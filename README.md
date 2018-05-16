@@ -98,17 +98,20 @@ Ignore any error if the folder already exists.
 
 ## Build and Install Executable
 1.	Click Window > Open Perspective > Other.... Select C/C++ (default). Click OK.
-2.	In the Project Explorer pane, select the project. Click Project > Build Project. Wait until the project finishes building. 
+2.  In the Project Explorer pane, Right-Click the Project  > Properties .In the left pane ,expand Resource > Linked Resources . In the right pane ,click Linked Resources .Select the location of C support file ,click Edit….Add the path where the source file of C support file locate .Usually the path is 
+        C:\Users\<administrator name>\workspace\C Support for ELVISIII\source
+
+3.  In the Project Explorer pane, select the project. Click Project > Build Project. Wait until the project finishes building. 
 NOTE: if you do not have the path to the toolchain added to the PATH environment variable, your build will fail.
-3.	In the Project Explorer pane, select the project. Click Run > Run Configurations .Right-click C/C++ Remote Application ,Click New .Run Configurations pane of the project shows .
+4.	In the Project Explorer pane, select the project. Click Run > Run Configurations .Right-click C/C++ Remote Application ,Click New .Run Configurations pane of the project shows .
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/picture/pic11.png) 
 
-4.	Click Connection and select the target IP address to connect with the ELVIS III.
-5.	In right hand pane beneath Remote Absolute File Path for C/C++ Application, click Browse to create a new folder for this project in ELVIS III .Select Remote C/C++ Application File dialog shows.
-6.	Right-click My Home .Click New .Click Folder . Input New folder name .Click Finish . 
-7.	Select newly created folder .Click OK .Add the project name to the Remote Absolute File Path .Add /<project name> to /home/admin/<new folder name>.Click Apply .
+5.	Click Connection and select the target IP address to connect with the ELVIS III.
+6.	In right hand pane beneath Remote Absolute File Path for C/C++ Application, click Browse to create a new folder for this project in ELVIS III .Select Remote C/C++ Application File dialog shows.
+7.	Right-click My Home .Click New .Click Folder . Input New folder name .Click Finish . 
+8.	Select newly created folder .Click OK .Add the project name to the Remote Absolute File Path .Add /<project name> to /home/admin/<new folder name>.Click Apply .
   
   ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/picture/pic12.png) 
   
-  8.	Click Run
+9.	Click Run
