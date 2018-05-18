@@ -33,7 +33,7 @@
 
 
 
-Note The  paths are customized for the 2017 version of Eclipse. If you use other versions of Eclipse, update the value to use the cross-compilers directory of Eclipse.
+>NOTE : The  paths are customized for the 2017 version of Eclipse. If you use other versions of Eclipse, update the value to use the cross-compilers directory of Eclipse.
 
 ## Start Eclipse
 
@@ -99,7 +99,19 @@ Ignore any error if the folder already exists.
 ## Build and Install Executable
 1.	Click Window > Open Perspective > Other.... Select C/C++ (default). Click OK.
 2.	In the Project Explorer pane, select the project. Click Project > Build Project. Wait until the project finishes building. 
-NOTE: if you do not have the path to the toolchain added to the PATH environment variable, your build will fail.
+
+>NOTE: if you select Release on the toolbar to  build the project ,you need to configure settings and tool chain of the project .
+
+>![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/modifyReadme/picture/pic13.png)  
+
+>   a.	In the Project Explorer pane, Right-Click the Project  > Properties .
+>In the left pane ,expand C/C++ Builder > Settings . In the right pane ,click Configuration and select Release . 
+>Bneath Configuration , select Tool Settings .Expand Cross GCC Compiler and configure Symbols , Includes  according to configuration in Debug .Expand Cross GCC Linker and configure libraries according to configuration in Debug .
+
+>![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/modifyReadme/picture/pic14.png)
+
+>   b.	In the left pane ,expand Select C/C++ Builder > Tool Chain Editor .In the right pane ,click Current builder and select CDT Internal Builder .
+
 3.	In the Project Explorer pane, select the project. Click Run > Run Configurations .Right-click C/C++ Remote Application ,Click New .Run Configurations pane of the project shows .
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/modifyReadme/picture/pic11.png) 
