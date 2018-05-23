@@ -20,11 +20,11 @@
 //AI channel selection number (DIFF mode)
 #define DIFF_NUM 4
 
-//AI_Fxp
+//AI Fix point
 #define AI_WordLength 26
 #define AI_IntegerWordLength 5
 
-//AO_Fxp
+//AO Fix point
 #define AO_WordLength 20
 #define AO_IntegerWordLength 5
 
@@ -37,7 +37,10 @@ extern "C" {
 #endif
 
 /**
- * Specify which AI channel to configure.
+ * Specify the numbers of AI channels.
+ * The analog input channels have RSE mode and DIFF mode.
+ * RSE mode corresponding to one particular analog input channel.
+ * DIFF mode corresponding to the difference of two analog input channels.
  *
  * RSE (the fourth bit is 1):
  * Ai_Channel 0 : 1 000b
@@ -95,11 +98,10 @@ typedef enum
 	AO_A1_VAL = 99536,
 	AO_B0_VAL = 99548,
 	AO_B1_VAL = 99544,
-} Ao_ValReg;
+} Ao_ValueRegister;
 
 /**
- * Registers and settings for a particular AI.
- * Explanation of each Registers is written below.
+ * Registers for a particular analog input.
  */
 typedef struct
 {
@@ -111,8 +113,7 @@ typedef struct
 } ELVISIII_Ai;
 
 /**
- * Registers and settings for a particular AO.
- * Explanation of each registers is written below.
+ * Registers for a particular analog output.
  */
 typedef struct
 {
@@ -122,44 +123,44 @@ typedef struct
 
 
 /**
- * Fix Point (signed) ----> double.
+ * Convert fix point value to double value.
  */
-double sFxp2Double(unsigned int value);
+double ConvertFixPointToDouble(unsigned int value);
 
 
 /**
- * double ----> Fix Point (signed).
+ * Convert double value to fix point value.
  */
-unsigned int sDouble2Fxp(double value);
+unsigned int ConvertDoubleToFixPoint(double value);
 
 
 /**
- * Set the AI Counter Register.
+ * Set the number of valid analog input channels.
  */
 void Ai_Counter(ELVISIII_Ai* connector, uint8_t counter);
 
 
 /**
- * Set the AI Configuration Register.
+ * Set the AI configuration options.
  */
 void Ai_Configure(ELVISIII_Ai* connector, Ai_Channel channel, Ai_Range range);
 
 
 /**
- * Set the AI Divisor Register.
+ * Generate the divisor for sample rate.
  */
 void Ai_Divisor(ELVISIII_Ai* connector, uint32_t ClockRate, uint32_t SampleRate);
 
 
 /**
- * Read the value from one channel in either RSE or DIFF mode.
+ * Read the value from one channel.
  */
 double Aio_Read(ELVISIII_Ai* connector, Ai_Channel channel);
 
 /**
  * Write the value to one AO Value Register.
  */
-void Aio_Write(ELVISIII_Ao* Ao, double value, Ao_ValReg valreg);
+void Aio_Write(ELVISIII_Ao* Ao, double value, Ao_ValueRegister ValueRegister);
 
 
 #if NiFpga_Cpp
