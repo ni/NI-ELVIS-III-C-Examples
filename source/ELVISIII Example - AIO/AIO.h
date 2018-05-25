@@ -123,15 +123,15 @@ typedef struct
 
 
 /**
- * Convert fix point value to double value.
+ * Convert unsigned int value of a fix point to double value.
  */
-double ConvertFixPointToDouble(unsigned int value);
+double ConvertUnsignedIntToDouble(unsigned int value);
 
 
 /**
- * Convert double value to fix point value.
+ * Convert double value to unsigned int value to represent a fix point.
  */
-unsigned int ConvertDoubleToFixPoint(double value);
+unsigned int ConvertDoubleToUnsignedInt(double value);
 
 
 /**

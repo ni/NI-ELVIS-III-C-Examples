@@ -43,13 +43,13 @@ ELVISIII_Ao Ao = {AOSYSGO, AOSYSSTAT};
 
 
 /**
- * Convert fix point value to double value.
+ * Convert unsigned int value to double value.
  *
- * @param[in]  value	Fix point value.
+ * @param[in]  value	Unsigned int value of a fix point.
  *
  * @return a double value.
  */
-double ConvertFixPointToDouble(unsigned int value)
+double ConvertUnsignedIntToDouble(unsigned int value)
 {
 	if (value & (1 << (AI_WordLength - 1)))
 	{
@@ -67,13 +67,13 @@ double ConvertFixPointToDouble(unsigned int value)
 
 
 /**
- * Convert double value to fix point value.
+ * Convert double value to unsigned int value.
  *
  * @param[in]  value	Double Value.
  *
- * @return a fix point value.
+ * @return an unsigned int value to represent a fix point.
  */
-unsigned int ConvertDoubleToFixPoint(double value)
+unsigned int ConvertDoubleToUnsignedInt(double value)
 {
 	if (value < 0)
 	{
@@ -150,8 +150,8 @@ void Ai_Counter(ELVISIII_Ai* connector, uint8_t counter)
  * Configure the range of the analog input channel.
  *
  * @param[in]  connector	A struct containing the registers for one connecter.
- * @param[in]  channel		Array of numbers corresponding to AI channels.
- * @param[in]  range		Array of numbers corresponding to the voltage range of the analog input channel.
+ * @param[in]  channel		Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
+ * @param[in]  range		Enum containing 4 kinds of ranges (±10 V, ±5 V, ±2 V, ±1 V).
  */
 void Ai_Configure(ELVISIII_Ai* connector, Ai_Channel channel, Ai_Range range)
 {
@@ -359,7 +359,7 @@ void Ai_Divisor(ELVISIII_Ai* connector, uint32_t ClockRate, uint32_t SampleRate)
  * Read value from one analog input channel.
  *
  * @param[in]  connector	A struct containing the registers for one connecter.
- * @param[in]  channel		Array of numbers corresponding to AI channels.
+ * @param[in]  channel		Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
  *
  * @return the voltage value in volts.
  */
@@ -392,7 +392,7 @@ double Aio_Read(ELVISIII_Ai* connector, Ai_Channel channel)
 	 */
 	NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AI Value Register!");
 
-	return ConvertFixPointToDouble(value);
+	return ConvertUnsignedIntToDouble(value);
 }
 
 
@@ -401,14 +401,14 @@ double Aio_Read(ELVISIII_Ai* connector, Ai_Channel channel)
  *
  * @param[in]  Ao		A struct containing the registers for analog output.
  * @param[in]  value	The voltage value to be written
- * @param[in]  ValueRegister	Array of numbers corresponding to AO Value registers.
+ * @param[in]  ValueRegister	Enum containing addresses for value registers.
  *
  */
 void Aio_Write(ELVISIII_Ao* Ao, double value, Ao_ValueRegister ValueRegister)
 {
 	NiFpga_Status status;
 
-	unsigned int result = ConvertDoubleToFixPoint(value);
+	unsigned int result = ConvertDoubleToUnsignedInt(value);
 
 	NiFpga_Bool stat = false;
 	NiFpga_Bool temp = false;
