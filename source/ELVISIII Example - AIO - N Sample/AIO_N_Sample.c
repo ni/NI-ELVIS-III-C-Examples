@@ -99,7 +99,7 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 	/*
 	 * Check if there was an error writing to the read register.
 	 *
-	 * If there was an error then print an error message to stdout .
+	 * If there was an error then print an error message to stdout and return.
 	 */
 	NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AI Configuration Register!");
 
@@ -127,7 +127,7 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 	/*
 	 * Check if there was an error writing to the write register.
 	 *
-	 * If there was an error then print an error message to stdout.
+	 * If there was an error then print an error message to stdout and return.
 	 */
 	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI Configuration Register!");
 
@@ -141,7 +141,7 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 	/*
 	 * Check if there was an error reading from the register.
 	 *
-	 * If there was an error then print an error message to stdout.
+	 * If there was an error then print an error message to stdout and return.
 	 */
 	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the AI Counter Register!");
 
@@ -196,9 +196,9 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 /**
  * Configure the divisor for the AI sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  connector		A struct containing the registers for one connecter.
- * @param[in]  ClockRate		The onboard clock rate of FPGA.
- * @param[in]  SampleRate		The analog sample rate.
+ * @param[in]  connector	A struct containing the registers for one connecter.
+ * @param[in]  ClockRate	The onboard clock rate of FPGA.
+ * @param[in]  SampleRate	The analog sample rate.
  */
 void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate)
 {
