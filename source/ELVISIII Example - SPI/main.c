@@ -22,12 +22,14 @@ extern ELVISIII_Spi connector_A;
  * returned bytes to the console.
  *
  * Instructions:
- * 1. Connect an SPI slave to the SPI pins on connector A.
- * 2. Run the program.
+ * 1. Connect SPI.CLK of the SPI slave to DIO5 on connector A.
+ * 2. Connect SPI.MISO of the SPI slave to DIO6 on connector A.
+ * 3. Connect SPI.MOSI of the SPI slave to DIO7 on connector A.
+ * 4. Run the program.
  *
  * Output:
  * The program writes the message "Hello World\n" for 60 s. Slave values are
- * written to the console every newline character.3
+ * written to the console every newline character.
  *
  * Note:
  * The Eclipse project defines the preprocessor symbol for the ELVIS III.
@@ -59,6 +61,7 @@ int main(int argc, char **argv)
 	{
 		return status;
 	}
+
 
 	/**
 	 * Write the value to the System Select Register.
