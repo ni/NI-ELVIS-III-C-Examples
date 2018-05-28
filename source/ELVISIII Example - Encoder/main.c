@@ -23,7 +23,7 @@ extern ELVISIII_Encoder connector_A;
 /**
  * Overview:
  * Demonstrates using the encoder. Reads a step and direction signal from the
- * encoder on connector B. Prints the values to the console.
+ * encoder on connector A. Prints the values to the console.
  *
  * Instructions:
  * 1. Connect ENC.A of the encoder to DIO0 on connector A.
