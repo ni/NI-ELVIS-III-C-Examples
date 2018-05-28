@@ -21,19 +21,22 @@ extern ELVISIII_Ao Ao;
 /**
  * Overview:
  * Demonstrates using the analog input and output (AIO).
- * Write an initial value to one AO Value Register.
- * Read this value from one AI Value Register in RSE mode, channel0, range ±10 V, connector A.
- * Read an initial value from one AI Value Register in DIFF mode, channel1_5, range ±5 V, connector B.
+ * Writes an initial value on connector A.Reads the write value from connector A.
+ * Reads the difference of the initial values of two analog input channels from connector B.
+ * Print the value and the difference to the console.
+ *
  *
  * Instructions:
  * 1. Connect the AI0 and AO0 on connector A.
- * 2. Connect a DC voltage input (between -5 V and 5 V) to AI1 and a DC voltage input (between -5 V and 5 V) to AI5 on connector B.
- * 3. Run this program.
+ * 2. Connect a DC voltage input (between -5 V and 5 V) to AI1 on connector B.
+ * 3. Connect a DC voltage input (between -5 V and 5 V) to AI5 on connector B.
+ * 4. Run this program.
  *
  * Output:
- * The program reads 2 values in voltages from proper channels on both connector A and connector B.
+ * The program writes the initial value to AO0 on connector A, and reads the write value from AI0.
+ * The program reads the difference of the initial voltage on AI1 and AI5 on connector B.
  * The output is maintained for 60 s.
- * Values and difference are written to the console.
+ * The write value and the difference are written to the console.
  *
  * Note:
  * The Eclipse project defines the preprocessor symbol for the ELVIS III.
@@ -59,54 +62,61 @@ int main(int argc, char **argv)
 	}
 
 	/*
-	 * Write the value to the proper AO Value Register.
+	 * Write the value to A/AO0 to set it to the desired value.
+	 * The channel is on connector A.
 	 */
-	Aio_Write(&Ao, 1.5, AO_A0_VAL);
+	Aio_Write(&Ao, 3.5, AO_A0_VAL);
 
 	/*
-	 * Set the AI Counter Register.
+	 * Set the number of valid channels on connector A.
 	 */
 	Ai_Counter(&connector_A, 12);
 
 	/*
-	 * Set the AI Configuration Register.
+	 * Configure the range of the analog input channel on connector A.
 	 */
 	Ai_Configure(&connector_A, Ai_Channel0, Ai_Range0);
 
 	/*
-	 * Set the AI Divisor Register.
+	 * Configure the divisor for the analog sample rate on connector A.
 	 */
 	Ai_Divisor(&connector_A, 40000000, 1000);
 
 	/*
-	 * Get the Value from AI Value Register in RSE mode, channel0, range ±10 V, connector_A.
+	 * Read from AI channel A/AI0.
+	 * The channel is on connector A.
 	 */
 	double ai_A0 = Aio_Read(&connector_A, Ai_Channel0);
 
 	/*
-	 * Set the AI Counter Register.
+	 * Print out the desired logic level of A/AI0.
+	 */
+	printf("ai_A0   = %f\n", ai_A0);
+
+	/*
+	 * Set the number of valid channels on connector B.
 	 */
 	Ai_Counter(&connector_B, 12);
 
 	/*
-	 * Set the AI Configuration Register.
+	 * Configure the range of the analog input channel on connector B.
 	 */
 	Ai_Configure(&connector_B, Ai_Channel1_5, Ai_Range1);
 
 	/*
-	 * Set the AI Divisor Register.
+	 * Configure the divisor for the analog sample rate on connector B.
 	 */
 	Ai_Divisor(&connector_B, 40000000, 1000);
 
 	/*
-	 * Get the Value from AI Value Register in DIFF mode, channel1_5, range ±5 V, connector_B.
+	 * Read from AI channel B/AI1 and B/AI5.
+	 * Each channel is on connector B.
 	 */
 	double ai_B1_5 = Aio_Read(&connector_B, Ai_Channel1_5);
 
 	/*
-	 * Print the value you get.
+	 * Print the difference of the values in two channels.
 	 */
-	printf("ai_A0   = %f\n", ai_A0);
 	printf("ai_B1_5 = %f\n", ai_B1_5);
 
 	/*
