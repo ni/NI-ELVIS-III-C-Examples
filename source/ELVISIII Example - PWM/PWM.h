@@ -19,12 +19,12 @@ extern "C" {
 #endif
 
 /**
- * Specify which PWM channel.
+ * Specify the numbers of PWM channels.
  *
  * Pwm_Channel0: 0
  * Pwm_Channel1: 1
  * ...
- * Pwm_Channel20: 19
+ * Pwm_Channel19: 19
  */
 typedef enum
 {
