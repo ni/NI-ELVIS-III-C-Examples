@@ -70,7 +70,7 @@ extern "C" {
 #endif
 
 /**
- * Set the DMA Enable Flag for one connector.
+ * Set the UART Enable Flag for one connector.
  */
 void Uart_Enable(ELVISIII_Connector* connector);
 

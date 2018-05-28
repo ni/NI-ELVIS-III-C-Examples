@@ -24,8 +24,11 @@ extern ELVISIII_Connector connector_A;
  * returned character to the console.
  *
  * Instructions:
- * 1. Connect a UART device that can receive and/or send character data to the UART pins on connector A.
- * 2. Run the program.
+ * 1. Connect UART.TX of the UART to DIO16 on connector A.
+ * 2. Connect UART.RX of the UART to DIO17 on connector A.
+ * 3. Connect UART.GND of the UART to DGND on connector A.
+ * 4. Connect a DC voltage input (+3.3 V) to the UART.
+ * 5. Run the program.
  *
  * Output:
  * The program writes the character "H" to the console.
@@ -38,7 +41,7 @@ int main(int argc, char **argv)
 {
     ELVISIII_Uart uart;
 
-    uint8_t writeData = 'O';
+    uint8_t writeData = 'H';
     uint8_t readData = 0;
     int32_t status = 0;
 
@@ -66,7 +69,7 @@ int main(int argc, char **argv)
 	}
 
     /*
-     * Set the UART Enable Register into NiFpga_true.
+     * Set the UART Enable Flag for one connector.
      */
     Uart_Enable(&connector_A);
 

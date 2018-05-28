@@ -32,7 +32,7 @@ ELVISIII_Connector connector_B = {UARTBENA, UARTBSTAT, CONSOLEENA};
 
 
 /**
- *  Set the DMA Enable Flag for one connector.The flag controls whether the DMA is enabled for a specific connector.
+ *  Set the UART Enable Flag for one connector.
  *
  * @param[in]  connector  	A struct containing the registers for one connecter.
  */
