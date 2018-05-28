@@ -45,7 +45,7 @@ ELVISIII_Encoder connector_B = {{ENCB_0CNFG, ENCB_1CNFG, ENCB_2CNFG, ENCB_3CNFG,
 /**
  * Sets options for the encoder configuration register.
  *
- * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector  	A struct containing the registers for one connecter.
  * @param[in]  channel		Enum containing 10 kinds of Encoder channels.
  * @param[in]  mask     	Array of flags that indicate which of the configure settings are valid.
  * @param[in]  settings 	Array of flags that indicate the configuration settings.
@@ -106,7 +106,7 @@ void Encoder_Configure(ELVISIII_Encoder*         connector,
 /**
  * Reads the encoder status, returning the status as bits.
  *
- * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector  	A struct containing the registers for one connecter.
  * @param[in]  channel		Enum containing 10 kinds of Encoder channels.
  *
  * @return the status as a bit field.
@@ -149,7 +149,7 @@ uint8_t Encoder_Status(ELVISIII_Encoder* connector, Encoder_Channel channel)
  * ENC_SET_AND_DIRECTION:
  * The counter increments when the direction input is low and decrements when the direction input is high.
  *
- * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector  	A struct containing the registers for one connecter.
  * @param[in]  channel		Enum containing 10 kinds of Encoder channels.
  *
  * @return the status as a bit field.
@@ -184,7 +184,7 @@ uint32_t Encoder_Counter(ELVISIII_Encoder* connector, Encoder_Channel channel)
 /**
  * Write the value to the System Select Register.
  *
- * @param[in]  connector		Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector		A struct containing the registers for one connecter.
  * @param[in]  channel			Enum containing 10 kinds of Encoder channels.
  */
 void Encoder_Select(ELVISIII_Encoder* connector, Encoder_Channel channel)
@@ -209,7 +209,8 @@ void Encoder_Select(ELVISIII_Encoder* connector, Encoder_Channel channel)
 	NiELVISIIIv10_ReturnValueIfNotSuccess(status, status, "Could not read from the System Select Register!");
 
 	/*
-	 * Clear proper bits.
+	 * Clear bits of the SYSSELECTA/SYSSELECTB register. This is
+     * done so that the correct value can be set later on.
 	 */
 	selectReg = selectReg & (~(0xf << (channel * 4)));
 

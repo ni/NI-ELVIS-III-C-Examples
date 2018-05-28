@@ -26,7 +26,10 @@ extern ELVISIII_Encoder connector_A;
  * encoder on connector B. Prints the values to the console.
  *
  * Instructions:
- * 1. Connect a step and direction signal to encoder pins on connector B.
+ * 1. Connect ENC.A of the encoder to DIO0 on connector A.
+ * 2. Connect ENC.B of the encoder to DIO1 on connector A.
+ * 3. Connect GND of the encoder to DGND on connector A.
+ * 4. Connect a DC voltage input (+5 V) to the encoder.
  * 2. Run this program.
  *
  * Output:
@@ -61,7 +64,7 @@ int main(int argc, char **argv)
 	}
 
 	/**
-	 * Write the value to the System Select Register.
+	 * Write the value to the Encoder Channel 0 on connector A.
 	 */
 	Encoder_Select(&connector_A, Encoder_Channel0);
 
