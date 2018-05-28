@@ -25,7 +25,8 @@ extern ELVISIII_Spi connector_A;
  * 1. Connect SPI.CLK of the SPI slave to DIO5 on connector A.
  * 2. Connect SPI.MISO of the SPI slave to DIO6 on connector A.
  * 3. Connect SPI.MOSI of the SPI slave to DIO7 on connector A.
- * 4. Run the program.
+ * 4. Connect SPI.GND of the SPI slave to DGND on connector A.
+ * 5. Run the program.
  *
  * Output:
  * The program writes the message "Hello World\n" for 60 s. Slave values are
