@@ -64,7 +64,7 @@ ELVISIII_Pwm connector_B = {{PWMB_0CNFG, PWMB_1CNFG, PWMB_2CNFG, PWMB_3CNFG, PWM
  * Pwm_Disabled disables PWM output
  * Pwm_Enabled enabled PWM output
  *
- * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector  	A struct containing the registers for one connecter.
  * @param[in]  channel		Enum containing 20 kinds of PWM channels.
  * @param[in]  mask     	Array of flags that indicate which of the configure settings are valid.
  *  						This can be one or more of the following values: Pwm_Invert, Pwm_Mode.
@@ -141,7 +141,7 @@ void Pwm_Configure(ELVISIII_Pwm* connector, Pwm_Channel channel, Pwm_ConfigureMa
  * | Pwm_32X  | f_clk / 32     	| 1.25 MHz      |
  * | Pwm_64X  | f_clk / 64     	| 625 kHz       |
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  channel		Enum containing 20 kinds of PWM channels.
  * @param[in]  divider  	The PWM waveform clock divider.
  */
@@ -176,7 +176,7 @@ void Pwm_ClockSelect(ELVISIII_Pwm* connector, Pwm_Channel channel, Pwm_ClockDivi
  * Pwm_Enabled:
  * The PWM counter counts to MAX, then resets to 0
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  channel		Enum containing 20 kinds of PWM channels.
  * @param[in]  counterMax  	The maximum counter value.
  */
@@ -214,7 +214,7 @@ void Pwm_CounterMaximum(ELVISIII_Pwm* connector, Pwm_Channel channel, uint16_t c
  * Pwm_Enabled and Pwm_Inverted:
  * Sets the output when CNTR = CMP
  *
- * @param[in]  connector		Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector		A struct containing the registers for one connecter.
  * @param[in]  channel			Enum containing 20 kinds of PWM channels.
  * @param[in]  counterCompare  	The comparison counter value.
  */
@@ -242,7 +242,7 @@ void Pwm_CounterCompare(ELVISIII_Pwm* connector, Pwm_Channel channel, uint16_t c
  * Gets the current value of the PWM counter.
  * The behavior of the counter depends on the waveform set by Pwm_Configure and the maximum counter value set by Pwm_CounterMaximum.\
  *
- * @param[in]  connector		Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector		A struct containing the registers for one connecter.
  * @param[in]  channel			Enum containing 20 kinds of PWM channels.
  *
  * @return the counter value.
@@ -271,7 +271,7 @@ uint16_t Pwm_Counter(ELVISIII_Pwm* connector, Pwm_Channel channel)
 /**
  * Write the value to the System Select Register.
  *
- * @param[in]  connector		Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector		A struct containing the registers for one connecter.
  * @param[in]  channel			Enum containing 20 kinds of PWM channels.
  */
 void Pwm_Select(ELVISIII_Pwm* connector, Pwm_Channel channel)
@@ -296,7 +296,8 @@ void Pwm_Select(ELVISIII_Pwm* connector, Pwm_Channel channel)
 	NiELVISIIIv10_ReturnValueIfNotSuccess(status, status, "Could not read from the System Select Register!");
 
 	/*
-	 * Clear proper bits.
+	 * Clear bits of the SYSSELECTA/SYSSELECTB register. This is
+     * done so that the correct value can be set later on.
 	 */
 	selectReg = selectReg & (~(0b11 << (channel * 2)));
 
