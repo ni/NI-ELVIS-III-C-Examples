@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 {
     ELVISIII_Uart uart;
 
-    uint8_t writeData = 'H';
+    uint8_t writeData = 'O';
     uint8_t readData = 0;
     int32_t status = 0;
 

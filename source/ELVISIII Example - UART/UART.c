@@ -21,7 +21,7 @@
 extern NiFpga_Session NiELVISIIIv10_session;
 
 /*
- * Initialize the register addresses of I2C in connector A.
+ * Initialize the register addresses of UART in connector A.
  */
 ELVISIII_Connector connector_A = {UARTAENA, UARTASTAT, CONSOLEENA};
 
@@ -32,9 +32,9 @@ ELVISIII_Connector connector_B = {UARTBENA, UARTBSTAT, CONSOLEENA};
 
 
 /**
- * Set the UART Enable Register into NiFpga_true.
+ *  Set the DMA Enable Flag for one connector.The flag controls whether the DMA is enabled for a specific connector.
  *
- * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector  	A struct containing the registers for one connecter.
  */
 void Uart_Enable(ELVISIII_Connector* connector)
 {
@@ -44,6 +44,8 @@ void Uart_Enable(ELVISIII_Connector* connector)
 
 	/*
 	 * Read the value from the Console Enable Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadBool(NiELVISIIIv10_session, connector->console, &Enable);
 
@@ -58,6 +60,8 @@ void Uart_Enable(ELVISIII_Connector* connector)
 	{
 		/*
 		 * Write the value to the Console Enable Register.
+		 *
+		 * The returned NiFpga_Status value is stored for error checking.
 		 */
 		status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->console, NiFpga_False);
 
@@ -71,6 +75,8 @@ void Uart_Enable(ELVISIII_Connector* connector)
 
 	/*
 	 * Write the value to the UART Enable Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->enable, NiFpga_True);
 

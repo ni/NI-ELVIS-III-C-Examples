@@ -70,7 +70,7 @@ extern "C" {
 #endif
 
 /**
- * Set the UART Enable Register into NiFpga_true.
+ * Set the DMA Enable Flag for one connector.
  */
 void Uart_Enable(ELVISIII_Connector* connector);
 
