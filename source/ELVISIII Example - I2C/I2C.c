@@ -41,7 +41,7 @@ ELVISIII_I2c connector_B = {I2CBADDR, I2CBCNFG, I2CBCNTL, I2CBCNTR, I2CBSTAT, I2
  * Configure the I2C block.
  * Set options for the I2C configuration register.
  *
- * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector  	A struct containing the registers for one connecter.
  * @param[in]  settings 	Settings configured on the register.
  */
 void I2c_Configure(ELVISIII_I2c* connector, I2c_ConfigureSettings settings)
@@ -50,6 +50,8 @@ void I2c_Configure(ELVISIII_I2c* connector, I2c_ConfigureSettings settings)
 
 	/*
 	 * Write the new value of the configure register to the device.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cnfg, settings);
 
@@ -79,7 +81,7 @@ void I2c_Configure(ELVISIII_I2c* connector, I2c_ConfigureSettings settings)
  *
  * This formula and its rationale can be found in the documentation.
  *
- * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector  	A struct containing the registers for one connecter.
  * @param[in]  speed    	The I2C speed configured on the I2C channel
  */
 void I2c_Counter(ELVISIII_I2c* connector, uint8_t speed)
@@ -88,6 +90,8 @@ void I2c_Counter(ELVISIII_I2c* connector, uint8_t speed)
 
 	/*
 	 * Write the new value of the counter register to the device.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cntr, speed);
 
@@ -107,7 +111,7 @@ void I2c_Counter(ELVISIII_I2c* connector, uint8_t speed)
  *
  * @warning The data array being passed in must be at least as big as the number of bytes being written.
  *
- * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector  	A struct containing the registers for one connecter.
  * @param[in]  address   	The address of the I2C slave device.
  * @param[in]  data      	A pointer to an array holding the data to write.
  * @param[in]  numBytes  	The number of bytes to be written to the slave.
@@ -320,7 +324,7 @@ void I2c_Write(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t
  *
  * @warning The data array passed in must be big enough to accommodate the number of bytes being read.
  *
- * @param[in]      connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]      connector  	A struct containing the registers for one connecter.
  * @param[in]      address   	The address of the I2C slave device.
  * @param[in,out]  data      	A pointer to an array to fill with the data read.
  * @param[in]      numBytes  	The number of bytes to be read from the slave.
@@ -558,7 +562,7 @@ void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t 
 /**
  * Write the value to the System Select Register.
  *
- * @param[in]  connector		Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector		A struct containing the registers for one connecter.
  */
 void I2c_Select(ELVISIII_I2c* connector)
 {
@@ -582,7 +586,8 @@ void I2c_Select(ELVISIII_I2c* connector)
 	NiELVISIIIv10_ReturnValueIfNotSuccess(status, status, "Could not read from the System Select Register!");
 
 	/*
-	 * Clear proper bits.
+	 * Clear bits of the SYSSELECTA/SYSSELECTB register. This is
+     * done so that the correct value can be set later on.
 	 */
 	selectReg = selectReg & 0x0fffffff;
 
