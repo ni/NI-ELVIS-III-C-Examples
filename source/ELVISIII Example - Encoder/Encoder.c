@@ -210,7 +210,7 @@ void Encoder_Select(ELVISIII_Encoder* connector, Encoder_Channel channel)
 
 	/*
 	 * Clear bits of the SYSSELECTA/SYSSELECTB register. This is
-     * done so that the correct value can be set later on.
+    	 * done so that the correct value can be set later on.
 	 */
 	selectReg = selectReg & (~(0xf << (channel * 4)));
 
