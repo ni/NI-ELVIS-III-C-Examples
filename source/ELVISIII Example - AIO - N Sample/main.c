@@ -22,22 +22,23 @@ extern ELVISIII_Aio connector_B;
 
 /**
  * Overview:
- * Demonstrates using the analog input and output in N Sample (AIO - N Sample).
- * Read a groups of values from a AI FIFO (connector A, channel 0).
- * Write a groups of values to a AO FIFO (connector B, channel 0).
+ * Demonstrates using the analog input and output of N Sample (AIO - N Sample).
+ * Read a group of values from one analog input channel on connector A.
+ * Write a group of values to one analog output channel on connector B.
  *
  * Instructions:
- * 1. Use an oscilloprobe to connect FGen (one side) and AI0, AGND (another side) on connector A.
- * 2. Use an oscilloprobe to connect Oscilloscope (one side) and AO0, AGND (another side) on connector B.
- * 3. Open FGen and set a square wave in 500Hz, 4Vpp and 0V DC offset.
- * 4. Open Oscilloscope and set Normal mode. The Level is 1V and the Type is Analog edge.
- * 5. Run this program.
+ * 1. Use an oscilloprobe to connect one Function Generator (one side) and AI0, AGND (another side) on connector A.
+ * 2. Use an oscilloprobe to connect one Oscilloscope (one side) and AO0, AGND (another side) on connector B.
+ * 3. Open MeasurementsLive website and connect the ELVISIII.
+ * 4. In Instruments tab, Open Function and Arbitrary Waveform Generator, set a square wave in 500Hz, 4Vpp and 0V DC offset.
+ * 5. In Instruments tab, Open Oscilloscope, set Normal mode, analog edge type and 1V level.
+ * 6. Run this program.
  *
  * Output:
- * The program reads groups of values from a AI FIFO in channel 0, connector A.
- * The program writes groups of values to a AO FIFO in channel 0, connector B.
- * The groups of values reading from the AI FIFO will be printed on the console.
+ * The program reads groups of values from AI0 on connector A.
+ * The program writes groups of initial values to AO0 on connector B.
  * The output is maintained for 60 s.
+ * The group of values reading from the AI0 is written to the console.
  *
  * Note:
  * The Eclipse project defines the preprocessor symbol for the ELVIS III.
@@ -46,11 +47,11 @@ int main(int argc, char **argv)
 {
 	NiFpga_Status status;
 
-	double val[FIFO_SIZE];
-	uint64_t fxp_buffer_recv[FIFO_SIZE];
+	double value[FIFO_SIZE];
+	uint64_t FixPoint_buffer_receive[FIFO_SIZE];
 
 	double send[] = {2, 2, 2, 2, -2, -2, -2, -2};
-	uint64_t fxp_buffer_send[FIFO_SIZE];
+	uint64_t FixPoint_buffer_send[FIFO_SIZE];
 
 	time_t currentTime;
 	time_t finalTime;
@@ -69,75 +70,77 @@ int main(int argc, char **argv)
 	}
 
 	/*
-	 * Set the AI Counter Register.
+	 * Set the number of valid channels on connector A.
 	 */
 	Ai_Counter(&connector_A, 1);
 
 	/*
-	 * Set the AI Configuration Register.
+	 * Configure the range of the AI channel on connector A.
 	 */
 	Ai_Configure(&connector_A, Ai_Channel0, Ai_Range0);
 
 	/*
-	 * Set the AI Divisor Register.
+	 * Configure the divisor for the AI sample rate on connector A.
 	 */
 	Ai_Divisor(&connector_A, 40000000, 1000);
 
 	/*
-	 * Set the AI DMA Enable Register.
+	 * Set the DMA Enable Flag for connector A.
 	 */
 	Ai_Enable(&connector_A);
 
 	/*
-	 * Read FXP from a AI FIFO.
+	 * Read Fix Points from an AI FIFO on connector A.
 	 */
 	Ai_ReadFifo(&connector_A,
-			    TargetToHost_FIFO_FXP_A,
-				fxp_buffer_recv,
+			    TargetToHost_FIFO_FixPoint_A,
+			    FixPoint_buffer_receive,
 				FIFO_SIZE,
 				NiFpga_InfiniteTimeout,
 				NULL);
 
 	/*
-	 * Get groups of values from one channel.
+	 * Convert Fix Point values of the FIFO to Double values.
+	 * The fix point value is an unsigned long long int value.
 	 */
-	Ai_GetVal(fxp_buffer_recv, FIFO_SIZE, val);
+	ConvertUnsignedLongLongIntToDouble(FixPoint_buffer_receive, FIFO_SIZE, value);
 
 	/*
-	 * Print the values of AIO0.
+	 * Print out the values of A/AI0.
 	 */
 	printf("Channel%d:\n", Ai_Channel0 - RSE_NUM);
 	int i;
 	for (i = 0; i < FIFO_SIZE; ++i)
 	{
-		printf("%f ", val[i]);
+		printf("%f ", value[i]);
 		if ((i + 1) % 10 == 0)
 			printf("\n");
 	}
 	printf("\n");
 
 	/*
-	 * Set the AO Divisor Register.
+	 * Configure the divisor for the AO sample rate on connector B.
 	 */
 	Ao_Divisor(&connector_B, 40000000, 1000);
 
 	/**
-	 * Set the AO DMA Enable Register
+	 * Set the DMA Enable Flag for AO0 on connector B.
 	 */
 	Ao_Enable(&connector_B, Ao_Channel0);
 
 	/*
-	 * Turn groups of values from double to Fix Point.
+	 * Convert double values to fix point values of the FIFO.
+	 * The fix point value is an unsigned long long int value.
 	 */
-	Ao_SetVal(send, fxp_buffer_send, sizeof(send)/sizeof(uint64_t));
+	ConvertDoubleToUnsignedLongLongInt(send, FixPoint_buffer_send, sizeof(send)/sizeof(uint64_t));
 
 	/*
-	 * Read FXP from a AI FIFO.
+	 * Write Fix Points to an AO FIFO on connector B.
 	 */
 	Ao_WriteFifo(&connector_B,
-				 HostToTarget_FIFO_FXP_B,
-				 fxp_buffer_send,
-				 (sizeof(fxp_buffer_send)/sizeof(uint64_t)),
+				 HostToTarget_FIFO_FixPoint_B,
+				 FixPoint_buffer_send,
+				 (sizeof(FixPoint_buffer_send)/sizeof(uint64_t)),
 				 NiFpga_InfiniteTimeout,
 				 NULL);
 
