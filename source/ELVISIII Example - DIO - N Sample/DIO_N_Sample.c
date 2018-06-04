@@ -409,7 +409,7 @@ void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 }
 
 /**
- * Set the DMA Enable value for an DO channel.The value controls
+ * Set the DMA Enable value for a DO channel.The value controls
  * whether the DMA is enabled for a specific digital output channel.
  *
  * @param[in]  connector	A struct containing the registers for one connecter.
@@ -460,7 +460,7 @@ void Do_Enable(ELVISIII_Dio* connector, Dio_Channel channel)
 }
 
 /**
- * Write groups of values to an DO FIFO.
+ * Write groups of values to a DO FIFO.
  *
  * @param[in]  connector				A struct containing the registers for one connecter.
  * @param[in]  fifo						DO host-to-target FIFO from which to write

@@ -85,7 +85,7 @@ int main()
 	Di_Enable(&connector_A);
 
 	/*
-	 * Read Fix Points from an DI FIFO on connector A.
+	 * Read Fix Points from a DI FIFO on connector A.
 	 */
 	Di_ReadFifo(&connector_A,
 				TargetToHost_FIFO_FixPoint_A,
