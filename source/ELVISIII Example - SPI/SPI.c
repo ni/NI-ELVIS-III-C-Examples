@@ -233,7 +233,7 @@ void Spi_Select(ELVISIII_Spi* connector)
 
 	/*
 	 * Clear the value of the bits in the SYSSELECTA/SYSSELECTB register. This is
-     * done so that the correct value can be set later on.
+    	 * done so that the correct value can be set later on.
 	 */
 	selectReg = selectReg & 0x03ff;
 
