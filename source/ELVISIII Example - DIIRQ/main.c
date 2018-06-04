@@ -38,9 +38,9 @@ typedef struct
  * The main thread runs for 60 s.
  *
  * Instructions:
- * 1. Use an oscilloprobe to connect one Function Generator (one side) and DIO0, DGND (another side) on connector A.
- * 2. Open MeasurementsLive website and connect the ELVISIII.
- * 3. In Instruments tab, Open Function and Arbitrary Waveform Generator, set a square wave.
+ * 1. Install an oscilloprobe on one of the Function Generator on NI ELVIS III device. Use the oscilloprobe to probe DIO0 on connector A. Use DGND as ground.
+ * 2. Open "Measurements Live" (measurementslive.ni.com) and connect to the NI ELVIS III device.
+ * 3. In Instruments tab, open Function and Arbitrary Waveform Generator and set a square wave.
  * 4. Run this program and observe the console.
  *
  * Output:
