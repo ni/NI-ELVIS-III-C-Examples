@@ -587,7 +587,7 @@ void I2c_Select(ELVISIII_I2c* connector)
 
 	/*
 	 * Clear bits of the SYSSELECTA/SYSSELECTB register. This is
-     * done so that the correct value can be set later on.
+     	* done so that the correct value can be set later on.
 	 */
 	selectReg = selectReg & 0x0fffffff;
 
