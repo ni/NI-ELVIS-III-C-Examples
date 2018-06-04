@@ -19,7 +19,7 @@ extern "C" {
 #endif
 
 /**
- * Specify which Encoder channel.
+ * Specify the numbers of encoder channels.
  *
  * Encoder_Channel0: 0
  * Encoder_Channel1: 1

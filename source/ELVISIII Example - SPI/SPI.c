@@ -39,7 +39,7 @@ ELVISIII_Spi connector_B = {SPIBCNFG, SPIBCNT, SPIBGO, SPIBSTAT, SPIBDATO, SPIBD
 /**
  * Sets options for the SPI configuration register.
  *
- * @param[in]  connector  	A struct containing the registers on the SPI channel to modify.
+ * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
  * @param[in]  mask     	Array of flags that indicate which of the configure settings are valid.
  * @param[in]  settings 	Array of flags that indicate the configuration settings.
  */
@@ -127,7 +127,7 @@ void Spi_CounterMaximum(ELVISIII_Spi* connector, uint16_t counterMax)
 /**
  * Transmits data.
  *
- * @param[in]  connector  	A struct containing the registers on the SPI channel to modify.
+ * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
  * @param[in]  dataOut 		Data to output.
  * @param[in]  dataIn 		Data to input.
  */
@@ -214,7 +214,7 @@ void Spi_Transmit(ELVISIII_Spi* connector, uint16_t dataOut, uint16_t* dataIn)
 /**
  * Write the value to the System Select Register.
  *
- * @param[in]  connector  	A struct containing the registers on the SPI channel to modify.
+ * @param[in]  connector  	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
  */
 void Spi_Select(ELVISIII_Spi* connector)
 {
@@ -232,8 +232,9 @@ void Spi_Select(ELVISIII_Spi* connector)
 	NiELVISIIIv10_ReturnValueIfNotSuccess(status, status, "Could not read from the System Select Register!");
 
 	/*
+
 	 * Clear the value of the bits in the SYSSELECTA/SYSSELECTB register. This is
-    	 * done so that the correct value can be set later on.
+   * done so that the correct value can be set later on.
 	 */
 	selectReg = selectReg & 0x03ff;
 
