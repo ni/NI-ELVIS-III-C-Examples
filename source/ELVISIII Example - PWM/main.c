@@ -23,10 +23,12 @@ extern ELVISIII_Pwm connector_A;
  *
  * Instructions:
  * 1. Connect an oscilloscope to the PWM 0 pin on connector A.
- * 2. Run this program.
+ * 2. Open MeasurementsLive website and connect the ELVISIII.
+ * 4. In Instruments tab, Open Oscilloscope, generate a PWM signal.
+ * 3. Run this program.
  *
  * Output:
- * The program generates a 50% duty cycle signal at 10 kHz for 60 s.
+ * The program generates a 25% duty cycle signal at 10 kHz for 60 s.
  *
  * Note:
  * The Eclipse project defines the preprocessor symbol for the ELVIS III.
@@ -76,14 +78,14 @@ int main(int argc, char **argv)
 
 	/*
 	 * Set the comparison counter value. The PWM counter counts from 0 to 1000
-	 * and outputs from 0 to the comparison value (500).
+	 * and outputs from 0 to the comparison value (250).
 	 *
-	 * The duty cycle is 500 / 1000 = 50%.
+	 * The duty cycle is 250 / 1000 = 25%.
 	 */
-	Pwm_CounterCompare(&connector_A, Pwm_Channel0, 500);
+	Pwm_CounterCompare(&connector_A, Pwm_Channel0, 250);
 
 	/**
-	 * Write the value to the System Select Register.
+	 * Write the value to PWM channel 0 on connector A.
 	 */
 	Pwm_Select(&connector_A, Pwm_Channel0);
 
