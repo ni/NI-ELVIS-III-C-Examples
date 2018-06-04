@@ -27,23 +27,35 @@
 extern NiFpga_Session NiELVISIIIv10_session;
 
 /*
- * Initialize the register addresses of DI in connector A.
+ * Initialize the register addresses of DIO in connector A.
  */
 ELVISIII_Dio connector_A = {DIADMA_ENA, 98328, DIADMA_CNTR, DOADMA_CNTR, 98304};
 
 /*
- * Initialize the register addresses of DI in connector B.
+ * Initialize the register addresses of DIO in connector B.
  */
 ELVISIII_Dio connector_B = {DIBDMA_ENA, 99508, DIBDMA_CNTR, DOBDMA_CNTR, 99532};
 
-
 /**
- * Set the DIO Direction Register.
+ * Set the Direction of the DIO channel as an input.
+ * The DIO channels are accessed in 8-bit banks where each bit in the bank
+ * corresponds to one of the DIO channels. In general:
+ *    DIO0 = bit0   (1st channel on the DIO 7:0 bank)
+ *    DIO1 = bit1   (2nd channel on the DIO 7:0 bank)
+ *       ...
+ *    DIO7 = bit7   (last channel on the DIO 7:0 bank)
+ *    DIO8 = bit0   (1st channel on the DIO 15:8 bank)
+ *      ...
+ *    DIO15 - bit7  (last channel on the DIO 15:8 bank)
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * A DIO channel can be either an input or an output depending on the value
+ * of the DIR register. A value of 0 makes the channel an input, a value of 1
+ * sets the channel as an output.
+ *
+ * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  channel  	Enum containing 20 kinds of channels (DIO0 - DIO19).
  */
-void Di_Direction(ELVISIII_Dio* connector, Di_Channel channel)
+void Di_Direction(ELVISIII_Dio* connector, Dio_Channel channel)
 {
 	NiFpga_Status status;
 
@@ -53,6 +65,8 @@ void Di_Direction(ELVISIII_Dio* connector, Di_Channel channel)
 
 	/*
 	 * Get the value of the DI Direction Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->dir, &dirValue);
 
@@ -73,6 +87,8 @@ void Di_Direction(ELVISIII_Dio* connector, Di_Channel channel)
 
 	/*
 	 * Write the new value to the DI Direction Register to ensure that the proper bit is turned into an input.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->dir, dirValue);
 
@@ -86,12 +102,11 @@ void Di_Direction(ELVISIII_Dio* connector, Di_Channel channel)
 	return;
 }
 
-
 /**
- * Set the DI Divisor Register.
+ * Configure the divisor for the DI sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  connector		Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  ClockRate		Onboard clock rate of FPGA.
+ * @param[in]  connector		A struct containing the registers for one connecter.
+ * @param[in]  ClockRate		The onboard clock rate of FPGA.
  * @param[in]  SampleRate		The Sample Rate.
  */
 void Di_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate)
@@ -101,7 +116,7 @@ void Di_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 	uint16_t Divisor = 0;
 
 	/*
-	 * The range of the sample rate is from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
+	 * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
 	 */
 	if (SampleRate > MAX_SAMPLE_RATE)
 	{
@@ -116,7 +131,9 @@ void Di_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 	uint16_t divisor = (uint16_t)(ClockRate / SampleRate);
 
 	/*
-	 * Write the new value to the DI DMA Enable Register.
+	 * Write the divisor value to the DI Divisor Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU16(NiELVISIIIv10_session, connector->di_cntr, divisor);
 
@@ -133,7 +150,9 @@ void Di_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 	while (flag)
 	{
 		/*
-		 * Read the value from the DI DMA Enable Register.
+		 * Read the value from the DI Divisor Register.
+		 *
+		 * The returned NiFpga_Status value is stored for error checking.
 		 */
 		status = NiFpga_ReadU16(NiELVISIIIv10_session, connector->di_cntr, &Divisor);
 
@@ -153,11 +172,10 @@ void Di_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 	return;
 }
 
-
 /**
- * Configure the DI DMA Enable Register.
+ * Set the DMA Enable Flag for one connector.The flag controls whether the DMA is enabled for a specific connector.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector	A struct containing the registers for one connecter.
  */
 void Di_Enable(ELVISIII_Dio* connector)
 {
@@ -165,6 +183,8 @@ void Di_Enable(ELVISIII_Dio* connector)
 
 	/*
 	 * Write the new value to the DI DMA Enable Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->di_enable, NiFpga_True);
 
@@ -178,20 +198,30 @@ void Di_Enable(ELVISIII_Dio* connector)
 	return;
 }
 
-
 /**
  * Read groups of values from a DI FIFO.
  *
- * @param[in]  connector			Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  fifo					DI target-to-host fifo, which can be seen in DIO_N_Sample.h.
- * @param[in]  fxp_buffer_recv		Array used to read from DI FIFO.
- * @param[in]  fifo_size			The size of DI FIFO.
- * @param[in]  timeout				The default value is NiFpga_InfiniteTimeout.
- * @param[in]  elementsRemaining	The default value is NULL.
+ * @param[in]  connector					A struct containing the registers for one connecter.
+ * @param[in]  fifo							DI target-to-host FIFO from which to read
+ * @param[in]  fixPoint_buffer_receive		groups of values in an DI FIFO, get from one channel.
+ * @param[in]  fifo_size					The size of DI FIFO.
+ * @param[in]  timeout						timeout in milliseconds, or NiFpga_InfiniteTimeout
+ * @param[in]  elementsRemaining			if non-NULL, outputs the number of elements
+ *                          				remaining in the host memory part of the DMA FIFO
+ *
+ * ------------------------------------------
+ * Item:             | Default value:
+ * ------------------------------------------
+ * fifo_size         | 100
+ * ------------------------------------------
+ * timeout           | NiFpga_InfiniteTimeout
+ * ------------------------------------------
+ * elementsRemaining | NULL.
+ * ------------------------------------------
  */
 void Di_ReadFifo(ELVISIII_Dio*         connector,
-				 TargetToHost_FIFO_FXP fifo,
-			 	 uint64_t*             fxp_buffer_recv,
+				 TargetToHost_FIFO_FixPoint fifo,
+			 	 uint64_t*             fixPoint_buffer_receive,
 			 	 size_t                fifo_size,
 			 	 uint32_t              timeout,
 			 	 size_t*               elementsRemaining)
@@ -199,21 +229,13 @@ void Di_ReadFifo(ELVISIII_Dio*         connector,
 	NiFpga_Status status;
 
 	/*
-	 * Read Groups of FXP from a DI FIFO.
+	 * Read Groups of Fix Points from an DI FIFO.
 	 *
-	 * ------------------------------------------
-	 * Item:             | Default value:
-	 * ------------------------------------------
-	 * fifo_size         | 100
-	 * ------------------------------------------
-	 * timeout           | NiFpga_InfiniteTimeout
-	 * ------------------------------------------
-	 * elementsRemaining | NULL.
-	 * ------------------------------------------
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadFifoU64(NiELVISIIIv10_session,
 								fifo,
-	                            fxp_buffer_recv,
+								fixPoint_buffer_receive,
 	                            fifo_size,
 	                            timeout,
 	                            elementsRemaining);
@@ -228,16 +250,16 @@ void Di_ReadFifo(ELVISIII_Dio*         connector,
 	return;
 }
 
-
 /**
- * Get groups of values from one channel.
+ * Convert Unsigned Long Long Int values of the fix points in the FIFO to Bool values.
  *
- * @param[in]  channel  		Enum containing 20 kinds of channels (DIO0 - DIO19).
- * @param[in]  fxp_buffer_recv	Array used to read from AI FIFO.
- * @param[in]  fifo_size		The size of AI FIFO.
- * @param[in]  val				The values get from one channel.
+ * @param[in]  channel  				Enum containing 20 kinds of channels (DIO0 - DIO19).
+ * @param[in]  fixPoint_buffer_receive	groups of Fix Point values get from one channel.
+ * 										The fix point value is an unsigned long long int value.
+ * @param[in]  fifo_size				The size of DI FIFO.
+ * @param[in]  value					groups of Bool value
  */
-void Di_GetVal(Di_Channel channel, uint64_t* fxp_buffer_recv, size_t fifo_size, NiFpga_Bool val[])
+void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fixPoint_buffer_receive, size_t fifo_size, NiFpga_Bool value[])
 {
 	uint8_t bit = channel;
 	int i;
@@ -247,20 +269,32 @@ void Di_GetVal(Di_Channel channel, uint64_t* fxp_buffer_recv, size_t fifo_size, 
 	 */
 	for(i = 0; i < fifo_size; ++i)
 	{
-		val[i] = (NiFpga_Bool)((fxp_buffer_recv[i] & (1 << bit)) >> bit);
+		value[i] = (NiFpga_Bool)((fixPoint_buffer_receive[i] & (1 << bit)) >> bit);
 	}
 
 	return;
 }
 
-
 /**
- * Set the DIO Direction Register.
+ * Set the Direction of the DIO channel as an output.
+ * The DIO channels are accessed in 8-bit banks where each bit in the bank
+ * corresponds to one of the DIO channels. In general:
+ *    DIO0 = bit0   (1st channel on the DIO 7:0 bank)
+ *    DIO1 = bit1   (2nd channel on the DIO 7:0 bank)
+ *       ...
+ *    DIO7 = bit7   (last channel on the DIO 7:0 bank)
+ *    DIO8 = bit0   (1st channel on the DIO 15:8 bank)
+ *      ...
+ *    DIO15 - bit7  (last channel on the DIO 15:8 bank)
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * A DIO channel can be either an input or an output depending on the value
+ * of the DIR register. A value of 0 makes the channel an input, a value of 1
+ * sets the channel as an output.
+ *
+ * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  channel  	Enum containing 20 kinds of channels (DIO0 - DIO19).
  */
-void Do_Direction(ELVISIII_Dio* connector, Di_Channel channel)
+void Do_Direction(ELVISIII_Dio* connector, Dio_Channel channel)
 {
 	NiFpga_Status status;
 
@@ -269,6 +303,8 @@ void Do_Direction(ELVISIII_Dio* connector, Di_Channel channel)
 
 	/*
 	 * Get the value from the DIO Direction Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->dir, &dirValue);
 
@@ -287,6 +323,8 @@ void Do_Direction(ELVISIII_Dio* connector, Di_Channel channel)
 
 	/*
 	 * Write the value to the DIO Direction Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->dir, dirValue);
 
@@ -300,12 +338,11 @@ void Do_Direction(ELVISIII_Dio* connector, Di_Channel channel)
 	return;
 }
 
-
 /**
- * Set the DO Divisor Register.
+ * Configure the divisor for the DO sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  connector		Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  ClockRate		Onboard clock rate of FPGA.
+ * @param[in]  connector		A struct containing the registers for one connecter.
+ * @param[in]  ClockRate		The onboard clock rate of FPGA.
  * @param[in]  SampleRate		The Sample Rate.
  */
 void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate)
@@ -315,7 +352,7 @@ void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 	uint16_t Divisor = 0;
 
 	/*
-	 * The range of the sample rate is from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
+	 * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
 	 */
 	if (SampleRate > MAX_SAMPLE_RATE)
 	{
@@ -330,7 +367,9 @@ void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 	uint16_t divisor = (uint16_t)(ClockRate / SampleRate);
 
 	/*
-	 * Write the new value to the DI DMA Enable Register.
+	 * Write the divisor value to the DO Divisor Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU16(NiELVISIIIv10_session, connector->do_cntr, divisor);
 
@@ -347,7 +386,9 @@ void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 	while (flag)
 	{
 		/*
-		 * Read the value from the DI DMA Enable Register.
+		 * Read the value from the DO Divisor Register.
+		 *
+		 * The returned NiFpga_Status value is stored for error checking.
 		 */
 		status = NiFpga_ReadU16(NiELVISIIIv10_session, connector->do_cntr, &Divisor);
 
@@ -367,14 +408,14 @@ void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 	return;
 }
 
-
 /**
- * Configure the DO DMA Enable Register.
+ * Set the DMA Enable value for an DO channel.The value controls
+ * whether the DMA is enabled for a specific digital output channel.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  channel  	Enum containing 20 kinds of channels (DIO0 - DIO19).
  */
-void Do_Enable(ELVISIII_Dio* connector, Di_Channel channel)
+void Do_Enable(ELVISIII_Dio* connector, Dio_Channel channel)
 {
 	NiFpga_Status status;
 
@@ -383,6 +424,8 @@ void Do_Enable(ELVISIII_Dio* connector, Di_Channel channel)
 
 	/*
 	 * Read the value from the DO DMA Enable Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->do_enable, &config);
 
@@ -400,7 +443,9 @@ void Do_Enable(ELVISIII_Dio* connector, Di_Channel channel)
 	config = config | (1 << bit);
 
 	/*
-	 * Write the new value to the DI DMA Enable Register.
+	 * Write the new value to the DO DMA Enable Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->do_enable, config);
 
@@ -414,20 +459,29 @@ void Do_Enable(ELVISIII_Dio* connector, Di_Channel channel)
 	return;
 }
 
-
 /**
- * Write FXP to a DO FIFO.
+ * Write groups of values to an DO FIFO.
  *
- * @param[in]  connector			Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  fifo					DO host-to-target fifo, which can be seen in DIO_N_Sample.h.
- * @param[in]  fxp_buffer_send		Array used to write to DO FIFO.
- * @param[in]  fifo_size			The size of DO FIFO.
- * @param[in]  timeout				The default value is NiFpga_InfiniteTimeout.
- * @param[in]  elementsRemaining	The default value is NULL.
+ * @param[in]  connector				A struct containing the registers for one connecter.
+ * @param[in]  fifo						DO host-to-target FIFO from which to write
+ * @param[in]  fixPoint_buffer_send		groups of values to be written.
+ * @param[in]  fifo_size				The size of DO FIFO.
+ * @param[in]  timeout					timeout in milliseconds, or NiFpga_InfiniteTimeout
+ * @param[in]  elementsRemaining		if non-NULL, outputs the number of elements
+ *                          			remaining in the host memory part of the DMA FIFO
+ * ------------------------------------------
+ * Item:             | Default value:
+ * ------------------------------------------
+ * fifo_size         | 100
+ * ------------------------------------------
+ * timeout           | NiFpga_InfiniteTimeout
+ * ------------------------------------------
+ * elementsRemaining | NULL.
+ * ------------------------------------------
  */
 void Do_WriteFifo(ELVISIII_Dio* 		connector,
-		          HostToTarget_FIFO_FXP fifo,
-			 	  const uint64_t*       fxp_buffer_send,
+		          HostToTarget_FIFO_FixPoint fifo,
+			 	  const uint64_t*       fixPoint_buffer_send,
 			 	  size_t                fifo_size,
 			 	  uint32_t              timeout,
 			 	  size_t*               elementsRemaining)
@@ -435,21 +489,14 @@ void Do_WriteFifo(ELVISIII_Dio* 		connector,
 	NiFpga_Status status;
 
 	/*
-	 * Write Groups of FXP to a DO FIFO.
+	 * Write Groups of Fix Points to a DO FIFO.
 	 *
-	 * ------------------------------------------
-	 * Item:             | Default value:
-	 * ------------------------------------------
-	 * fifo_size         | 100
-	 * ------------------------------------------
-	 * timeout           | NiFpga_InfiniteTimeout
-	 * ------------------------------------------
-	 * elementsRemaining | NULL.
-	 * ------------------------------------------
+	 * The returned NiFpga_Status value is stored for error checking.
+	 *
 	 */
 	status = NiFpga_WriteFifoU64(NiELVISIIIv10_session,
 								 fifo,
-								 fxp_buffer_send,
+								 fixPoint_buffer_send,
 								 fifo_size,
 								 timeout,
 								 elementsRemaining);
