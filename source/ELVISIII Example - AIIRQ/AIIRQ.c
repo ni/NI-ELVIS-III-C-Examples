@@ -125,7 +125,7 @@ void Ai_Counter(ELVISIII_IrqAi* connector, uint8_t counter)
  * Configure the range of the analog input channel.
  *
  * @param[in]  connector	A struct containing the registers for one connecter.
- * @param[in]  channel		Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
+ * @param[in]  channel		Enum containing 2 kinds of channels (AI0, AI1).
  * @param[in]  range		Enum containing 4 kinds of ranges (±10 V, ±5 V, ±2 V, ±1 V).
  */
 void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range)

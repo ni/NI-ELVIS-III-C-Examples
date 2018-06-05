@@ -22,7 +22,7 @@
 //AIIRQ channel selection number
 #define AIIRQ_NUM 2
 
-//AI_FXP
+//AI_Fxp
 #define AIIRQ_WordLength 26
 #define AIIRQ_IntegerWordLength 5
 
