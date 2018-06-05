@@ -203,7 +203,7 @@ void Di_Enable(ELVISIII_Dio* connector)
  *
  * @param[in]  connector					A struct containing the registers for one connecter.
  * @param[in]  fifo							DI target-to-host FIFO from which to read
- * @param[in]  fixPoint_buffer_receive		groups of values in an DI FIFO, get from one channel.
+ * @param[in]  fxp_buffer_receive			groups of values in an DI FIFO, get from one channel.
  * @param[in]  fifo_size					The size of DI FIFO.
  * @param[in]  timeout						timeout in milliseconds, or NiFpga_InfiniteTimeout
  * @param[in]  elementsRemaining			if non-NULL, outputs the number of elements
@@ -220,8 +220,8 @@ void Di_Enable(ELVISIII_Dio* connector)
  * ------------------------------------------
  */
 void Di_ReadFifo(ELVISIII_Dio*         connector,
-				 TargetToHost_FIFO_FixPoint fifo,
-			 	 uint64_t*             fixPoint_buffer_receive,
+				 TargetToHost_FIFO_FXP fifo,
+			 	 uint64_t*             fxp_buffer_receive,
 			 	 size_t                fifo_size,
 			 	 uint32_t              timeout,
 			 	 size_t*               elementsRemaining)
@@ -229,13 +229,13 @@ void Di_ReadFifo(ELVISIII_Dio*         connector,
 	NiFpga_Status status;
 
 	/*
-	 * Read Groups of Fix Points from an DI FIFO.
+	 * Read Groups of fixed-point values from an DI FIFO.
 	 *
 	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadFifoU64(NiELVISIIIv10_session,
 								fifo,
-								fixPoint_buffer_receive,
+								fxp_buffer_receive,
 	                            fifo_size,
 	                            timeout,
 	                            elementsRemaining);
@@ -251,15 +251,15 @@ void Di_ReadFifo(ELVISIII_Dio*         connector,
 }
 
 /**
- * Convert Unsigned Long Long Int values of the fix points in the FIFO to Bool values.
+ * Convert unsigned long long int values of the fixed-points in the FIFO to boolean values.
  *
  * @param[in]  channel  				Enum containing 20 kinds of channels (DIO0 - DIO19).
- * @param[in]  fixPoint_buffer_receive	groups of Fix Point values get from one channel.
- * 										The fix point value is an unsigned long long int value.
+ * @param[in]  fxp_buffer_receive		groups of fixed-point values get from one channel.
+ * 										The fixed-point value is an unsigned long long int value.
  * @param[in]  fifo_size				The size of DI FIFO.
- * @param[in]  value					groups of Bool value
+ * @param[in]  value					groups of boolean value
  */
-void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fixPoint_buffer_receive, size_t fifo_size, NiFpga_Bool value[])
+void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fxp_buffer_receive, size_t fifo_size, NiFpga_Bool value[])
 {
 	uint8_t bit = channel;
 	int i;
@@ -269,7 +269,7 @@ void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fixPoint_bu
 	 */
 	for(i = 0; i < fifo_size; ++i)
 	{
-		value[i] = (NiFpga_Bool)((fixPoint_buffer_receive[i] & (1 << bit)) >> bit);
+		value[i] = (NiFpga_Bool)((fxp_buffer_receive[i] & (1 << bit)) >> bit);
 	}
 
 	return;
@@ -464,7 +464,7 @@ void Do_Enable(ELVISIII_Dio* connector, Dio_Channel channel)
  *
  * @param[in]  connector				A struct containing the registers for one connecter.
  * @param[in]  fifo						DO host-to-target FIFO from which to write
- * @param[in]  fixPoint_buffer_send		groups of values to be written.
+ * @param[in]  fxp_buffer_send			groups of values to be written.
  * @param[in]  fifo_size				The size of DO FIFO.
  * @param[in]  timeout					timeout in milliseconds, or NiFpga_InfiniteTimeout
  * @param[in]  elementsRemaining		if non-NULL, outputs the number of elements
@@ -480,8 +480,8 @@ void Do_Enable(ELVISIII_Dio* connector, Dio_Channel channel)
  * ------------------------------------------
  */
 void Do_WriteFifo(ELVISIII_Dio* 		connector,
-		          HostToTarget_FIFO_FixPoint fifo,
-			 	  const uint64_t*       fixPoint_buffer_send,
+		          HostToTarget_FIFO_FXP fifo,
+			 	  const uint64_t*       fxp_buffer_send,
 			 	  size_t                fifo_size,
 			 	  uint32_t              timeout,
 			 	  size_t*               elementsRemaining)
@@ -489,14 +489,14 @@ void Do_WriteFifo(ELVISIII_Dio* 		connector,
 	NiFpga_Status status;
 
 	/*
-	 * Write Groups of Fix Points to a DO FIFO.
+	 * Write Groups of fix point values to a DO FIFO.
 	 *
 	 * The returned NiFpga_Status value is stored for error checking.
 	 *
 	 */
 	status = NiFpga_WriteFifoU64(NiELVISIIIv10_session,
 								 fifo,
-								 fixPoint_buffer_send,
+								 fxp_buffer_send,
 								 fifo_size,
 								 timeout,
 								 elementsRemaining);

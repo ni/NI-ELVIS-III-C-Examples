@@ -52,8 +52,8 @@ int main()
 	time_t currentTime;
 	time_t finalTime;
 
-	uint64_t fixPoint_buffer_receive[FIFO_SIZE];
-	uint64_t fixPoint_buffer_send[] = {0, 1, 0, 1, 0, 1, 0, 1};
+	uint64_t fxp_buffer_receive[FIFO_SIZE];
+	uint64_t fxp_buffer_send[] = {0, 1, 0, 1, 0, 1, 0, 1};
 	NiFpga_Bool value[FIFO_SIZE];
 
 	printf("DigitalInputOutput - N Sample:\n");
@@ -85,20 +85,20 @@ int main()
 	Di_Enable(&connector_A);
 
 	/*
-	 * Read Fix Points from a DI FIFO on connector A.
+	 * Read fixed-point values from a DI FIFO on connector A.
 	 */
 	Di_ReadFifo(&connector_A,
-				TargetToHost_FIFO_FixPoint_A,
-				fixPoint_buffer_receive,
+				TargetToHost_FIFO_FXP_A,
+				fxp_buffer_receive,
 				FIFO_SIZE,
 				NiFpga_InfiniteTimeout,
 				NULL);
 
 	/*
-	 * Convert Fix Point values of the FIFO to Double values.
-	 * The fix point value is an unsigned long long int value.
+	 * Convert fixed-point values of the FIFO to boolean values.
+	 * The fixed-point value is an unsigned long long int value.
 	 */
-	ConvertUnsignedLongLongIntToBool(Dio_Channel0, fixPoint_buffer_receive, FIFO_SIZE, value);
+	ConvertUnsignedLongLongIntToBool(Dio_Channel0, fxp_buffer_receive, FIFO_SIZE, value);
 
 	/*
 	 * Print the values of A/DIO0.
@@ -129,12 +129,12 @@ int main()
 	Do_Enable(&connector_B, Dio_Channel0);
 
 	/*
-	 * Write Fix Points to a DO FIFO on connector B.
+	 * Write fixed-point values to a DO FIFO on connector B.
 	 */
 	Do_WriteFifo(&connector_B,
-				 HostToTarget_FIFO_FixPoint_B,
-				 fixPoint_buffer_send,
-				 sizeof(fixPoint_buffer_send)/sizeof(uint64_t),
+				 HostToTarget_FIFO_FXP_B,
+				 fxp_buffer_send,
+				 sizeof(fxp_buffer_send)/sizeof(uint64_t),
 				 NiFpga_InfiniteTimeout,
 				 NULL);
 
