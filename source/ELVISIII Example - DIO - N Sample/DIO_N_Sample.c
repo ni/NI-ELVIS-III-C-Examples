@@ -229,7 +229,7 @@ void Di_ReadFifo(ELVISIII_Dio*         connector,
 	NiFpga_Status status;
 
 	/*
-	 * Read Groups of fixed-point values from an DI FIFO.
+	 * Read Groups of fixed-point values from a DI FIFO.
 	 *
 	 * The returned NiFpga_Status value is stored for error checking.
 	 */
