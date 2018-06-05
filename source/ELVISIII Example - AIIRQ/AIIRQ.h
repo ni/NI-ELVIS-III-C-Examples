@@ -22,7 +22,7 @@
 //AIIRQ channel selection number
 #define AIIRQ_NUM 2
 
-//AI_Fxp
+//AI_FXP
 #define AIIRQ_WordLength 26
 #define AIIRQ_IntegerWordLength 5
 
@@ -37,7 +37,6 @@ extern "C" {
 /**
  * Specify which AI channel to configure.
  *
- * RSE (the fourth bit is 1):
  * Ai_Channel 0 : 1 000b
  * Ai_Channel 1 : 1 001b
  */
@@ -110,25 +109,25 @@ typedef struct
 
 
 /**
- * double ----> Fix Point (signed)
+ * Convert double value to unsigned int value to represent a fixed-point.
  */
-unsigned int sDouble2Fxp(double value);
+unsigned int ConvertDoubleToUnsignedInt(double value);
 
 
 /**
- * Set the AI Counter Register.
+ * Set the number of valid AI channels.
  */
 void Ai_Counter(ELVISIII_IrqAi* connector, uint8_t counter);
 
 
 /**
- * Set the AI Configuration Register.
+ * Set the AI configuration options.
  */
 void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range);
 
 
 /**
- * Set the AI Divisor Register.
+ * Generate the divisor for sample rate.
  */
 void Ai_Divisor(ELVISIII_IrqAi* connector, uint32_t ClockRate, uint32_t SampleRate);
 
