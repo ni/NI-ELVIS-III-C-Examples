@@ -5,6 +5,7 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 #include <time.h>
 
 #include "AIO.h"
@@ -65,22 +66,27 @@ int main(int argc, char **argv)
 	 * Write the value to A/AO0 to set it to the desired value.
 	 * The channel is on connector A.
 	 */
-	Aio_Write(&Ao, 3.5, AO_A0_VAL);
+	Aio_Write(&Ao, 3, AO_B0_VAL);
 
 	/*
 	 * Set the number of valid channels on connector A.
 	 */
-	Ai_Counter(&connector_A, 12);
+	Ai_Counter(&connector_B, 12);
 
 	/*
 	 * Configure the range of the analog input channel on connector A.
 	 */
-	Ai_Configure(&connector_A, Ai_Channel0, Ai_Range0);
+	Ai_Configure(&connector_B, Ai_Channel0, Ai_Range0);
 
 	/*
 	 * Configure the divisor for the analog sample rate on connector A.
 	 */
-	Ai_Divisor(&connector_A, 40000000, 1000);
+	Ai_Divisor(&connector_B, 40000000, 1000);
+
+	/*
+	 * Sleep before reading.Wait for the value writing to the register.
+	 */
+	sleep (1);
 
 	/*
 	 * Read from AI channel A/AI0.

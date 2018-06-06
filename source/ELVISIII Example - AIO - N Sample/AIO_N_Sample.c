@@ -28,21 +28,21 @@
 extern NiFpga_Session NiELVISIIIv10_session;
 
 /*
- * Initialize the register addresses of AI in connector A
+ * Initialize the register addresses for a particular analog Input on connector A.
  */
 ELVISIII_Aio connector_A = {AIACNFG, AIACNTR, AOADMA_CNTR, AIACNT, AIADMA_ENA, 99558};
 
 /*
- * Initialize the register addresses of AI in connector B
+ * Initialize the register addresses for a particular analog Input on connector B.
  */
 ELVISIII_Aio connector_B = {AIBCNFG, AIBCNTR, AOADMA_CNTR, AIBCNT, AIBDMA_ENA, 99566};
 
 
 /**
- * Set the AI Counter Register.
+ * Set the number of valid channels.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  counter		The number of valid channels.
+ * @param[in]  connector	A struct containing the registers for one connecter.
+ * @param[in]  counter		The number of valid channels on the connector.
  */
 void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter)
 {
@@ -50,6 +50,8 @@ void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter)
 
 	/*
 	 * Write the counter value to the AI Counter Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cnt, counter);
 
@@ -65,9 +67,9 @@ void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter)
 
 
 /**
- * Set the AI Configuration Register.
+ * Set the AI Configuration Register and configure the range of the analog input channel.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  channel		Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
  * @param[in]  range		Enum containing 4 kinds of ranges (±10 V, ±5 V, ±2 V, ±1 V).
  */
@@ -89,6 +91,8 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 
 	/*
 	 * Get the initial values from the AI Configuration Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, connector->cnfg, Config, RSE_NUM + DIFF_NUM);
 
@@ -100,19 +104,23 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 	NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AI Configuration Register!");
 
 	/*
-	 * Change the proper element in the configuration array.
+	 * Generate AI Channel Selection Bit and AI Range Bit.For the AI Configuration Register, cast the value to a unsigned 8-bit value.
 	 */
 	if ((Channel >> 3) == 1)
-	{//RSE mode
+	{
+		//RSE mode
 		Config[Channel - RSE_NUM] = Channel | Range;
 	}
 	else
-	{//DIFF mode
+	{
+		//DIFF mode
 		Config[Channel + RSE_NUM] = Channel | Range;
 	}
 
 	/*
 	 * Write the configuration values to the AI Configuration Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteArrayU8(NiELVISIIIv10_session, connector->cnfg, (const uint8_t*)(Config), RSE_NUM + DIFF_NUM);
 
@@ -125,6 +133,8 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 
 	/*
 	 * Read the value from the AI Counter Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->cnt, &Counter);
 
@@ -146,6 +156,8 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 
 		/*
 		 * Get the values from the AI Configuration Register.
+		 *
+		 * The returned NiFpga_Status value is stored for error checking.
 		 */
 		status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, connector->cnfg, ConfigValue, RSE_NUM + DIFF_NUM);
 
@@ -173,8 +185,7 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 	free(ConfigValue);
 
 	/*
-	 * We need a 1s-delay in order to wait until all the numbers can be read from the AI FIFO correctly.
-	 * If you remove the sleep(), the first number reading from the AI FIFO may be incorrect.
+	 * Waiting for reading all the numbers from AI FIFO.
 	 */
 	sleep(1);
 
@@ -183,18 +194,18 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 
 
 /**
- * Set the AI Divisor Register.
+ * Configure the divisor for the AI sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  ClockRate	Onboard clock rate of FPGA.
- * @param[in]  SampleRate	The Sample Rate.
+ * @param[in]  connector	A struct containing the registers for one connecter.
+ * @param[in]  ClockRate	The onboard clock rate of FPGA.
+ * @param[in]  SampleRate	The analog sample rate.
  */
 void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate)
 {
 	NiFpga_Status status;
 
 	/*
-	 * The range of the sample rate is from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
+	 * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
 	 */
 	if (SampleRate > MAX_SAMPLE_RATE)
 	{
@@ -206,10 +217,16 @@ void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate
 		SampleRate = MIN_SAMPLE_RATE;
 	}
 
+	/*
+	 * Generate the divisor, cast this value directly to a unsigned 32-bit value.
+	 */
+
 	uint32_t divisor = (uint32_t)(ClockRate / SampleRate);
 
 	/*
 	 * Write the divisor value to the AI Divisor Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->ai_cntr, divisor);
 
@@ -225,9 +242,9 @@ void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate
 
 
 /**
- * Set the AI DMA Enable Register.
+ * Set the DMA Enable Flag for one connector.The flag controls whether the DMA is enabled for a specific connector.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector	A struct containing the registers for one connecter.
  */
 void Ai_Enable(ELVISIII_Aio* connector)
 {
@@ -235,6 +252,8 @@ void Ai_Enable(ELVISIII_Aio* connector)
 
 	/*
 	 * Write the NiFpga_True to the AI DMA Enable Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->ai_enable, NiFpga_True);
 
@@ -246,44 +265,49 @@ void Ai_Enable(ELVISIII_Aio* connector)
 	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI DMA Enable Register!");
 
 	return;
+
 }
 
 
 /**
- * Read groups of values from a AI FIFO.
+ * Read groups of values from an AI FIFO.
  *
- * @param[in]  connector			Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  fifo					AI target-to-host fifo, which can be seen in AIO_N_Sample.h.
- * @param[in]  fxp_buffer_recv		Array used to read from AI FIFO.
- * @param[in]  fifo_size			The size of AI FIFO.
- * @param[in]  timeout				The default value is NiFpga_InfiniteTimeout.
- * @param[in]  elementsRemaining	The default value is NULL.
+ * @param[in]  connector					A struct containing the registers for one connecter.
+ * @param[in]  fifo							AI target-to-host FIFO from which to read
+ * @param[in]  fxp_buffer_receive			groups of values in an AI FIFO, get from one channel.
+ * @param[in]  fifo_size					The size of the AI FIFO.
+ * @param[in]  timeout						timeout in milliseconds, or NiFpga_InfiniteTimeout
+ * @param[in]  elementsRemaining			if non-NULL, outputs the number of elements
+ *                          				remaining in the host memory part of the DMA FIFO
+ *
+ * ------------------------------------------
+ * Item:             | Default value:
+ * ------------------------------------------
+ * fifo_size         | 100
+ * ------------------------------------------
+ * timeout           | NiFpga_InfiniteTimeout
+ * ------------------------------------------
+ * elementsRemaining | NULL.
+ * ------------------------------------------
  */
-void Ai_ReadFifo(ELVISIII_Aio*          connector,
-		         TargetToHost_FIFO_FXP fifo,
-			 	 uint64_t*             fxp_buffer_recv,
-			 	 size_t                fifo_size,
-			 	 uint32_t              timeout,
-			 	 size_t*               elementsRemaining)
+void Ai_ReadFifo(ELVISIII_Aio*          		connector,
+		         TargetToHost_FIFO_FXP 	fifo,
+			 	 uint64_t*             			fxp_buffer_receive,
+			 	 size_t                			fifo_size,
+			 	 uint32_t              			timeout,
+			 	 size_t*               			elementsRemaining)
 {
 	NiFpga_Status status;
 
 	/*
-	 * Read Groups of FXP from a AI FIFO.
+	 * Get Groups of fixed-point values from an AI FIFO.
 	 *
-	 * ------------------------------------------
-	 * Item:             | Default value:
-	 * ------------------------------------------
-	 * fifo_size         | 100
-	 * ------------------------------------------
-	 * timeout           | NiFpga_InfiniteTimeout
-	 * ------------------------------------------
-	 * elementsRemaining | NULL.
-	 * ------------------------------------------
+	 * The returned NiFpga_Status value is stored for error checking.
+	 *
 	 */
 	status = NiFpga_ReadFifoU64(NiELVISIIIv10_session,
 								fifo,
-								fxp_buffer_recv,
+								fxp_buffer_receive,
 								fifo_size,
 								timeout,
 								elementsRemaining);
@@ -300,28 +324,31 @@ void Ai_ReadFifo(ELVISIII_Aio*          connector,
 
 
 /**
- * Get groups of values from one channel.
+ * Convert unsigned long long int values of the fixed-point in the FIFO to double values.
  *
- * @param[in]  fxp_buffer_recv	Array used to read from AI FIFO.
- * @param[in]  fifo_size		The size of AI FIFO.
- * @param[in]  val				The values get from one channel.
+ * @param[in]  fxp_buffer_receive			groups of fixed-point values get from one channel.
+ * 											The fixed-point value is an unsigned long long int value.
+ * @param[in]  fifo_size					The size of the AI FIFO.
+ * @param[in]  value						Double value.
  */
-void Ai_GetVal(uint64_t *fxp_buffer_recv, size_t fifo_size, double *val)
+void ConvertUnsignedLongLongIntToDouble(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value)
 {
 	int i;
 	uint32_t temp;
 	for (i = 0; i < fifo_size; ++i)
 	{
-		temp = (uint32_t)fxp_buffer_recv[i];
+		temp = (uint32_t)fxp_buffer_receive[i];
 		if (temp & (1 << (AI_WordLength - 1)))
-		{//negative
+		{
+		//Unsigned value is negative
 			temp = ~temp;
 			++temp;
-			val[i] = (double)(temp / pow(2, (AI_WordLength - AI_IntegerWordLength)) * (-1));
+			value[i] = (double)(temp / pow(2, (AI_WordLength - AI_IntegerWordLength)) * (-1));
 		}
 		else
-		{//positive
-			val[i] = (double)(temp / pow(2, (AI_WordLength - AI_IntegerWordLength)));
+		{
+		//Unsigned value is positive
+			value[i] = (double)(temp / pow(2, (AI_WordLength - AI_IntegerWordLength)));
 		}
 	}
 
@@ -330,18 +357,18 @@ void Ai_GetVal(uint64_t *fxp_buffer_recv, size_t fifo_size, double *val)
 
 
 /**
- * Set the AI Divisor Register.
+ * Configure the divisor for the AO sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  ClockRate	Onboard clock rate of FPGA.
- * @param[in]  SampleRate	The Sample Rate.
+ * @param[in]  connector	A struct containing the registers for one connecter.
+ * @param[in]  ClockRate	The onboard clock rate of FPGA.
+ * @param[in]  SampleRate	The analog sample rate.
  */
 void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate)
 {
 	NiFpga_Status status;
 
 	/*
-	 * The range of the sample rate is from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
+	 * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
 	 */
 	if (SampleRate > MAX_SAMPLE_RATE)
 	{
@@ -353,10 +380,16 @@ void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate
 		SampleRate = MIN_SAMPLE_RATE;
 	}
 
+	/*
+	 * Generate the divisor, cast this value directly to a unsigned 32-bit value.
+	 */
+
 	uint32_t divisor = (uint32_t)(ClockRate / SampleRate);
 
 	/*
-	 * Write the divisor value to the AI Divisor Register.
+	 * Write the divisor value to the AO Divisor Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->ao_cntr, divisor);
 
@@ -372,9 +405,10 @@ void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate
 
 
 /**
- * Set the AO DMA Enable Register
+ * Set the DMA Enable value for an analog output channel.The value controls
+ * whether the DMA is enabled for a specific analog output channel.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  channel		Enum containing 2 kinds of channels.
  */
 void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel)
@@ -386,6 +420,8 @@ void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel)
 
 	/*
 	 * Get the initial values from the AO DMA Enable Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->ao_enable, &enable);
 
@@ -397,17 +433,22 @@ void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel)
 	NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AO DMA Enable Register!");
 
 	/*
-	 * Clear the proper bit.
+	 * Clear the value of the bits in the DMA Enable register. This is
+     * done so that the correct value can be set later on.
 	 */
 	enable = enable & ~bit;
 
 	/*
-	 * Set the proper bit.
+	 * Set the value of the bits in the DMA Enable register. If the
+     * value to set is 0 this operation would not work unless the bit was
+     * previously cleared.
 	 */
 	enable = enable | bit;
 
 	/*
 	 * Write the value to the AO DMA Enable Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->ao_enable, enable);
 
@@ -423,29 +464,32 @@ void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel)
 
 
 /**
- * Turn groups of values from double to Fix Point.
+ * Convert double values to unsigned long long int values to represent the fixed-point in the FIFO.
  *
- * @param[in]  val				The values get from one channel.
- * @param[in]  fxp_buffer_send	Array used to write to AO FIFO.
- * @param[in]  fifo_size		The size of AO FIFO.
+ * @param[in]  value					Double value
+ * @param[in]  fxp_buffer_send			groups of the fixed-point values to be written.
+ * 										The fixed-point value is an unsigned long long int value.
+ * @param[in]  fifo_size				The size of the AO FIFO.
  */
-void Ao_SetVal(double *val, uint64_t *fxp_buffer_send, size_t fifo_size)
+void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send, size_t fifo_size)
 {
 	int i;
 	uint32_t temp = 0;
 
 	for (i = 0; i < fifo_size; ++i)
 	{
-		if (val[i] < 0)
-		{//negative
-			temp = (uint32_t)(val[i] * (-1) * pow(2, (AO_WordLength - AO_IntegerWordLength)));
+		if (value[i] < 0)
+		{
+		//Value is negative.
+			temp = (uint32_t)(value[i] * (-1) * pow(2, (AO_WordLength - AO_IntegerWordLength)));
 			--temp;
 			temp = ~temp;
 			fxp_buffer_send[i] = (uint64_t)(0xFFFFFFFF00000000 + temp);
 		}
 		else
-		{//positive
-			fxp_buffer_send[i] = (uint64_t)(val[i] * pow(2, (AO_WordLength - AO_IntegerWordLength)));
+		{
+		//Value is positive.
+			fxp_buffer_send[i] = (uint64_t)(value[i] * pow(2, (AO_WordLength - AO_IntegerWordLength)));
 		}
 	}
 
@@ -454,36 +498,39 @@ void Ao_SetVal(double *val, uint64_t *fxp_buffer_send, size_t fifo_size)
 
 
 /**
- * Write FXP to a AO FIFO.
+ * Read groups of values to an AO FIFO.
  *
- * @param[in]  connector			Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  fifo					AO host-to-target fifo, which can be seen in AIO_N_Sample.h.
- * @param[in]  fxp_buffer_send		Array used to write to AO FIFO.
- * @param[in]  fifo_size			The size of AO FIFO
- * @param[in]  timeout				The default value is NiFpga_InfiniteTimeout.
- * @param[in]  elementsRemaining	The default value is NULL.
+ * @param[in]  connector				A struct containing the registers for one connecter.
+ * @param[in]  fifo						AO host-to-target FIFO from which to write
+ * @param[in]  fxp_buffer_send			groups of values to be written.
+ * @param[in]  fifo_size				The size of the AO FIFO
+ * @param[in]  timeout					timeout in milliseconds, or NiFpga_InfiniteTimeout
+ * @param[in]  elementsRemaining		if non-NULL, outputs the number of elements
+ *                          			remaining in the host memory part of the DMA FIFO
+ * ------------------------------------------
+ * Item:             | Default value:
+ * ------------------------------------------
+ * fifo_size         | 100
+ * ------------------------------------------
+ * timeout           | NiFpga_InfiniteTimeout
+ * ------------------------------------------
+ * elementsRemaining | NULL.
+ * ------------------------------------------
  */
-void Ao_WriteFifo(ELVISIII_Aio*         connector,
-		          HostToTarget_FIFO_FXP fifo,
-			 	  const uint64_t*       fxp_buffer_send,
-			 	  size_t                fifo_size,
-			 	  uint32_t              timeout,
-			 	  size_t*               elementsRemaining)
+void Ao_WriteFifo(ELVISIII_Aio*         		connector,
+		          HostToTarget_FIFO_FixPoint 	fifo,
+			 	  const uint64_t*       		fxp_buffer_send,
+			 	  size_t                		fifo_size,
+			 	  uint32_t              		timeout,
+			 	  size_t*               		elementsRemaining)
 {
 	NiFpga_Status status;
 
 	/*
-	 * Read Groups of FXP from a AI FIFO.
+	 * Write Groups of fixed-point values to an AO FIFO.
 	 *
-	 * ------------------------------------------
-	 * Item:             | Default value:
-	 * ------------------------------------------
-	 * FIFO_SIZE         | 100
-	 * ------------------------------------------
-	 * timeout           | NiFpga_InfiniteTimeout
-	 * ------------------------------------------
-	 * elementsRemaining | NULL.
-	 * ------------------------------------------
+	 * The returned NiFpga_Status value is stored for error checking.
+	 *
 	 */
 	status = NiFpga_WriteFifoU64(NiELVISIIIv10_session,
 								fifo,

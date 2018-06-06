@@ -20,11 +20,11 @@
 //AI channel selection number (DIFF mode)
 #define DIFF_NUM 4
 
-//AI Fix point
+//AI Fixed-point
 #define AI_WordLength 26
 #define AI_IntegerWordLength 5
 
-//AO Fix point
+//AO Fixed-point
 #define AO_WordLength 20
 #define AO_IntegerWordLength 5
 
@@ -123,13 +123,13 @@ typedef struct
 
 
 /**
- * Convert unsigned int value of a fix point to double value.
+ * Convert unsigned int value of a fixed-point to double value.
  */
 double ConvertUnsignedIntToDouble(unsigned int value);
 
 
 /**
- * Convert double value to unsigned int value to represent a fix point.
+ * Convert double value to unsigned int value to represent a fixed-point.
  */
 unsigned int ConvertDoubleToUnsignedInt(double value);
 

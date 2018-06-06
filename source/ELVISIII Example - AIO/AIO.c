@@ -45,7 +45,7 @@ ELVISIII_Ao Ao = {AOSYSGO, AOSYSSTAT};
 /**
  * Convert unsigned int value to double value.
  *
- * @param[in]  value	Unsigned int value of a fix point.
+ * @param[in]  value	Unsigned int value of a fixed-point.
  *
  * @return a double value.
  */
@@ -71,7 +71,7 @@ double ConvertUnsignedIntToDouble(unsigned int value)
  *
  * @param[in]  value	Double Value.
  *
- * @return an unsigned int value to represent a fix point.
+ * @return an unsigned int value to represent a fixed-point.
  */
 unsigned int ConvertDoubleToUnsignedInt(double value)
 {
@@ -480,7 +480,9 @@ void Aio_Write(ELVISIII_Ao* Ao, double value, Ao_ValueRegister ValueRegister)
 		NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AI Status Register!");
 
 		if(stat != temp)
+		{
 			flag = false;
+		}
 	}
 
 	return;
