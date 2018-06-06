@@ -232,7 +232,8 @@ void Spi_Select(ELVISIII_Spi* connector)
 	NiELVISIIIv10_ReturnValueIfNotSuccess(status, status, "Could not read from the System Select Register!");
 
 	/*
-	 * Clear proper bits.
+	 * Clear the value of the bits in the SYSSELECTA/SYSSELECTB register. This is
+   * done so that the correct value can be set later on.
 	 */
 	selectReg = selectReg & 0x03ff;
 

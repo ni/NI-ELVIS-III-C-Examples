@@ -38,17 +38,17 @@ extern "C" {
 //AO FIFO Fixed-point
 typedef enum
 {
-	HostToTarget_FIFO_FXP_B = 4,
-	HostToTarget_FIFO_FXP_A = 5,
-} HostToTarget_FIFO_FXP;
+	HostToTarget_FIFO_FixPoint_B = 4,
+	HostToTarget_FIFO_FixPoint_A = 5,
+} HostToTarget_FIFO_FixPoint;
 
 
 //AI FIFO Fixed-point
 typedef enum
 {
-	TargetToHost_FIFO_FXP_B = 6,
-	TargetToHost_FIFO_FXP_A = 7,
-} TargetToHost_FIFO_FXP;
+	TargetToHost_FIFO_FixPoint_B = 6,
+	TargetToHost_FIFO_FixPoint_A = 7,
+} TargetToHost_FIFO_FixPoint;
 
 
 /**
@@ -102,10 +102,10 @@ typedef enum
 /**
  * Specify the voltage range of the AI channel.
  *
- * ±10 V: 00b
- * ±5 V: 01b
- * ±2 V: 10b
- * ±1 V: 11b
+ * Â±10 V: 00b
+ * Â±5 V: 01b
+ * Â±2 V: 10b
+ * Â±1 V: 11b
  */
 typedef enum
 {

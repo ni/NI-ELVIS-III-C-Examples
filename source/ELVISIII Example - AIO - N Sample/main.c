@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 	uint64_t fxp_buffer_receive[FIFO_SIZE];
 
 	double send[] = {2, 2, 2, 2, -2, -2, -2, -2};
-	uint64_t fxp_buffer_send[FIFO_SIZE];
+	uint64_t FixPoint_buffer_send[FIFO_SIZE];
 
 	time_t currentTime;
 	time_t finalTime;
@@ -142,9 +142,9 @@ int main(int argc, char **argv)
 	 * Write fixed-point values to an AO FIFO on connector B.
 	 */
 	Ao_WriteFifo(&connector_B,
-				 HostToTarget_FIFO_FXP_B,
-				 fxp_buffer_send,
-				 (sizeof(fxp_buffer_send)/sizeof(uint64_t)),
+				 HostToTarget_FIFO_FixPoint_B,
+				 FixPoint_buffer_send,
+				 (sizeof(FixPoint_buffer_send)/sizeof(uint64_t)),
 				 NiFpga_InfiniteTimeout,
 				 NULL);
 

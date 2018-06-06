@@ -71,7 +71,7 @@ void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter)
  *
  * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  channel		Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
- * @param[in]  range		Enum containing 4 kinds of ranges (±10 V, ±5 V, ±2 V, ±1 V).
+ * @param[in]  range		Enum containing 4 kinds of ranges (Â±10 V, Â±5 V, Â±2 V, Â±1 V).
  */
 void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 {
@@ -323,7 +323,7 @@ void Ai_ReadFifo(ELVISIII_Aio*          		connector,
 }
 
 
-/**
+/*
  * Convert unsigned long long int values of the fixed-point in the FIFO to double values.
  *
  * @param[in]  fxp_buffer_receive			groups of fixed-point values get from one channel.
@@ -463,7 +463,7 @@ void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel)
 }
 
 
-/**
+/*
  * Convert double values to unsigned long long int values to represent the fixed-point in the FIFO.
  *
  * @param[in]  value					Double value
@@ -484,7 +484,7 @@ void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send
 			temp = (uint32_t)(value[i] * (-1) * pow(2, (AO_WordLength - AO_IntegerWordLength)));
 			--temp;
 			temp = ~temp;
-			fxp_buffer_send[i] = (uint64_t)(0xFFFFFFFF00000000 + temp);
+			FixPoint_buffer_send[i] = (uint64_t)(0xFFFFFFFF00000000 + temp);
 		}
 		else
 		{
@@ -534,7 +534,7 @@ void Ao_WriteFifo(ELVISIII_Aio*         		connector,
 	 */
 	status = NiFpga_WriteFifoU64(NiELVISIIIv10_session,
 								fifo,
-								fxp_buffer_send,
+								FixPoint_buffer_send,
 								fifo_size,
 								timeout,
 								elementsRemaining);

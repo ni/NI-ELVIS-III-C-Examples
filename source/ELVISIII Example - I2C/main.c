@@ -23,6 +23,10 @@ extern ELVISIII_I2c connector_A;
  *
  * Instructions:
  * 1. Connect a TMP102 digital temperature sensor to the I2C pins on connector A.
+ * 2. Connect I2C.SCL  to DIO14 on connector A.
+ * 3. Connect I2C.SDA  to DIO15 on connector A.
+ * 4. Connect GND of the sensor to DGND on connector A.
+ * 4. Connect a DC voltage input (+3.3 V) to the sensor.
  * 2. Run the program.
  *
  * Output:
@@ -54,7 +58,7 @@ int main(int argc, char **argv)
 	}
 
 	/**
-	 * Write the value to the System Select Register.
+	 * Write the value to the System Select Register on connector A.
 	 */
 	I2c_Select(&connector_A);
 
