@@ -518,7 +518,7 @@ void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send
  * ------------------------------------------
  */
 void Ao_WriteFifo(ELVISIII_Aio*         		connector,
-		          HostToTarget_FIFO_FixPoint 	fifo,
+		          HostToTarget_FIFO_FXP 	fifo,
 			 	  const uint64_t*       		fxp_buffer_send,
 			 	  size_t                		fifo_size,
 			 	  uint32_t              		timeout,

@@ -142,7 +142,7 @@ int main(int argc, char **argv)
 	 * Write fixed-point values to an AO FIFO on connector B.
 	 */
 	Ao_WriteFifo(&connector_B,
-				 HostToTarget_FIFO_FixPoint_B,
+				 HostToTarget_FIFO_FXP_B,
 				 fxp_buffer_send,
 				 (sizeof(fxp_buffer_send)/sizeof(uint64_t)),
 				 NiFpga_InfiniteTimeout,
