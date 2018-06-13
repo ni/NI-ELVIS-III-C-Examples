@@ -38,8 +38,10 @@ typedef struct
  * The main thread runs for 60 s.
  *
  * Instructions:
- * 1. Connect a signal such as square wave to DIO0(pin11) on connector A.
- * 2. Run this program and observe the console.
+ * 1. Install an oscilloprobe on one of the Function Generator on NI ELVIS III device. Use the oscilloprobe to probe DIO0 on connector A. Use DGND as ground.
+ * 2. Open "Measurements Live" (measurementslive.ni.com) and connect to the NI ELVIS III device.
+ * 3. In Instruments tab, open Function and Arbitrary Waveform Generator and set a square wave.
+ * 4. Run this program and observe the console.
  *
  * Output:
  * The IRQ2, triggered times and main loop count number.
