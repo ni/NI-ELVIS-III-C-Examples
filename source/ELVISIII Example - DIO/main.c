@@ -19,9 +19,9 @@ extern ELVISIII_Dio connector_B;
 /**
  * Overview:
  * Demonstrates using the digital input and output (DIO).
- * Write an initial value to DO Value Register (connector A, channel 1).
- * Read this value from DI Value Register (connector A, channel 0).
- * Read an initial value from DI Value Register (connector B, channel 0).
+ * Write an initial value to DIO1 on connector A.
+ * Read this value from DIO0 on connector A.
+ * Read an initial value from DIO0 on connector B.
  *
  * Instructions:
  * 1. Connect the DIO0 and DIO1 on connector A.
@@ -29,9 +29,10 @@ extern ELVISIII_Dio connector_B;
  * 3. Run this program.
  *
  * Output:
- * The program reads 2 values from proper channels on both connector A and connector B.
+ * The program writes the initial value to DIO1 on connector A, and reads the write value from DIO0.
+ * The program reads the initial value from DIO0 on connector B.
  * The output is maintained for 60 s.
- * Values and difference are written to the console.
+ * Values are written to the console.
  *
  * Note:
  * The Eclipse project defines the preprocessor symbol for the ELVIS III.
@@ -57,22 +58,22 @@ int main(int argc, char **argv)
 	}
 
 	/*
-	 * Write the value to channel 1, connector_A.
+	 * Write the initial value to channel DIO1, connector_A.
 	 */
-	Dio_WriteBit(&connector_A, false, Di_Channel1);
+	Dio_WriteBit(&connector_A, false, Dio_Channel1);
 
 	/*
-	 * Get the value in Channel 0, connector_A.
+	 * Get the value in channel DIO0, connector_A.
 	 */
-	NiFpga_Bool di_A0 = Dio_ReadBit(&connector_A, Di_Channel0);
+	NiFpga_Bool di_A0 = Dio_ReadBit(&connector_A, Dio_Channel0);
 
 	/*
-	 * Get the value in Channel 0, connector_B.
+	 * Get the value in channel DIO0, connector_B.
 	 */
-	NiFpga_Bool di_B0 = Dio_ReadBit(&connector_B, Di_Channel0);
+	NiFpga_Bool di_B0 = Dio_ReadBit(&connector_B, Dio_Channel0);
 
 	/*
-	 * Print the value you get.
+	 * Print out the logic level of each channel.
 	 */
 	printf("di_A0 = %d\n", di_A0);
 	printf("di_B0 = %d\n", di_B0);

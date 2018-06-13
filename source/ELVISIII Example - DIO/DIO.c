@@ -39,16 +39,26 @@ ELVISIII_Dio connector_B = {99532, 99524, 99516};
 /**
  * Read the value from one channel.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * The DIO channels are accessed in 8-bit banks where each bit in the bank
+ * corresponds to one of the DIO channels. In general:
+ *    DIO0 = bit0   (1st channel on the DIO 7:0 bank)
+ *    DIO1 = bit1   (2nd channel on the DIO 7:0 bank)
+ *       ...
+ *    DIO7 = bit7   (last channel on the DIO 7:0 bank)
+ *    DIO8 = bit0   (1st channel on the DIO 15:8 bank)
+ *      ...
+ *    DIO15 - bit7  (last channel on the DIO 15:8 bank)
+ *
+ * A DIO channel can be either an input or an output depending on the value
+ * of the DIR register. A value of 0 makes the channel an input, a value of 1
+ * sets the channel as an output.
+ *
+ * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  channel  	Enum containing 20 kinds of channels (DIO0 - DIO19).
  *
  * @return the logical value of the voltage on the channel.
- *
- * Note:
- * 1. The first parameter can be either &connector_A or &connector_B (Both are initialized in AIO.h) unless you know certain addresses of AI Registers.
- * 2. The second parameter only have 20 choices which can be seen in AIO.h (enum DiChannel).
  */
-NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Di_Channel channel)
+NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Dio_Channel channel)
 {
 	NiFpga_Status status;
 
@@ -59,6 +69,8 @@ NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Di_Channel channel)
 
 	/*
 	 * Get the value of the DI Direction Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->dir, &dirValue);
 
@@ -79,6 +91,8 @@ NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Di_Channel channel)
 
 	/*
 	 * Write the new value to the DI Direction Register to ensure that the proper bit is turned into an input.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->dir, dirValue);
 
@@ -119,16 +133,26 @@ NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Di_Channel channel)
 /**
  * Write the value into one channel.
  *
- * @param[in]  connector	Only connector_A or connector_B can be used unless you know the addresses of certain registers.
+ * The DIO channels are accessed in 8-bit banks where each bit in the bank
+ * corresponds to one of the DIO channels. In general:
+ *    DIO0 = bit0   (1st channel on the DIO 7:0 bank)
+ *    DIO1 = bit1   (2nd channel on the DIO 7:0 bank)
+ *       ...
+ *    DIO7 = bit7   (last channel on the DIO 7:0 bank)
+ *    DIO8 = bit0   (1st channel on the DIO 15:8 bank)
+ *      ...
+ *    DIO15 - bit7  (last channel on the DIO 15:8 bank)
+ *
+ * A DIO channel can be either an input or an output depending on the value
+ * of the DIR register. A value of 0 makes the channel an input, a value of 1
+ * sets the channel as an output.
+ *
+ * @param[in]  connector	A struct containing the registers for one connecter.
  * @param[in]  value  		the value used to write into the DO Value Register.
  * @param[in]  channel  	Enum containing 20 kinds of channels (DIO0 - DIO19).
  *
- * Note:
- * 1. The first parameter can be either &connector_A or &connector_B (Both are initialized in AIO.h) unless you know certain addresses of AI Registers.
- * 2. The second parameter is either true or false.
- * 3. The third parameter only have 20 choices which can be seen in AIO.h (enum DiChannel).
  */
-void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Di_Channel channel)
+void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Dio_Channel channel)
 {
 	NiFpga_Status status;
 
@@ -138,6 +162,8 @@ void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Di_Channel channel
 
 	/*
 	 * Get the value from the DO Value Register.
+	 *
+	 * The returned NiFpga_Status value is stored for error checking.
 	 */
 	status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->out, &outValue);
 
