@@ -141,17 +141,17 @@ int main(int argc, char **argv)
 	}
 
 	/*
-	 * Set the AI Counter Register.
+	 * Set the number of valid channels on connector A.
 	 */
-	Ai_Counter(&connector_A, 1);
+	Ai_Counter(&connector_A, 2);
 
 	/*
-	 * Set the AI Configuration Register.
+	 * Configure the range of the A/AI0 on connector A.
 	 */
 	Ai_Configure(&connector_A, Ai_Channel0, Ai_Range0);
 
 	/*
-	 * Set the AI Divisor Register.
+	 * Configure the divisor for the analog sample rate on connector A.
 	 */
 	Ai_Divisor(&connector_A, 40000000, 1000);
 	
