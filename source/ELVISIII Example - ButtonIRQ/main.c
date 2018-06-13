@@ -30,6 +30,23 @@ typedef struct
     uint8_t           irqNumber;       /* IRQ number value */
 } ThreadResource;
 
+/**
+ * Overview:
+ * Demonstrates how to use the button IRQ. Once the button IRQ occurs, print the
+ * IRQ number, trigger times, and main loop count number in the console.
+ * The main thread runs for 60s.
+ *
+ * Instructions:
+ * 1. Push the button if you select the button IRQ.
+ * 2. Run this program and observe the console.
+ *
+ * Output:
+ * IRQ3, triggered times and main loop count number are shown in the console.
+ *
+ * Note:
+ * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ */
+
 
 void *Button_Irq_Thread(void* resource)
 {
