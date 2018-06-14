@@ -3,7 +3,25 @@
  * National Instruments Corporation.
  * All rights reserved.
  */
-
+/**
+ * Overview:
+ * Demonstrates using the UART. Writes a character to the UART bus, prints any
+ * returned character to the console.
+ *
+ * Instructions:
+ * 1. Connect UART.TX of the UART to DIO16 on connector A.
+ * 2. Connect UART.RX of the UART to DIO17 on connector A.
+ * 3. Connect UART.GND of the UART to DGND on connector A.
+ * 4. Connect a DC voltage input (+3.3 V) to the UART.
+ * 5. Run the program.
+ *
+ * Output:
+ * The program writes the character "H" to the console.
+ * Returned character is written to the console if the attached UART device writes to the bus.
+ *
+ * Note:
+ * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ */
 #include <stdio.h>
 #include <time.h>
 #include "UART.h"
@@ -18,22 +36,7 @@
 extern ELVISIII_Connector connector_A;
 
 
-/**
- * Overview:
- * Demonstrates using the UART. Writes a character to the UART bus, prints any
- * returned character to the console.
- *
- * Instructions:
- * 1. Connect a UART device that can receive and/or send character data to the UART pins on connector A.
- * 2. Run the program.
- *
- * Output:
- * The program writes the character "H" to the console.
- * Returned character is written to the console if the attached UART device writes to the bus.
- *
- * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
- */
+
 int main(int argc, char **argv)
 {
     ELVISIII_Uart uart;
@@ -42,10 +45,10 @@ int main(int argc, char **argv)
     uint8_t readData = 0;
     int32_t status = 0;
 
-	time_t currentTime;
-	time_t finalTime;
+    time_t currentTime;
+    time_t finalTime;
 
-	printf("UART:\n");
+    printf("UART:\n");
 
     /*
      * Initialize the UART port structure.
@@ -55,18 +58,18 @@ int main(int argc, char **argv)
     uart.session = 0;
 
     /*
-	 * Open the ELVIS III NiFpga Session.
-	 * This function MUST be called before all other functions. After this call
-	 * is complete the ELVIS III target will be ready to be used.
-	 */
-	status = NiELVISIIIv10_Open();
-	if (NiELVISIIIv10_IsNotSuccess(status))
-	{
-		return status;
-	}
+     * Open the ELVIS III NiFpga Session.
+     * This function MUST be called before all other functions. After this call
+     * is complete the ELVIS III target will be ready to be used.
+     */
+    status = NiELVISIIIv10_Open();
+    if (NiELVISIIIv10_IsNotSuccess(status))
+    {
+        return status;
+    }
 
     /*
-     * Set the UART Enable Register into NiFpga_true.
+     * Set the UART Enable Flag for one connector.
      */
     Uart_Enable(&connector_A);
 
@@ -118,22 +121,22 @@ int main(int argc, char **argv)
     }
 
     /*
-	 * Normally, the main function runs a long running or infinite loop.
-	 * Keep the program running so that you can measure the output using
-	 * an external instrument.
-	 */
-	time(&currentTime);
-	finalTime = currentTime + LoopDuration;
-	while (currentTime < finalTime)
-	{
-		time(&currentTime);
-	}
+     * Normally, the main function runs a long running or infinite loop.
+     * Keep the program running so that you can measure the output using
+     * an external instrument.
+     */
+    time(&currentTime);
+    finalTime = currentTime + LoopDuration;
+    while (currentTime < finalTime)
+    {
+        time(&currentTime);
+    }
 
-	/*
-	 * Close the ELVISIII NiFpga Session.
-	 * This function MUST be called after all other functions.
-	 */
-	status = NiELVISIIIv10_Close();
+    /*
+     * Close the ELVISIII NiFpga Session.
+     * This function MUST be called after all other functions.
+     */
+    status = NiELVISIIIv10_Close();
 
     return status;
 }

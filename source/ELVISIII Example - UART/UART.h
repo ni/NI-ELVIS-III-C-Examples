@@ -59,9 +59,9 @@ typedef struct
  */
 typedef struct
 {
-	uint32_t enable;         /**< UART Enable Register */
-	uint32_t stat;           /**< UART Status Register */
-	uint32_t console;        /**< UART Console Enable Register */
+    uint32_t enable;         /**< UART Enable Register */
+    uint32_t stat;           /**< UART Status Register */
+    uint32_t console;        /**< UART Console Enable Register */
 } ELVISIII_Connector;
 
 
@@ -70,7 +70,7 @@ extern "C" {
 #endif
 
 /**
- * Set the UART Enable Register into NiFpga_true.
+ * Set the UART Enable Flag for one connector.
  */
 void Uart_Enable(ELVISIII_Connector* connector);
 
@@ -79,7 +79,7 @@ void Uart_Enable(ELVISIII_Connector* connector);
  * Opens a UART session.
  */
 int32_t Uart_Open(ELVISIII_Uart*      port,
-				  const uint32_t      baud,
+                  const uint32_t      baud,
                   const uint8_t       dataBits,
                   const Uart_StopBits stopBits,
                   const Uart_Parity   parity);
@@ -98,7 +98,7 @@ int32_t Uart_Close(ELVISIII_Uart* port);
  * occurs.
  */
 int32_t Uart_Read(ELVISIII_Uart* port,
-				  uint8_t* const data,
+                  uint8_t* const data,
                   const size_t   nData);
 
 
@@ -108,7 +108,7 @@ int32_t Uart_Read(ELVISIII_Uart* port,
  * occurs.
  */
 int32_t Uart_Write(ELVISIII_Uart* port,
-				   const uint8_t* const data,
+                   const uint8_t* const data,
                    const size_t   nData);
 
 

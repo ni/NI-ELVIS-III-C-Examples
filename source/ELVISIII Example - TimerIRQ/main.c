@@ -3,7 +3,23 @@
  * National Instruments.
  * All rights reserved.
  */
-
+/**
+ * Overview:
+ * Demonstrates how to use the timer IRQ. Once the timer IRQ occurs (5 s), print
+ * the IRQ number, triggered times and main loop count number in the console.
+ * The timer IRQ will be triggered only once in this example.
+ * The output is maintained for 60 s.
+ *
+ * Instructions:
+ * Run this program and observe the console.
+ *
+ * Output:
+ * IRQ0, triggered times and main loop count number are shown in the console,
+ * The output is maintained for 60 s.
+ *
+ * Note:
+ * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ */
 #include <stdio.h>
 #include <time.h>
 #include <pthread.h>
@@ -28,72 +44,6 @@ typedef struct
     NiFpga_IrqContext irqContext;      /* IRQ context reserved by Irq_ReserveContext() */
     NiFpga_Bool irqThreadRdy;           /* IRQ thread ready flag */
 } ThreadResource;
-
-
-/**
- * Overview:
- * Demonstrates how to use the timer IRQ. Once the timer IRQ occurs (5 s), print
- * the IRQ number, triggered times and main loop count number in the console.
- * The timer IRQ will be triggered only once in this example.
- * The output is maintained for 60 s.
- *
- * Instructions:
- * Run this program and observe the console.
- *
- * Output:
- * IRQ0, triggered times and main loop count number are shown in the console,
- * The output is maintained for 60 s.
- *
- * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
- */
-void *Timer_Irq_Thread(void* resource)
-{
-    ThreadResource* threadResource = (ThreadResource*) resource;
-    while (1)
-    {
-        uint32_t irqAssert = 0;
-        static uint32_t irqCount = 0;
-
-        /*
-         * Stop the calling thread, wait until a selected IRQ is asserted.
-         */
-        Irq_Wait(threadResource->irqContext,
-        		 TIMERIRQNO,
-        		 &irqAssert,
-        		 (NiFpga_Bool*) &(threadResource->irqThreadRdy));
-
-        /*
-         * If an IRQ was asserted.
-         */
-        if (irqAssert & (1 << TIMERIRQNO))
-        {
-            printf("IRQ%d,%d\n", TIMERIRQNO, ++irqCount);
-
-            /*
-             * Acknowledge the IRQ(s) when assertion is done.
-             */
-            Irq_Acknowledge(irqAssert);
-        }
-
-        /*
-         * Check the indicator to see if the new thread is stopped.
-         */
-        if (!(threadResource->irqThreadRdy))
-        {
-            printf("The IRQ thread ends.\n");
-            break;
-        }
-    }
-
-    /*
-     * Exit the new thread.
-     */
-    pthread_exit(NULL);
-
-    return NULL;
-}
-
 
 int main(int argc, char **argv)
 {
@@ -133,7 +83,7 @@ int main(int argc, char **argv)
      * Return a status message to indicate if the configuration is successful. The error code is defined in IRQConfigure.h.
      */
     status = Irq_RegisterTimerIrq(&IrqTimer,
-    							  &irqThread0.irqContext,
+                                  &irqThread0.irqContext,
                                   timeoutValue);
 
     /*
@@ -216,4 +166,51 @@ int main(int argc, char **argv)
      * Returns 0 if successful.
      */
     return status;
+}
+
+void *Timer_Irq_Thread(void* resource)
+{
+    ThreadResource* threadResource = (ThreadResource*) resource;
+    while (1)
+    {
+        uint32_t irqAssert = 0;
+        static uint32_t irqCount = 0;
+
+        /*
+         * Stop the calling thread, wait until a selected IRQ is asserted.
+         */
+        Irq_Wait(threadResource->irqContext,
+                 TIMERIRQNO,
+                 &irqAssert,
+                 (NiFpga_Bool*) &(threadResource->irqThreadRdy));
+
+        /*
+         * If an IRQ was asserted.
+         */
+        if (irqAssert & (1 << TIMERIRQNO))
+        {
+            printf("IRQ%d,%d\n", TIMERIRQNO, ++irqCount);
+
+            /*
+             * Acknowledge the IRQ(s) when assertion is done.
+             */
+            Irq_Acknowledge(irqAssert);
+        }
+
+        /*
+         * Check the indicator to see if the new thread is stopped.
+         */
+        if (!(threadResource->irqThreadRdy))
+        {
+            printf("The IRQ thread ends.\n");
+            break;
+        }
+    }
+
+    /*
+     * Exit the new thread.
+     */
+    pthread_exit(NULL);
+
+    return NULL;
 }
