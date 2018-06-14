@@ -48,9 +48,6 @@ typedef struct
     uint8_t           irqNumber;       /* IRQ number value */
 } ThreadResource;
 
-
-
-
 int main(int argc, char **argv)
 {
     NiFpga_Status status;

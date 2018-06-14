@@ -19,11 +19,13 @@
 //AI channel selection number (DIFF mode)
 #define DIFF_NUM 4
 
+
 //AI Fixed-point
 #define AI_WordLength 24
 #define AI_IntegerWordLength 5
 
 //AO Fixed-point
+
 #define AO_WordLength 20
 #define AO_IntegerWordLength 5
 
@@ -34,6 +36,7 @@
 #if NiFpga_Cpp
 extern "C" {
 #endif
+
 
 //AO FIFO Fixed-point
 typedef enum
@@ -49,6 +52,7 @@ typedef enum
     TargetToHost_FIFO_FXP_B = 6,
     TargetToHost_FIFO_FXP_A = 7,
 } TargetToHost_FIFO_FXP;
+
 
 
 /**
@@ -102,10 +106,10 @@ typedef enum
 /**
  * Specify the voltage range of the AI channel.
  *
- * ±10 V: 00b
- * ±5 V: 01b
- * ±2 V: 10b
- * ±1 V: 11b
+ * Â±10 V: 00b
+ * Â±5 V: 01b
+ * Â±2 V: 10b
+ * Â±1 V: 11b
  */
 typedef enum
 {
@@ -163,6 +167,7 @@ void Ai_Enable(ELVISIII_Aio* connector);
 /**
  * Read groups of AI values as an AI FIFO from a single channel.
  */
+
 void Ai_ReadFifo(ELVISIII_Aio*                connector,
                  TargetToHost_FIFO_FXP         fifo,
                   uint64_t*                    fxp_buffer_receive,
@@ -175,6 +180,7 @@ void Ai_ReadFifo(ELVISIII_Aio*                connector,
  * Convert fixed-point values of the FIFO to double values.
  */
 void ConvertUnsignedLongLongIntToDouble(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value);
+
 
 
 /**
@@ -190,20 +196,24 @@ void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel);
 
 
 /**
+
  * Convert double values to fixed-point values of the FIFO.
  */
 void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send, size_t fifo_size);
 
 
+
 /**
  * Write groups of AO values as an AO FIFO to a single channel.
  */
+
 void Ao_WriteFifo(ELVISIII_Aio*             connector,
                   HostToTarget_FIFO_FXP     fifo,
                    const uint64_t*           fxp_buffer_send,
                    size_t                    fifo_size,
                    uint32_t                  timeout,
                    size_t*                   elementsRemaining);
+
 
 
 #if NiFpga_Cpp

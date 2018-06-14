@@ -56,7 +56,6 @@ int main(int argc, char **argv)
     {
         return status;
     }
-
     /*
      * Write the initial value to channel DIO1, connector_A.
      */

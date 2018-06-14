@@ -68,10 +68,9 @@ void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter)
 
 /**
  * Set the AI Configuration Register and configure the range of the analog input channel.
- *
  * @param[in]  connector    A struct containing the registers for one connecter.
  * @param[in]  channel        Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
- * @param[in]  range        Enum containing 4 kinds of ranges (±10 V, ±5 V, ±2 V, ±1 V).
+ * @param[in]  range        Enum containing 4 kinds of ranges (Â±10 V, Â±5 V, Â±2 V, Â±1 V).
  */
 void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 {
@@ -195,7 +194,6 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 
 /**
  * Configure the divisor for the AI sample rate.The default onboard clock rate of FPGA is 40 MHz.
- *
  * @param[in]  connector    A struct containing the registers for one connecter.
  * @param[in]  ClockRate    The onboard clock rate of FPGA.
  * @param[in]  SampleRate    The analog sample rate.
@@ -243,7 +241,6 @@ void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate
 
 /**
  * Set the DMA Enable Flag for one connector.The flag controls whether the DMA is enabled for a specific connector.
- *
  * @param[in]  connector    A struct containing the registers for one connecter.
  */
 void Ai_Enable(ELVISIII_Aio* connector)
@@ -265,7 +262,6 @@ void Ai_Enable(ELVISIII_Aio* connector)
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI DMA Enable Register!");
 
     return;
-
 }
 
 
@@ -407,7 +403,6 @@ void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate
 /**
  * Set the DMA Enable value for an analog output channel.The value controls
  * whether the DMA is enabled for a specific analog output channel.
- *
  * @param[in]  connector    A struct containing the registers for one connecter.
  * @param[in]  channel        Enum containing 2 kinds of channels.
  */
@@ -460,6 +455,7 @@ void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel)
     NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not write to the AO DMA Enable Register!");
 
     return;
+
 }
 
 
@@ -494,6 +490,7 @@ void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send
     }
 
     return;
+
 }
 
 

@@ -44,7 +44,6 @@
 extern ELVISIII_Dio connector_A;
 extern ELVISIII_Dio connector_B;
 
-
 int main()
 {
     NiFpga_Status status;

@@ -248,6 +248,7 @@ void Di_ReadFifo(ELVISIII_Dio*         connector,
     NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the DI FIFO!");
 
     return;
+
 }
 
 /**
