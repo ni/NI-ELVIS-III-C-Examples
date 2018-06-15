@@ -41,28 +41,28 @@ ELVISIII_Aio connector_B = {AIBCNFG, AIBCNTR, AOADMA_CNTR, AIBCNT, AIBDMA_ENA, 9
 /**
  * Set the number of valid channels.
  *
- * @param[in]  connector	A struct containing the registers for one connecter.
- * @param[in]  counter		The number of valid channels on the connector.
+ * @param[in]  connector    A struct containing the registers for one connecter.
+ * @param[in]  counter        The number of valid channels on the connector.
  */
 void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter)
 {
-	NiFpga_Status status;
+    NiFpga_Status status;
 
-	/*
-	 * Write the counter value to the AI Counter Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cnt, counter);
+    /*
+     * Write the counter value to the AI Counter Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cnt, counter);
 
-	/*
-	 * Check if there was an error writing to the write register.
-	 *
-	 * If there was an error then print an error message to stdout and return.
-	 */
-	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI Counter Register!");
+    /*
+     * Check if there was an error writing to the write register.
+     *
+     * If there was an error then print an error message to stdout and return.
+     */
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI Counter Register!");
 
-	return;
+    return;
 }
 
 
@@ -75,197 +75,194 @@ void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter)
  */
 void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
 {
-	NiFpga_Status status;
+    NiFpga_Status status;
 
-	bool rdy;
-	bool flag = true;
-	int i = 0;
+    bool rdy;
+    bool flag = true;
+    int i = 0;
 
-	unsigned short int Channel = channel;
-	unsigned short int Range = range;
+    unsigned short int Channel = channel;
+    unsigned short int Range = range;
 
-	uint8_t  Config[RSE_NUM + DIFF_NUM] = {0};
-	uint8_t *ConfigValue = (uint8_t*)calloc(sizeof(uint8_t), RSE_NUM + DIFF_NUM);
+    uint8_t  Config[RSE_NUM + DIFF_NUM] = {0};
+    uint8_t *ConfigValue = (uint8_t*)calloc(sizeof(uint8_t), RSE_NUM + DIFF_NUM);
 
-	uint8_t Counter = 0;
+    uint8_t Counter = 0;
 
-	/*
-	 * Get the initial values from the AI Configuration Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, connector->cnfg, Config, RSE_NUM + DIFF_NUM);
+    /*
+     * Get the initial values from the AI Configuration Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, connector->cnfg, Config, RSE_NUM + DIFF_NUM);
 
-	/*
-	 * Check if there was an error writing to the read register.
-	 *
-	 * If there was an error then print an error message to stdout and return.
-	 */
-	NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AI Configuration Register!");
+    /*
+     * Check if there was an error writing to the read register.
+     *
+     * If there was an error then print an error message to stdout and return.
+     */
+    NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AI Configuration Register!");
 
-	/*
-	 * Generate AI Channel Selection Bit and AI Range Bit.For the AI Configuration Register, cast the value to a unsigned 8-bit value.
-	 */
-	if ((Channel >> 3) == 1)
-	{
-		//RSE mode
-		Config[Channel - RSE_NUM] = Channel | Range;
-	}
-	else
-	{
-		//DIFF mode
-		Config[Channel + RSE_NUM] = Channel | Range;
-	}
+    /*
+     * Generate AI Channel Selection Bit and AI Range Bit.For the AI Configuration Register, cast the value to a unsigned 8-bit value.
+     */
+    if ((Channel >> 3) == 1)
+    {
+        //RSE mode
+        Config[Channel - RSE_NUM] = Channel | Range;
+    }
+    else
+    {
+        //DIFF mode
+        Config[Channel + RSE_NUM] = Channel | Range;
+    }
 
-	/*
-	 * Write the configuration values to the AI Configuration Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_WriteArrayU8(NiELVISIIIv10_session, connector->cnfg, (const uint8_t*)(Config), RSE_NUM + DIFF_NUM);
+    /*
+     * Write the configuration values to the AI Configuration Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_WriteArrayU8(NiELVISIIIv10_session, connector->cnfg, (const uint8_t*)(Config), RSE_NUM + DIFF_NUM);
 
-	/*
-	 * Check if there was an error writing to the write register.
-	 *
-	 * If there was an error then print an error message to stdout and return.
-	 */
-	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI Configuration Register!");
+    /*
+     * Check if there was an error writing to the write register.
+     *
+     * If there was an error then print an error message to stdout and return.
+     */
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI Configuration Register!");
 
-	/*
-	 * Read the value from the AI Counter Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->cnt, &Counter);
+    /*
+     * Read the value from the AI Counter Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->cnt, &Counter);
 
-	/*
-	 * Check if there was an error reading from the register.
-	 *
-	 * If there was an error then print an error message to stdout and return.
-	 */
-	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the AI Counter Register!");
+    /*
+     * Check if there was an error reading from the register.
+     *
+     * If there was an error then print an error message to stdout and return.
+     */
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the AI Counter Register!");
 
-	/*
-	 * Get the value from the AI Configuration Register to check whether the configuration writing process is OK.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	while(flag)
-	{
-		rdy = true;
+    /*
+     * Get the value from the AI Configuration Register to check whether the configuration writing process is OK.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    while(flag)
+    {
+        rdy = true;
 
-		/*
-		 * Get the values from the AI Configuration Register.
-		 *
-		 * The returned NiFpga_Status value is stored for error checking.
-		 */
-		status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, connector->cnfg, ConfigValue, RSE_NUM + DIFF_NUM);
+        /*
+         * Get the values from the AI Configuration Register.
+         *
+         * The returned NiFpga_Status value is stored for error checking.
+         */
+        status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, connector->cnfg, ConfigValue, RSE_NUM + DIFF_NUM);
 
-		/*
-		 * Check if there was an error writing to the read register.
-		 *
-		 * If there was an error then print an error message to stdout and return.
-		 */
-		NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AI Configuration Register!");
+        /*
+         * Check if there was an error writing to the read register.
+         *
+         * If there was an error then print an error message to stdout and return.
+         */
+        NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AI Configuration Register!");
 
-		/*
-		 * Waiting to finish reading from AI Configuration Register.
-		 */
-		for(i = 0; i < Counter; ++i)
-		{
-			if (ConfigValue[i] != Config[i])
-			{
-				rdy = false;
-				break;
-			}
-		}
-		if (rdy == true)
-			flag = false;
-	}
-	free(ConfigValue);
+        /*
+         * Waiting to finish reading from AI Configuration Register.
+         */
+        for(i = 0; i < Counter; ++i)
+        {
+            if (ConfigValue[i] != Config[i])
+            {
+                rdy = false;
+                break;
+            }
+        }
+        if (rdy == true)
+            flag = false;
+    }
+    free(ConfigValue);
 
-	/*
-	 * Waiting for reading all the numbers from AI FIFO.
-	 */
-	sleep(1);
+    /*
+     * Waiting for reading all the numbers from AI FIFO.
+     */
+    sleep(1);
 
-	return;
+    return;
 }
 
 
 /**
  * Configure the divisor for the AI sample rate.The default onboard clock rate of FPGA is 40 MHz.
- *
- * @param[in]  connector	A struct containing the registers for one connecter.
- * @param[in]  ClockRate	The onboard clock rate of FPGA.
- * @param[in]  SampleRate	The analog sample rate.
+ * @param[in]  connector    A struct containing the registers for one connecter.
+ * @param[in]  ClockRate    The onboard clock rate of FPGA.
+ * @param[in]  SampleRate    The analog sample rate.
  */
 void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate)
 {
-	NiFpga_Status status;
+    NiFpga_Status status;
 
-	/*
-	 * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
-	 */
-	if (SampleRate > MAX_SAMPLE_RATE)
-	{
-		SampleRate = MAX_SAMPLE_RATE;
-	}
+    /*
+     * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
+     */
+    if (SampleRate > MAX_SAMPLE_RATE)
+    {
+        SampleRate = MAX_SAMPLE_RATE;
+    }
 
-	if (SampleRate < MIN_SAMPLE_RATE)
-	{
-		SampleRate = MIN_SAMPLE_RATE;
-	}
+    if (SampleRate < MIN_SAMPLE_RATE)
+    {
+        SampleRate = MIN_SAMPLE_RATE;
+    }
 
-	/*
-	 * Generate the divisor, cast this value directly to a unsigned 32-bit value.
-	 */
+    /*
+     * Generate the divisor, cast this value directly to a unsigned 32-bit value.
+     */
 
-	uint32_t divisor = (uint32_t)(ClockRate / SampleRate);
+    uint32_t divisor = (uint32_t)(ClockRate / SampleRate);
 
-	/*
-	 * Write the divisor value to the AI Divisor Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->ai_cntr, divisor);
+    /*
+     * Write the divisor value to the AI Divisor Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->ai_cntr, divisor);
 
-	/*
-	 * Check if there was an error writing to the write register.
-	 *
-	 * If there was an error then print an error message to stdout and return.
-	 */
-	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI Divisor Register!");
+    /*
+     * Check if there was an error writing to the write register.
+     *
+     * If there was an error then print an error message to stdout and return.
+     */
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI Divisor Register!");
 
-	return;
+    return;
 }
 
 
 /**
  * Set the DMA Enable Flag for one connector.The flag controls whether the DMA is enabled for a specific connector.
- *
- * @param[in]  connector	A struct containing the registers for one connecter.
+ * @param[in]  connector    A struct containing the registers for one connecter.
  */
 void Ai_Enable(ELVISIII_Aio* connector)
 {
-	NiFpga_Status status;
+    NiFpga_Status status;
 
-	/*
-	 * Write the NiFpga_True to the AI DMA Enable Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->ai_enable, NiFpga_True);
+    /*
+     * Write the NiFpga_True to the AI DMA Enable Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->ai_enable, NiFpga_True);
 
-	/*
-	 * Check if there was an error writing to the write register.
-	 *
-	 * If there was an error then print an error message to stdout and return.
-	 */
-	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI DMA Enable Register!");
+    /*
+     * Check if there was an error writing to the write register.
+     *
+     * If there was an error then print an error message to stdout and return.
+     */
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AI DMA Enable Register!");
 
-	return;
-
+    return;
 }
 
 
@@ -359,107 +356,107 @@ void ConvertUnsignedLongLongIntToDouble(uint64_t *fxp_buffer_receive, size_t fif
 /**
  * Configure the divisor for the AO sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  connector	A struct containing the registers for one connecter.
- * @param[in]  ClockRate	The onboard clock rate of FPGA.
- * @param[in]  SampleRate	The analog sample rate.
+ * @param[in]  connector    A struct containing the registers for one connecter.
+ * @param[in]  ClockRate    The onboard clock rate of FPGA.
+ * @param[in]  SampleRate    The analog sample rate.
  */
 void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate)
 {
-	NiFpga_Status status;
+    NiFpga_Status status;
 
-	/*
-	 * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
-	 */
-	if (SampleRate > MAX_SAMPLE_RATE)
-	{
-		SampleRate = MAX_SAMPLE_RATE;
-	}
+    /*
+     * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
+     */
+    if (SampleRate > MAX_SAMPLE_RATE)
+    {
+        SampleRate = MAX_SAMPLE_RATE;
+    }
 
-	if (SampleRate < MIN_SAMPLE_RATE)
-	{
-		SampleRate = MIN_SAMPLE_RATE;
-	}
+    if (SampleRate < MIN_SAMPLE_RATE)
+    {
+        SampleRate = MIN_SAMPLE_RATE;
+    }
 
-	/*
-	 * Generate the divisor, cast this value directly to a unsigned 32-bit value.
-	 */
+    /*
+     * Generate the divisor, cast this value directly to a unsigned 32-bit value.
+     */
 
-	uint32_t divisor = (uint32_t)(ClockRate / SampleRate);
+    uint32_t divisor = (uint32_t)(ClockRate / SampleRate);
 
-	/*
-	 * Write the divisor value to the AO Divisor Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->ao_cntr, divisor);
+    /*
+     * Write the divisor value to the AO Divisor Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->ao_cntr, divisor);
 
-	/*
-	 * Check if there was an error writing to the write register.
-	 *
-	 * If there was an error then print an error message to stdout and return.
-	 */
-	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AO Divisor Register!");
+    /*
+     * Check if there was an error writing to the write register.
+     *
+     * If there was an error then print an error message to stdout and return.
+     */
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the AO Divisor Register!");
 
-	return;
+    return;
 }
 
 
 /**
  * Set the DMA Enable value for an analog output channel.The value controls
  * whether the DMA is enabled for a specific analog output channel.
- *
- * @param[in]  connector	A struct containing the registers for one connecter.
- * @param[in]  channel		Enum containing 2 kinds of channels.
+ * @param[in]  connector    A struct containing the registers for one connecter.
+ * @param[in]  channel        Enum containing 2 kinds of channels.
  */
 void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel)
 {
-	NiFpga_Status status;
-	uint8_t bit = channel;
+    NiFpga_Status status;
+    uint8_t bit = channel;
 
-	uint8_t enable = 0;
+    uint8_t enable = 0;
 
-	/*
-	 * Get the initial values from the AO DMA Enable Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->ao_enable, &enable);
+    /*
+     * Get the initial values from the AO DMA Enable Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->ao_enable, &enable);
 
-	/*
-	 * Check if there was an error writing to the read register.
-	 *
-	 * If there was an error then print an error message to stdout and return.
-	 */
-	NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AO DMA Enable Register!");
+    /*
+     * Check if there was an error writing to the read register.
+     *
+     * If there was an error then print an error message to stdout and return.
+     */
+    NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the AO DMA Enable Register!");
 
-	/*
-	 * Clear the value of the bits in the DMA Enable register. This is
+    /*
+     * Clear the value of the bits in the DMA Enable register. This is
      * done so that the correct value can be set later on.
-	 */
-	enable = enable & ~bit;
+     */
+    enable = enable & ~bit;
 
-	/*
-	 * Set the value of the bits in the DMA Enable register. If the
+    /*
+     * Set the value of the bits in the DMA Enable register. If the
      * value to set is 0 this operation would not work unless the bit was
      * previously cleared.
-	 */
-	enable = enable | bit;
+     */
+    enable = enable | bit;
 
-	/*
-	 * Write the value to the AO DMA Enable Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->ao_enable, enable);
+    /*
+     * Write the value to the AO DMA Enable Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->ao_enable, enable);
 
-	/*
-	 * Check if there was an error writing to the register.
-	 *
-	 * If there was an error then print an error message to stdout and return.
-	 */
-	NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not write to the AO DMA Enable Register!");
+    /*
+     * Check if there was an error writing to the register.
+     *
+     * If there was an error then print an error message to stdout and return.
+     */
+    NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not write to the AO DMA Enable Register!");
 
-	return;
+    return;
+
 }
 
 

@@ -44,66 +44,66 @@ int32_t Irq_RegisterTimerIrq(ELVISIII_IrqTimer* irqChannel,
                              NiFpga_IrqContext* irqContext,
                              uint32_t           timeout)
 {
-	int32_t status;
+    int32_t status;
 
-	/*
-	 * Reserve an IRQ context. IRQ contexts are single-threaded; only one thread
-	 * can wait with a particular context at any given time. To minimize jitter
-	 * when first waiting on IRQs, reserve as many contexts as the application requires.
-	 * If a context is successfully reserved, you must unreserve it later.
-	 * Otherwise a memory leak will occur.
-	 */
-	status = NiFpga_ReserveIrqContext(NiELVISIIIv10_session, irqContext);
+    /*
+     * Reserve an IRQ context. IRQ contexts are single-threaded; only one thread
+     * can wait with a particular context at any given time. To minimize jitter
+     * when first waiting on IRQs, reserve as many contexts as the application requires.
+     * If a context is successfully reserved, you must unreserve it later.
+     * Otherwise a memory leak will occur.
+     */
+    status = NiFpga_ReserveIrqContext(NiELVISIIIv10_session, irqContext);
 
-	/*
-	 * Check if there was an error when you reserved the IRQ.
-	 * If there was an error, print an error message to stdout and return the configuration status.
-	 */
-	NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "A required NiFpga_IrqContext was not reserved.");
+    /*
+     * Check if there was an error when you reserved the IRQ.
+     * If there was an error, print an error message to stdout and return the configuration status.
+     */
+    NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "A required NiFpga_IrqContext was not reserved.");
 
-	/*
-	 * Check if the IRQ number or channel value already exists in the resource list,
-	 * return the configuration status and print an error message.
-	 */
-	status = Irq_CheckReserved(irqChannel->timerChannel, TIMERIRQNO);
-	if (status == NiELVISIIIv10_Status_IrqNumberNotUsable || status == NiELVISIIIv10_Status_IrqChannelNotUsable)
-	{
-		printf("You have already registered the only timer interrupt.\n");
-		return status;
-	}
+    /*
+     * Check if the IRQ number or channel value already exists in the resource list,
+     * return the configuration status and print an error message.
+     */
+    status = Irq_CheckReserved(irqChannel->timerChannel, TIMERIRQNO);
+    if (status == NiELVISIIIv10_Status_IrqNumberNotUsable || status == NiELVISIIIv10_Status_IrqChannelNotUsable)
+    {
+        printf("You have already registered the only timer interrupt.\n");
+        return status;
+    }
 
-	/*
-	 * Write the value to the TIMERWRITE register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_WriteU32(NiELVISIIIv10_session, irqChannel->timerWrite, timeout);
+    /*
+     * Write the value to the TIMERWRITE register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_WriteU32(NiELVISIIIv10_session, irqChannel->timerWrite, timeout);
 
-	/*
-	 * Check if there was an error when you reserved the IRQ.
-	 *
-	 * If there was an error, print an error message to stdout and return the configuration status.
-	 */
-	NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to TIMERWRITE Register!");
+    /*
+     * Check if there was an error when you reserved the IRQ.
+     *
+     * If there was an error, print an error message to stdout and return the configuration status.
+     */
+    NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to TIMERWRITE Register!");
 
-	/*
-	 * Write the value to the TIMERSETTIME Register.
-	 */
-	status = NiFpga_WriteBool(NiELVISIIIv10_session, irqChannel->timerSet, NiFpga_True);
+    /*
+     * Write the value to the TIMERSETTIME Register.
+     */
+    status = NiFpga_WriteBool(NiELVISIIIv10_session, irqChannel->timerSet, NiFpga_True);
 
-	/*
-	 * Check if there was an error when you reserved the IRQ.
-	 *
-	 * If there was an error, print an error message to stdout and return the configuration status.
-	 */
-	NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to TIMERSETTIME Register!");
+    /*
+     * Check if there was an error when you reserved the IRQ.
+     *
+     * If there was an error, print an error message to stdout and return the configuration status.
+     */
+    NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to TIMERSETTIME Register!");
 
-	/*
-	 * Add the channel value and IRQ number to the list.
-	 */
-	Irq_AddReserved(irqChannel->timerChannel, TIMERIRQNO);
+    /*
+     * Add the channel value and IRQ number to the list.
+     */
+    Irq_AddReserved(irqChannel->timerChannel, TIMERIRQNO);
 
-	return NiELVISIIIv10_Status_Success;
+    return NiELVISIIIv10_Status_Success;
 }
 
 
@@ -118,58 +118,58 @@ int32_t Irq_RegisterTimerIrq(ELVISIII_IrqTimer* irqChannel,
 int32_t Irq_UnregisterTimerIrq(ELVISIII_IrqTimer* irqChannel,
                                NiFpga_IrqContext  irqContext)
 {
-	int32_t status;
+    int32_t status;
 
-	/*
-	 * Check if the specified IRQ resource is registered.
-	 */
-	status = Irq_CheckReserved(irqChannel->timerChannel, TIMERIRQNO);
-	if (status == NiELVISIIIv10_Status_Success)
-	{
-		/*
-		 * Did not find the resource in the list.
-		 */
-		printf("You didn't register an interrupt with this IRQ number.\n");
-		return NiELVISIIIv10_Status_Success;
-	}
+    /*
+     * Check if the specified IRQ resource is registered.
+     */
+    status = Irq_CheckReserved(irqChannel->timerChannel, TIMERIRQNO);
+    if (status == NiELVISIIIv10_Status_Success)
+    {
+        /*
+         * Did not find the resource in the list.
+         */
+        printf("You didn't register an interrupt with this IRQ number.\n");
+        return NiELVISIIIv10_Status_Success;
+    }
 
-	/*
-	 * Write the value to the IRQTIMERSETTIME Register.
-	 */
-	status = NiFpga_WriteU32(NiELVISIIIv10_session, irqChannel->timerWrite, 0);
-	status = NiFpga_WriteBool(NiELVISIIIv10_session, irqChannel->timerSet, NiFpga_True);
+    /*
+     * Write the value to the IRQTIMERSETTIME Register.
+     */
+    status = NiFpga_WriteU32(NiELVISIIIv10_session, irqChannel->timerWrite, 0);
+    status = NiFpga_WriteBool(NiELVISIIIv10_session, irqChannel->timerSet, NiFpga_True);
 
-	/*
-	 * Check if there was an error writing to the IRQTIMERSETTIME Register.
-	 *
-	 * If there was an error then print an error message to stdout and return configuration status.
-	 */
-	NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to IRQTIMERSETTIME register!");
+    /*
+     * Check if there was an error writing to the IRQTIMERSETTIME Register.
+     *
+     * If there was an error then print an error message to stdout and return configuration status.
+     */
+    NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to IRQTIMERSETTIME register!");
 
-	/*
-	 * Delete the reserved resource in the list.
-	 */
-	status = Irq_RemoveReserved(TIMERIRQNO);
+    /*
+     * Delete the reserved resource in the list.
+     */
+    status = Irq_RemoveReserved(TIMERIRQNO);
 
-	/*
-	 * Check if there was an error releasing the resource from list.
-	 *
-	 * If there was an error then print an error message to stdout.
-	 */
-	NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not release the IRQ resource!");
+    /*
+     * Check if there was an error releasing the resource from list.
+     *
+     * If there was an error then print an error message to stdout.
+     */
+    NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not release the IRQ resource!");
 
-	/*
-	 * Unreserve an IRQ context obtained from Irq_ReserveIrqContext.
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_UnreserveIrqContext(NiELVISIIIv10_session, irqContext);
+    /*
+     * Unreserve an IRQ context obtained from Irq_ReserveIrqContext.
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_UnreserveIrqContext(NiELVISIIIv10_session, irqContext);
 
-	/*
-	 * Check if there was an error when unreserve an IRQ.
-	 *
-	 * If there was an error then print an error message to stdout and return configuration status.
-	 */
-	NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "A required NiFpga_IrqContext was not unreserved.");
+    /*
+     * Check if there was an error when unreserve an IRQ.
+     *
+     * If there was an error then print an error message to stdout and return configuration status.
+     */
+    NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "A required NiFpga_IrqContext was not unreserved.");
 
-	return NiELVISIIIv10_Status_Success;
+    return NiELVISIIIv10_Status_Success;
 }

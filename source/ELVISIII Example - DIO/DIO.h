@@ -17,36 +17,36 @@ extern "C" {
 #endif
 
 /**
- * Specify which DIO channel.
+ * Specify the numbers of DIO channels.
  *
- * Di_Channel0: 0
- * Di_Channel1: 1
+ * Dio_Channel0: 0
+ * Dio_Channel1: 1
  * ...
- * Di_Channel20: 19
+ * Dio_Channel19: 19
  */
 typedef enum
 {
-	Di_Channel0  = 0,
-	Di_Channel1  = 1,
-	Di_Channel2  = 2,
-	Di_Channel3  = 3,
-	Di_Channel4  = 4,
-	Di_Channel5  = 5,
-	Di_Channel6  = 6,
-	Di_Channel7  = 7,
-	Di_Channel8  = 8,
-	Di_Channel9  = 9,
-	Di_Channel10 = 10,
-	Di_Channel11 = 11,
-	Di_Channel12 = 12,
-	Di_Channel13 = 13,
-	Di_Channel14 = 14,
-	Di_Channel15 = 15,
-	Di_Channel16 = 16,
-	Di_Channel17 = 17,
-	Di_Channel18 = 18,
-	Di_Channel19 = 19,
-} Di_Channel;
+    Dio_Channel0  = 0,
+    Dio_Channel1  = 1,
+    Dio_Channel2  = 2,
+    Dio_Channel3  = 3,
+    Dio_Channel4  = 4,
+    Dio_Channel5  = 5,
+    Dio_Channel6  = 6,
+    Dio_Channel7  = 7,
+    Dio_Channel8  = 8,
+    Dio_Channel9  = 9,
+    Dio_Channel10 = 10,
+    Dio_Channel11 = 11,
+    Dio_Channel12 = 12,
+    Dio_Channel13 = 13,
+    Dio_Channel14 = 14,
+    Dio_Channel15 = 15,
+    Dio_Channel16 = 16,
+    Dio_Channel17 = 17,
+    Dio_Channel18 = 18,
+    Dio_Channel19 = 19,
+} Dio_Channel;
 
 /**
  * Registers and settings for a particular DIO.
@@ -55,20 +55,20 @@ typedef enum
  */
 typedef struct
 {
-	uint32_t dir;         /**< DIO Direction Register */
-	uint32_t in;          /**< DI Value Register */
-	uint32_t out;         /**< DO Value Register */
+    uint32_t dir;         /**< DIO Direction Register */
+    uint32_t in;          /**< DI Value Register */
+    uint32_t out;         /**< DO Value Register */
 } ELVISIII_Dio;
 
 /**
  * Read the value from one channel.
  */
-NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Di_Channel channel);
+NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Dio_Channel channel);
 
 /**
  * Write the value into one channel.
  */
-void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Di_Channel channel);
+void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Dio_Channel channel);
 
 #if NiFpga_Cpp
 }

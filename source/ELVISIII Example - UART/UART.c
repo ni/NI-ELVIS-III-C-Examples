@@ -34,96 +34,96 @@ ELVISIII_Connector connector_B = {UARTBENA, UARTBSTAT, CONSOLEENA};
 /**
  *  Set the UART Enable Flag for one connector.
  *
- * @param[in]  connector  	A struct containing the registers for one connecter.
+ * @param[in]  connector      A struct containing the registers for one connecter.
  */
 void Uart_Enable(ELVISIII_Connector* connector)
 {
-	NiFpga_Status status;
-	NiFpga_Bool Enable;
-	bool flag = true;
+    NiFpga_Status status;
+    NiFpga_Bool Enable;
+    bool flag = true;
 
-	/*
-	 * Read the value from the Console Enable Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_ReadBool(NiELVISIIIv10_session, connector->console, &Enable);
+    /*
+     * Read the value from the Console Enable Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_ReadBool(NiELVISIIIv10_session, connector->console, &Enable);
 
-	/*
-	 * Check if there was an error reading from the Console Enable Register.
-	 *
-	 * If there was an error then print an error message to stdout.
-	 */
-	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the Console Enable Register!");
+    /*
+     * Check if there was an error reading from the Console Enable Register.
+     *
+     * If there was an error then print an error message to stdout.
+     */
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the Console Enable Register!");
 
-	if (Enable == NiFpga_True)
-	{
-		/*
-		 * Write the value to the Console Enable Register.
-		 *
-		 * The returned NiFpga_Status value is stored for error checking.
-		 */
-		status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->console, NiFpga_False);
+    if (Enable == NiFpga_True)
+    {
+        /*
+         * Write the value to the Console Enable Register.
+         *
+         * The returned NiFpga_Status value is stored for error checking.
+         */
+        status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->console, NiFpga_False);
 
-		/*
-		 * Check if there was an error writing to the Console Enable Register.
-		 *
-		 * If there was an error then print an error message to stdout.
-		 */
-		NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the Console Enable Register!");
-	}
+        /*
+         * Check if there was an error writing to the Console Enable Register.
+         *
+         * If there was an error then print an error message to stdout.
+         */
+        NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the Console Enable Register!");
+    }
 
-	/*
-	 * Write the value to the UART Enable Register.
-	 *
-	 * The returned NiFpga_Status value is stored for error checking.
-	 */
-	status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->enable, NiFpga_True);
+    /*
+     * Write the value to the UART Enable Register.
+     *
+     * The returned NiFpga_Status value is stored for error checking.
+     */
+    status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->enable, NiFpga_True);
 
-	/*
-	 * Check if there was an error writing to the UART Enable Register.
-	 *
-	 * If there was an error then print an error message to stdout.
-	 */
-	NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the UART Enable Register!");
+    /*
+     * Check if there was an error writing to the UART Enable Register.
+     *
+     * If there was an error then print an error message to stdout.
+     */
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the UART Enable Register!");
 
-	while(flag)
-	{
-		/*
-		 * Read the value from the UART Enable Register.
-		 */
-		NiFpga_ReadBool(NiELVISIIIv10_session, connector->enable, &Enable);
+    while(flag)
+    {
+        /*
+         * Read the value from the UART Enable Register.
+         */
+        NiFpga_ReadBool(NiELVISIIIv10_session, connector->enable, &Enable);
 
-		/*
-		 * Check if there was an error reading from the UART Enable Register.
-		 *
-		 * If there was an error then print an error message to stdout.
-		 */
-		NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the UART Enable Register!");
+        /*
+         * Check if there was an error reading from the UART Enable Register.
+         *
+         * If there was an error then print an error message to stdout.
+         */
+        NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the UART Enable Register!");
 
-		if (Enable == NiFpga_True)
-		{
-			flag = false;
-		}
-	}
+        if (Enable == NiFpga_True)
+        {
+            flag = false;
+        }
+    }
 
-	return;
+    return;
 }
 
 
 /**
  * Opens a UART session on an VISA implemented port.
  *
- * @param[in]  port   		UART port information.
- * @param[in]  baud        	Baud rate (bps).
- * @param[in]  dataBits    	Number of bits per frame.
- * @param[in]  stopBits    	Stop bit configuration.
- * @param[in]  parity      	Parity configuration.
+ * @param[in]  port           UART port information.
+ * @param[in]  baud            Baud rate (bps).
+ * @param[in]  dataBits        Number of bits per frame.
+ * @param[in]  stopBits        Stop bit configuration.
+ * @param[in]  parity          Parity configuration.
  *
- * @return     int32_t     	Error/success status
+ * @return     int32_t         Error/success status
  */
 int32_t Uart_Open(ELVISIII_Uart*      port,
-				  const uint32_t      baud,
+                  const uint32_t      baud,
                   const uint8_t       dataBits,
                   const Uart_StopBits stopBits,
                   const Uart_Parity   parity)
@@ -271,11 +271,11 @@ int32_t Uart_Read(ELVISIII_Uart* port, uint8_t* const data, const size_t nData)
  * FIFO, this function blocks until sufficient space is available or a timeout
  * occurs.
  *
- * @param[in]  port    	UART port to access
- * @param[in]  data    	Array of data to write
- * @param[in]  nData   	Size of data array
+ * @param[in]  port        UART port to access
+ * @param[in]  data        Array of data to write
+ * @param[in]  nData       Size of data array
  *
- * @return     int32_t 	Error/success status
+ * @return     int32_t     Error/success status
  */
 int32_t Uart_Write(ELVISIII_Uart* port, const uint8_t* const data, const size_t nData)
 {
@@ -291,7 +291,7 @@ int32_t Uart_Write(ELVISIII_Uart* port, const uint8_t* const data, const size_t 
 /**
  * Clears UART receive buffer.
  *
- * @param[in]  port    	UART port to access
+ * @param[in]  port        UART port to access
  *
  * @return     int32_t  Error/success status
  */

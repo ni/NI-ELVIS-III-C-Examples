@@ -3,23 +3,6 @@
  * National Instruments Corporation.
  * All rights reserved.
  */
-
-#include <stdio.h>
-#include <time.h>
-
-#include "AIO_N_Sample.h"
-#include "NiELVISIIIv10.h"
-
-#if !defined(LoopDuration)
-#define LoopDuration    60  /* How long to output the signal, in seconds */
-#endif
-
-//Default FIFO size.
-#define FIFO_SIZE 100
-
-extern ELVISIII_Aio connector_A;
-extern ELVISIII_Aio connector_B;
-
 /**
  * Overview:
  * Demonstrates using the analog input and output of N Sample (AIO - N Sample).
@@ -47,6 +30,23 @@ extern ELVISIII_Aio connector_B;
  * Note:
  * The Eclipse project defines the preprocessor symbol for the ELVIS III.
  */
+#include <stdio.h>
+#include <time.h>
+
+#include "AIO_N_Sample.h"
+#include "NiELVISIIIv10.h"
+
+#if !defined(LoopDuration)
+#define LoopDuration    60  /* How long to output the signal, in seconds */
+#endif
+
+//Default FIFO size.
+#define FIFO_SIZE 100
+
+extern ELVISIII_Aio connector_A;
+extern ELVISIII_Aio connector_B;
+
+
 int main(int argc, char **argv)
 {
 	NiFpga_Status status;

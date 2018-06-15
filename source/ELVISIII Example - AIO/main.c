@@ -42,6 +42,21 @@ extern ELVISIII_Ao Ao;
  * Note:
  * The Eclipse project defines the preprocessor symbol for the ELVIS III.
  */
+#include <stdio.h>
+#include <unistd.h>
+#include <time.h>
+
+#include "AIO.h"
+#include "NiELVISIIIv10.h"
+
+#if !defined(LoopDuration)
+#define LoopDuration    60  /* How long to output the signal, in seconds */
+#endif
+
+extern ELVISIII_Ai connector_A;
+extern ELVISIII_Ai connector_B;
+extern ELVISIII_Ao Ao;
+
 int main(int argc, char **argv)
 {
 	NiFpga_Status status;

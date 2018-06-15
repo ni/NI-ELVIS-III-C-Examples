@@ -19,6 +19,7 @@
 //AI channel selection number (DIFF mode)
 #define DIFF_NUM 4
 
+
 //AI Fixed-point
 #define AI_WordLength 24
 #define AI_IntegerWordLength 5
@@ -38,17 +39,18 @@ extern "C" {
 //AO FIFO Fixed-point
 typedef enum
 {
-	HostToTarget_FIFO_FixPoint_B = 4,
-	HostToTarget_FIFO_FixPoint_A = 5,
-} HostToTarget_FIFO_FixPoint;
+    HostToTarget_FIFO_FXP_B = 4,
+    HostToTarget_FIFO_FXP_A = 5,
+} HostToTarget_FIFO_FXP;
 
 
 //AI FIFO Fixed-point
 typedef enum
 {
-	TargetToHost_FIFO_FixPoint_B = 6,
-	TargetToHost_FIFO_FixPoint_A = 7,
-} TargetToHost_FIFO_FixPoint;
+    TargetToHost_FIFO_FXP_B = 6,
+    TargetToHost_FIFO_FXP_A = 7,
+} TargetToHost_FIFO_FXP;
+
 
 
 /**
@@ -71,21 +73,21 @@ typedef enum
  */
 typedef enum
 {
-	//RSE mode
-	Ai_Channel0 = 0x08,
-	Ai_Channel1 = 0x09,
-	Ai_Channel2 = 0x0a,
-	Ai_Channel3 = 0x0b,
-	Ai_Channel4 = 0x0c,
-	Ai_Channel5 = 0x0d,
-	Ai_Channel6 = 0x0e,
-	Ai_Channel7 = 0x0f,
+    //RSE mode
+    Ai_Channel0 = 0x08,
+    Ai_Channel1 = 0x09,
+    Ai_Channel2 = 0x0a,
+    Ai_Channel3 = 0x0b,
+    Ai_Channel4 = 0x0c,
+    Ai_Channel5 = 0x0d,
+    Ai_Channel6 = 0x0e,
+    Ai_Channel7 = 0x0f,
 
-	//DIFF mode
-	Ai_Channel0_4 = 0x00,
-	Ai_Channel1_5 = 0x01,
-	Ai_Channel2_6 = 0x02,
-	Ai_Channel3_7 = 0x03,
+    //DIFF mode
+    Ai_Channel0_4 = 0x00,
+    Ai_Channel1_5 = 0x01,
+    Ai_Channel2_6 = 0x02,
+    Ai_Channel3_7 = 0x03,
 } Ai_Channel;
 
 
@@ -94,8 +96,8 @@ typedef enum
  */
 typedef enum
 {
-	Ao_Channel0 = 0b01,
-	Ao_Channel1 = 0b10,
+    Ao_Channel0 = 0b01,
+    Ao_Channel1 = 0b10,
 }Ao_Channel;
 
 
@@ -109,10 +111,10 @@ typedef enum
  */
 typedef enum
 {
-	Ai_Range0 = 0x00,
-	Ai_Range1 = 0x10,
-	Ai_Range2 = 0x20,
-	Ai_Range3 = 0x30,
+    Ai_Range0 = 0x00,
+    Ai_Range1 = 0x10,
+    Ai_Range2 = 0x20,
+    Ai_Range3 = 0x30,
 } Ai_Range;
 
 
@@ -124,15 +126,15 @@ typedef enum
  */
 typedef struct
 {
-	uint32_t cnfg;                          /**< AI Configuration Register */
+    uint32_t cnfg;                          /**< AI Configuration Register */
 
-	uint32_t ai_cntr;                       /**< AI Divisor Register */
-	uint32_t ao_cntr;                       /**< AO Divisor Register */
+    uint32_t ai_cntr;                       /**< AI Divisor Register */
+    uint32_t ao_cntr;                       /**< AO Divisor Register */
 
-	uint32_t cnt;                           /**< AI Counter Register */
+    uint32_t cnt;                           /**< AI Counter Register */
 
-	uint32_t ai_enable;                     /**< AI DMA Enable Register */
-	uint32_t ao_enable;                     /**< AO DMA Enable Register */
+    uint32_t ai_enable;                     /**< AI DMA Enable Register */
+    uint32_t ao_enable;                     /**< AO DMA Enable Register */
 } ELVISIII_Aio;
 
 

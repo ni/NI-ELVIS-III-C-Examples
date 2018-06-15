@@ -27,7 +27,7 @@ extern "C" {
  */
 typedef struct
 {
-	uint32_t timerRead;         /**< Timer IRQ Read Register */
+    uint32_t timerRead;         /**< Timer IRQ Read Register */
     uint32_t timerWrite;        /**< Timer IRQ Write Register */
     uint32_t timerSet;          /**< Timer IRQ Set Time Register */
 
