@@ -37,7 +37,7 @@ ELVISIII_Aio connector_B = {AIBCNFG, AIBCNTR, AOADMA_CNTR, AIBCNT, AIBDMA_ENA, 9
  * Set the number of valid channels.
  *
  * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  counter        The number of valid channels on the connector.
+ * @param[in]  counter      The number of valid channels on the connector.
  */
 void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter)
 {
@@ -58,7 +58,7 @@ void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter)
  * Set the AI Configuration Register and configure the range of the analog input channel.
  *
  * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
+ * @param[in]  channel      Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
  * @param[in]  range        Enum containing 4 kinds of ranges (±10 V, ±5 V, ±2 V, ±1 V).
  */
 void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
@@ -152,7 +152,7 @@ void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range)
  *
  * @param[in]  connector    A struct containing the registers for one connecter.
  * @param[in]  ClockRate    The onboard clock rate of FPGA.
- * @param[in]  SampleRate    The analog sample rate.
+ * @param[in]  SampleRate   The analog sample rate.
  */
 void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate)
 {
@@ -208,13 +208,13 @@ void Ai_Enable(ELVISIII_Aio* connector)
 /**
  * Read groups of values from an AI FIFO.
  *
- * @param[in]  connector					A struct containing the registers for one connecter.
- * @param[in]  fifo							AI target-to-host FIFO from which to read
- * @param[in]  fxp_buffer_receive			groups of values in an AI FIFO, get from one channel.
- * @param[in]  fifo_size					The size of the AI FIFO.
- * @param[in]  timeout						timeout in milliseconds, or NiFpga_InfiniteTimeout
- * @param[in]  elementsRemaining			if non-NULL, outputs the number of elements
- *                          				remaining in the host memory part of the DMA FIFO
+ * @param[in]  connector                    A struct containing the registers for one connecter.
+ * @param[in]  fifo                         AI target-to-host FIFO from which to read
+ * @param[in]  fxp_buffer_receive           groups of values in an AI FIFO, get from one channel.
+ * @param[in]  fifo_size                    The size of the AI FIFO.
+ * @param[in]  timeout                      timeout in milliseconds, or NiFpga_InfiniteTimeout
+ * @param[in]  elementsRemaining            if non-NULL, outputs the number of elements
+ *                                          remaining in the host memory part of the DMA FIFO
  *
  * ------------------------------------------
  * Item:             | Default value:
@@ -226,12 +226,12 @@ void Ai_Enable(ELVISIII_Aio* connector)
  * elementsRemaining | NULL.
  * ------------------------------------------
  */
-void Ai_ReadFifo(ELVISIII_Aio*          		connector,
-		         TargetToHost_FIFO_FXP 	fifo,
-			 	 uint64_t*             			fxp_buffer_receive,
-			 	 size_t                			fifo_size,
-			 	 uint32_t              			timeout,
-			 	 size_t*               			elementsRemaining)
+void Ai_ReadFifo(ELVISIII_Aio*             connector,
+                 TargetToHost_FIFO_FXP     fifo,
+                  uint64_t*                fxp_buffer_receive,
+                  size_t                   fifo_size,
+                  uint32_t                 timeout,
+                  size_t*                  elementsRemaining)
 {
     NiFpga_Status status;
 
@@ -254,33 +254,33 @@ void Ai_ReadFifo(ELVISIII_Aio*          		connector,
 /**
  * Convert unsigned long long int values of the fixed-point in the FIFO to double values.
  *
- * @param[in]  fxp_buffer_receive			groups of fixed-point values get from one channel.
- * 											The fixed-point value is an unsigned long long int value.
- * @param[in]  fifo_size					The size of the AI FIFO.
- * @param[in]  value						Double value.
+ * @param[in]  fxp_buffer_receive           groups of fixed-point values get from one channel.
+ *                                          The fixed-point value is an unsigned long long int value.
+ * @param[in]  fifo_size                    The size of the AI FIFO.
+ * @param[in]  value                        Double value.
  */
 void ConvertUnsignedLongLongIntToDouble(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value)
 {
-	int i;
-	uint32_t temp;
-	for (i = 0; i < fifo_size; ++i)
-	{
-		temp = (uint32_t)fxp_buffer_receive[i];
-		if (temp & (1 << (AI_WordLength - 1)))
-		{
-		//Unsigned value is negative
-			temp = ~temp;
-			++temp;
-			value[i] = (double)(temp / pow(2, (AI_WordLength - AI_IntegerWordLength)) * (-1));
-		}
-		else
-		{
-		//Unsigned value is positive
-			value[i] = (double)(temp / pow(2, (AI_WordLength - AI_IntegerWordLength)));
-		}
-	}
+    int i;
+    uint32_t temp;
+    for (i = 0; i < fifo_size; ++i)
+    {
+        temp = (uint32_t)fxp_buffer_receive[i];
+        if (temp & (1 << (AI_WordLength - 1)))
+        {
+        //Unsigned value is negative
+            temp = ~temp;
+            ++temp;
+            value[i] = (double)(temp / pow(2, (AI_WordLength - AI_IntegerWordLength)) * (-1));
+        }
+        else
+        {
+        //Unsigned value is positive
+            value[i] = (double)(temp / pow(2, (AI_WordLength - AI_IntegerWordLength)));
+        }
+    }
 
-	return;
+    return;
 }
 
 /**
@@ -288,7 +288,7 @@ void ConvertUnsignedLongLongIntToDouble(uint64_t *fxp_buffer_receive, size_t fif
  *
  * @param[in]  connector    A struct containing the registers for one connecter.
  * @param[in]  ClockRate    The onboard clock rate of FPGA.
- * @param[in]  SampleRate    The analog sample rate.
+ * @param[in]  SampleRate   The analog sample rate.
  */
 void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate)
 {
@@ -325,7 +325,7 @@ void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate
  * whether the DMA is enabled for a specific analog output channel.
  *
  * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 2 kinds of channels.
+ * @param[in]  channel      Enum containing 2 kinds of channels.
  */
 void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel)
 {
@@ -365,10 +365,10 @@ void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel)
 /**
  * Convert double values to unsigned long long int values to represent the fixed-point in the FIFO.
  *
- * @param[in]  value					Double value
- * @param[in]  fxp_buffer_send			groups of the fixed-point values to be written.
- * 										The fixed-point value is an unsigned long long int value.
- * @param[in]  fifo_size				The size of the AO FIFO.
+ * @param[in]  value                    Double value
+ * @param[in]  fxp_buffer_send          groups of the fixed-point values to be written.
+ *                                      The fixed-point value is an unsigned long long int value.
+ * @param[in]  fifo_size                The size of the AO FIFO.
  */
 void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send, size_t fifo_size)
 {
@@ -398,13 +398,13 @@ void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send
 /**
  * Read groups of values to an AO FIFO.
  *
- * @param[in]  connector				A struct containing the registers for one connecter.
- * @param[in]  fifo						AO host-to-target FIFO from which to write
- * @param[in]  fxp_buffer_send			groups of values to be written.
- * @param[in]  fifo_size				The size of the AO FIFO
- * @param[in]  timeout					timeout in milliseconds, or NiFpga_InfiniteTimeout
- * @param[in]  elementsRemaining		if non-NULL, outputs the number of elements
- *                          			remaining in the host memory part of the DMA FIFO
+ * @param[in]  connector                A struct containing the registers for one connecter.
+ * @param[in]  fifo                     AO host-to-target FIFO from which to write
+ * @param[in]  fxp_buffer_send          groups of values to be written.
+ * @param[in]  fifo_size                The size of the AO FIFO
+ * @param[in]  timeout                  timeout in milliseconds, or NiFpga_InfiniteTimeout
+ * @param[in]  elementsRemaining        if non-NULL, outputs the number of elements
+ *                                      remaining in the host memory part of the DMA FIFO
  * ------------------------------------------
  * Item:             | Default value:
  * ------------------------------------------
@@ -415,12 +415,12 @@ void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send
  * elementsRemaining | NULL.
  * ------------------------------------------
  */
-void Ao_WriteFifo(ELVISIII_Aio*         		connector,
-		          HostToTarget_FIFO_FXP 	fifo,
-			 	  const uint64_t*       		fxp_buffer_send,
-			 	  size_t                		fifo_size,
-			 	  uint32_t              		timeout,
-			 	  size_t*               		elementsRemaining)
+void Ao_WriteFifo(ELVISIII_Aio*                  connector,
+                  HostToTarget_FIFO_FXP          fifo,
+                   const uint64_t*               fxp_buffer_send,
+                   size_t                        fifo_size,
+                   uint32_t                      timeout,
+                   size_t*                       elementsRemaining)
 {
     NiFpga_Status status;
 
