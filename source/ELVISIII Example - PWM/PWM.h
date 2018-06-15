@@ -28,26 +28,26 @@ extern "C" {
  */
 typedef enum
 {
-	Pwm_Channel0  = 0,
-	Pwm_Channel1  = 1,
-	Pwm_Channel2  = 2,
-	Pwm_Channel3  = 3,
-	Pwm_Channel4  = 4,
-	Pwm_Channel5  = 5,
-	Pwm_Channel6  = 6,
-	Pwm_Channel7  = 7,
-	Pwm_Channel8  = 8,
-	Pwm_Channel9  = 9,
-	Pwm_Channel10 = 10,
-	Pwm_Channel11 = 11,
-	Pwm_Channel12 = 12,
-	Pwm_Channel13 = 13,
-	Pwm_Channel14 = 14,
-	Pwm_Channel15 = 15,
-	Pwm_Channel16 = 16,
-	Pwm_Channel17 = 17,
-	Pwm_Channel18 = 18,
-	Pwm_Channel19 = 19,
+    Pwm_Channel0  = 0,
+    Pwm_Channel1  = 1,
+    Pwm_Channel2  = 2,
+    Pwm_Channel3  = 3,
+    Pwm_Channel4  = 4,
+    Pwm_Channel5  = 5,
+    Pwm_Channel6  = 6,
+    Pwm_Channel7  = 7,
+    Pwm_Channel8  = 8,
+    Pwm_Channel9  = 9,
+    Pwm_Channel10 = 10,
+    Pwm_Channel11 = 11,
+    Pwm_Channel12 = 12,
+    Pwm_Channel13 = 13,
+    Pwm_Channel14 = 14,
+    Pwm_Channel15 = 15,
+    Pwm_Channel16 = 16,
+    Pwm_Channel17 = 17,
+    Pwm_Channel18 = 18,
+    Pwm_Channel19 = 19,
 } Pwm_Channel;
 
 
@@ -95,12 +95,12 @@ typedef enum
  */
 typedef struct
 {
-	uint32_t cnfg[PWM_NUM];     /**< Counter Configuration Register */
-	uint32_t cs[PWM_NUM];       /**< Selects Speed of the Clock Register */
-	uint32_t max[PWM_NUM];      /**< Maximum Value of the Counter Register */
-	uint32_t cmp[PWM_NUM];      /**< Output Compare Value Register */
-	uint32_t cntr[PWM_NUM];     /**< Current Value of the Counter Register */
-	uint32_t sel;               /**< System Select Register */
+    uint32_t cnfg[PWM_NUM];     /**< Counter Configuration Register */
+    uint32_t cs[PWM_NUM];       /**< Selects Speed of the Clock Register */
+    uint32_t max[PWM_NUM];      /**< Maximum Value of the Counter Register */
+    uint32_t cmp[PWM_NUM];      /**< Output Compare Value Register */
+    uint32_t cntr[PWM_NUM];     /**< Current Value of the Counter Register */
+    uint32_t sel;               /**< System Select Register */
 } ELVISIII_Pwm;
 
 

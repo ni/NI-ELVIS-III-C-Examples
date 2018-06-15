@@ -28,16 +28,16 @@ extern "C" {
  */
 typedef enum
 {
-	Encoder_Channel0 = 0,
-	Encoder_Channel1 = 1,
-	Encoder_Channel2 = 2,
-	Encoder_Channel3 = 3,
-	Encoder_Channel4 = 4,
-	Encoder_Channel5 = 5,
-	Encoder_Channel6 = 6,
-	Encoder_Channel7 = 7,
-	Encoder_Channel8 = 8,
-	Encoder_Channel9 = 9,
+    Encoder_Channel0 = 0,
+    Encoder_Channel1 = 1,
+    Encoder_Channel2 = 2,
+    Encoder_Channel3 = 3,
+    Encoder_Channel4 = 4,
+    Encoder_Channel5 = 5,
+    Encoder_Channel6 = 6,
+    Encoder_Channel7 = 7,
+    Encoder_Channel8 = 8,
+    Encoder_Channel9 = 9,
 } Encoder_Channel;
 
 
@@ -110,8 +110,8 @@ typedef struct
  * Set the encoder options.
  */
 void Encoder_Configure(ELVISIII_Encoder*         connector,
-		               Encoder_Channel           channel,
-		               Encoder_ConfigureMask     mask,
+                       Encoder_Channel           channel,
+                       Encoder_ConfigureMask     mask,
                        Encoder_ConfigureSettings settings);
 
 

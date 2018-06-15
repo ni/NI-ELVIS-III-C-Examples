@@ -42,8 +42,8 @@ extern "C" {
  */
 typedef enum
 {
-	Ai_Channel0 = 0x08,
-	Ai_Channel1 = 0x09,
+    Ai_Channel0 = 0x08,
+    Ai_Channel1 = 0x09,
 } Ai_Channel;
 
 
@@ -57,10 +57,10 @@ typedef enum
  */
 typedef enum
 {
-	Ai_Range0 = 0x00,
-	Ai_Range1 = 0x10,
-	Ai_Range2 = 0x20,
-	Ai_Range3 = 0x30,
+    Ai_Range0 = 0x00,
+    Ai_Range1 = 0x10,
+    Ai_Range2 = 0x20,
+    Ai_Range3 = 0x30,
 } Ai_Range;
 
 
@@ -93,12 +93,12 @@ typedef enum
  */
 typedef struct
 {
-	uint32_t cnfg;                           /**< AI Configuration Register */
-	uint32_t cntr;                           /**< AI Divisor Register */
-	uint32_t cnt;                            /**< AI Counter Register */
-	uint32_t rdy;                            /**< AI Ready Register */
-	uint32_t val[AIIRQ_NUM];        		 /**< AIO Value Register */
-	
+    uint32_t cnfg;                           /**< AI Configuration Register */
+    uint32_t cntr;                           /**< AI Divisor Register */
+    uint32_t cnt;                            /**< AI Counter Register */
+    uint32_t rdy;                            /**< AI Ready Register */
+    uint32_t val[AIIRQ_NUM];                 /**< AIO Value Register */
+
     uint32_t aiIrqNumber[AIIRQ_NUM];         /**< AI IRQ Number Register */
     uint32_t aiHysteresis[AIIRQ_NUM];        /**< AI IRQ Hysteresis Register */
     uint32_t aiThreshold[AIIRQ_NUM];         /**< AI IRQ Threshold Register */

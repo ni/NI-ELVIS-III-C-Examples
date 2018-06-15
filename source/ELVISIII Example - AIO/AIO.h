@@ -20,11 +20,11 @@
 //AI channel selection number (DIFF mode)
 #define DIFF_NUM 4
 
-//AI Fix point
+//AI Fixed-point
 #define AI_WordLength 26
 #define AI_IntegerWordLength 5
 
-//AO Fix point
+//AO Fixed-point
 #define AO_WordLength 20
 #define AO_IntegerWordLength 5
 
@@ -56,21 +56,21 @@ extern "C" {
  */
 typedef enum
 {
-	//RSE mode
-	Ai_Channel0 = 0x08,
-	Ai_Channel1 = 0x09,
-	Ai_Channel2 = 0x0a,
-	Ai_Channel3 = 0x0b,
-	Ai_Channel4 = 0x0c,
-	Ai_Channel5 = 0x0d,
-	Ai_Channel6 = 0x0e,
-	Ai_Channel7 = 0x0f,
+    //RSE mode
+    Ai_Channel0 = 0x08,
+    Ai_Channel1 = 0x09,
+    Ai_Channel2 = 0x0a,
+    Ai_Channel3 = 0x0b,
+    Ai_Channel4 = 0x0c,
+    Ai_Channel5 = 0x0d,
+    Ai_Channel6 = 0x0e,
+    Ai_Channel7 = 0x0f,
 
-	//DIFF mode
-	Ai_Channel0_4 = 0x00,
-	Ai_Channel1_5 = 0x01,
-	Ai_Channel2_6 = 0x02,
-	Ai_Channel3_7 = 0x03,
+    //DIFF mode
+    Ai_Channel0_4 = 0x00,
+    Ai_Channel1_5 = 0x01,
+    Ai_Channel2_6 = 0x02,
+    Ai_Channel3_7 = 0x03,
 } Ai_Channel;
 
 /**
@@ -83,10 +83,10 @@ typedef enum
  */
 typedef enum
 {
-	Ai_Range0 = 0x00,
-	Ai_Range1 = 0x10,
-	Ai_Range2 = 0x20,
-	Ai_Range3 = 0x30,
+    Ai_Range0 = 0x00,
+    Ai_Range1 = 0x10,
+    Ai_Range2 = 0x20,
+    Ai_Range3 = 0x30,
 } Ai_Range;
 
 /**
@@ -94,10 +94,10 @@ typedef enum
  */
 typedef enum
 {
-	AO_A0_VAL = 99540,
-	AO_A1_VAL = 99536,
-	AO_B0_VAL = 99548,
-	AO_B1_VAL = 99544,
+    AO_A0_VAL = 99540,
+    AO_A1_VAL = 99536,
+    AO_B0_VAL = 99548,
+    AO_B1_VAL = 99544,
 } Ao_ValueRegister;
 
 /**
@@ -105,11 +105,11 @@ typedef enum
  */
 typedef struct
 {
-	uint32_t cnfg;                          /**< AI Configuration Register */
-	uint32_t cntr;                          /**< AI Divisor Register */
-	uint32_t cnt;                           /**< AI Counter Register */
-	uint32_t rdy;                           /**< AI Ready Register */
-	uint32_t val[RSE_NUM + DIFF_NUM];       /**< AIO Value Register */
+    uint32_t cnfg;                          /**< AI Configuration Register */
+    uint32_t cntr;                          /**< AI Divisor Register */
+    uint32_t cnt;                           /**< AI Counter Register */
+    uint32_t rdy;                           /**< AI Ready Register */
+    uint32_t val[RSE_NUM + DIFF_NUM];       /**< AIO Value Register */
 } ELVISIII_Ai;
 
 /**
@@ -117,19 +117,19 @@ typedef struct
  */
 typedef struct
 {
-	uint32_t go;        /**< AO Start Register */
-	uint32_t stat;      /**< AO Status Register */
+    uint32_t go;        /**< AO Start Register */
+    uint32_t stat;      /**< AO Status Register */
 } ELVISIII_Ao;
 
 
 /**
- * Convert unsigned int value of a fix point to double value.
+ * Convert unsigned int value of a fixed-point to double value.
  */
 double ConvertUnsignedIntToDouble(unsigned int value);
 
 
 /**
- * Convert double value to unsigned int value to represent a fix point.
+ * Convert double value to unsigned int value to represent a fixed-point.
  */
 unsigned int ConvertDoubleToUnsignedInt(double value);
 

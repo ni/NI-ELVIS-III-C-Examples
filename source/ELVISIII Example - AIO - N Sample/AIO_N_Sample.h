@@ -19,11 +19,13 @@
 //AI channel selection number (DIFF mode)
 #define DIFF_NUM 4
 
-//AI Fix point
+
+//AI Fixed-point
 #define AI_WordLength 24
 #define AI_IntegerWordLength 5
 
-//AO Fix point
+//AO Fixed-point
+
 #define AO_WordLength 20
 #define AO_IntegerWordLength 5
 
@@ -35,20 +37,22 @@
 extern "C" {
 #endif
 
-//AO FIFO Fix Point
+
+//AO FIFO Fixed-point
 typedef enum
 {
-	HostToTarget_FIFO_FixPoint_B = 4,
-	HostToTarget_FIFO_FixPoint_A = 5,
-} HostToTarget_FIFO_FixPoint;
+    HostToTarget_FIFO_FXP_B = 4,
+    HostToTarget_FIFO_FXP_A = 5,
+} HostToTarget_FIFO_FXP;
 
 
-//AI FIFO Fix Point
+//AI FIFO Fixed-point
 typedef enum
 {
-	TargetToHost_FIFO_FixPoint_B = 6,
-	TargetToHost_FIFO_FixPoint_A = 7,
-} TargetToHost_FIFO_FixPoint;
+    TargetToHost_FIFO_FXP_B = 6,
+    TargetToHost_FIFO_FXP_A = 7,
+} TargetToHost_FIFO_FXP;
+
 
 
 /**
@@ -71,21 +75,21 @@ typedef enum
  */
 typedef enum
 {
-	//RSE mode
-	Ai_Channel0 = 0x08,
-	Ai_Channel1 = 0x09,
-	Ai_Channel2 = 0x0a,
-	Ai_Channel3 = 0x0b,
-	Ai_Channel4 = 0x0c,
-	Ai_Channel5 = 0x0d,
-	Ai_Channel6 = 0x0e,
-	Ai_Channel7 = 0x0f,
+    //RSE mode
+    Ai_Channel0 = 0x08,
+    Ai_Channel1 = 0x09,
+    Ai_Channel2 = 0x0a,
+    Ai_Channel3 = 0x0b,
+    Ai_Channel4 = 0x0c,
+    Ai_Channel5 = 0x0d,
+    Ai_Channel6 = 0x0e,
+    Ai_Channel7 = 0x0f,
 
-	//DIFF mode
-	Ai_Channel0_4 = 0x00,
-	Ai_Channel1_5 = 0x01,
-	Ai_Channel2_6 = 0x02,
-	Ai_Channel3_7 = 0x03,
+    //DIFF mode
+    Ai_Channel0_4 = 0x00,
+    Ai_Channel1_5 = 0x01,
+    Ai_Channel2_6 = 0x02,
+    Ai_Channel3_7 = 0x03,
 } Ai_Channel;
 
 
@@ -94,25 +98,25 @@ typedef enum
  */
 typedef enum
 {
-	Ao_Channel0 = 0b01,
-	Ao_Channel1 = 0b10,
+    Ao_Channel0 = 0b01,
+    Ao_Channel1 = 0b10,
 }Ao_Channel;
 
 
 /**
  * Specify the voltage range of the AI channel.
  *
- * ±10 V: 00b
- * ±5 V: 01b
- * ±2 V: 10b
- * ±1 V: 11b
+ * Â±10 V: 00b
+ * Â±5 V: 01b
+ * Â±2 V: 10b
+ * Â±1 V: 11b
  */
 typedef enum
 {
-	Ai_Range0 = 0x00,
-	Ai_Range1 = 0x10,
-	Ai_Range2 = 0x20,
-	Ai_Range3 = 0x30,
+    Ai_Range0 = 0x00,
+    Ai_Range1 = 0x10,
+    Ai_Range2 = 0x20,
+    Ai_Range3 = 0x30,
 } Ai_Range;
 
 
@@ -124,15 +128,15 @@ typedef enum
  */
 typedef struct
 {
-	uint32_t cnfg;                          /**< AI Configuration Register */
+    uint32_t cnfg;                          /**< AI Configuration Register */
 
-	uint32_t ai_cntr;                       /**< AI Divisor Register */
-	uint32_t ao_cntr;                       /**< AO Divisor Register */
+    uint32_t ai_cntr;                       /**< AI Divisor Register */
+    uint32_t ao_cntr;                       /**< AO Divisor Register */
 
-	uint32_t cnt;                           /**< AI Counter Register */
+    uint32_t cnt;                           /**< AI Counter Register */
 
-	uint32_t ai_enable;                     /**< AI DMA Enable Register */
-	uint32_t ao_enable;                     /**< AO DMA Enable Register */
+    uint32_t ai_enable;                     /**< AI DMA Enable Register */
+    uint32_t ao_enable;                     /**< AO DMA Enable Register */
 } ELVISIII_Aio;
 
 
@@ -163,18 +167,20 @@ void Ai_Enable(ELVISIII_Aio* connector);
 /**
  * Read groups of AI values as an AI FIFO from a single channel.
  */
-void Ai_ReadFifo(ELVISIII_Aio*        		 	connector,
-		         TargetToHost_FIFO_FixPoint 	fifo,
-			 	 uint64_t*            			FixPoint_buffer_receive,
-			 	 size_t               			fifo_size,
-			 	 uint32_t              			timeout,
-			 	 size_t*              			elementsRemaining);
+
+void Ai_ReadFifo(ELVISIII_Aio*                connector,
+                 TargetToHost_FIFO_FXP         fifo,
+                  uint64_t*                    fxp_buffer_receive,
+                  size_t                       fifo_size,
+                  uint32_t                      timeout,
+                  size_t*                      elementsRemaining);
 
 
 /**
- * Convert Fix Point values of the FIFO to Double values.
+ * Convert fixed-point values of the FIFO to double values.
  */
-void ConvertUnsignedLongLongIntToDouble(uint64_t *FixPoint_buffer_receive, size_t fifo_size, double *value);
+void ConvertUnsignedLongLongIntToDouble(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value);
+
 
 
 /**
@@ -190,20 +196,24 @@ void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel);
 
 
 /**
- * Convert double values to fix point values of the FIFO.
+
+ * Convert double values to fixed-point values of the FIFO.
  */
-void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *FixPoint_buffer_send, size_t fifo_size);
+void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send, size_t fifo_size);
+
 
 
 /**
  * Write groups of AO values as an AO FIFO to a single channel.
  */
-void Ao_WriteFifo(ELVISIII_Aio*         		connector,
-		          HostToTarget_FIFO_FixPoint 	fifo,
-			 	  const uint64_t*       		FixPoint_buffer_send,
-			 	  size_t                		fifo_size,
-			 	  uint32_t              		timeout,
-			 	  size_t*               		elementsRemaining);
+
+void Ao_WriteFifo(ELVISIII_Aio*             connector,
+                  HostToTarget_FIFO_FXP     fifo,
+                   const uint64_t*           fxp_buffer_send,
+                   size_t                    fifo_size,
+                   uint32_t                  timeout,
+                   size_t*                   elementsRemaining);
+
 
 
 #if NiFpga_Cpp

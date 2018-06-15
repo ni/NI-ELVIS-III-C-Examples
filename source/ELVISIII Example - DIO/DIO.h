@@ -26,26 +26,26 @@ extern "C" {
  */
 typedef enum
 {
-	Dio_Channel0  = 0,
-	Dio_Channel1  = 1,
-	Dio_Channel2  = 2,
-	Dio_Channel3  = 3,
-	Dio_Channel4  = 4,
-	Dio_Channel5  = 5,
-	Dio_Channel6  = 6,
-	Dio_Channel7  = 7,
-	Dio_Channel8  = 8,
-	Dio_Channel9  = 9,
-	Dio_Channel10 = 10,
-	Dio_Channel11 = 11,
-	Dio_Channel12 = 12,
-	Dio_Channel13 = 13,
-	Dio_Channel14 = 14,
-	Dio_Channel15 = 15,
-	Dio_Channel16 = 16,
-	Dio_Channel17 = 17,
-	Dio_Channel18 = 18,
-	Dio_Channel19 = 19,
+    Dio_Channel0  = 0,
+    Dio_Channel1  = 1,
+    Dio_Channel2  = 2,
+    Dio_Channel3  = 3,
+    Dio_Channel4  = 4,
+    Dio_Channel5  = 5,
+    Dio_Channel6  = 6,
+    Dio_Channel7  = 7,
+    Dio_Channel8  = 8,
+    Dio_Channel9  = 9,
+    Dio_Channel10 = 10,
+    Dio_Channel11 = 11,
+    Dio_Channel12 = 12,
+    Dio_Channel13 = 13,
+    Dio_Channel14 = 14,
+    Dio_Channel15 = 15,
+    Dio_Channel16 = 16,
+    Dio_Channel17 = 17,
+    Dio_Channel18 = 18,
+    Dio_Channel19 = 19,
 } Dio_Channel;
 
 /**
@@ -55,9 +55,9 @@ typedef enum
  */
 typedef struct
 {
-	uint32_t dir;         /**< DIO Direction Register */
-	uint32_t in;          /**< DI Value Register */
-	uint32_t out;         /**< DO Value Register */
+    uint32_t dir;         /**< DIO Direction Register */
+    uint32_t in;          /**< DI Value Register */
+    uint32_t out;         /**< DO Value Register */
 } ELVISIII_Dio;
 
 /**
