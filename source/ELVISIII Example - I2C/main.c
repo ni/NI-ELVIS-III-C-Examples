@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments Corporation.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates using the I2C. Read the temperature from a connected TMP102
  * digital temperature sensor and writes the response to the console.

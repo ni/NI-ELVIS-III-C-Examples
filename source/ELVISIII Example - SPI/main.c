@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments Corporation.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates using the SPI. Writes a message to the SPI bus, prints any
  * returned bytes to the console.

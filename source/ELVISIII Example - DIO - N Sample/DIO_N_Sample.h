@@ -74,13 +74,13 @@ typedef enum
  */
 typedef struct
 {
-    uint32_t di_enable;   //*< DI DMA Enable Register 
-    uint32_t do_enable;   //*< DO DMA Enable Register 
+    uint32_t di_enable;   // DI DMA Enable Register 
+    uint32_t do_enable;   // DO DMA Enable Register 
 
-    uint32_t di_cntr;     //*< DI Divisor Register 
-    uint32_t do_cntr;     //*< DO Divisor Register 
+    uint32_t di_cntr;     // DI Divisor Register 
+    uint32_t do_cntr;     // DO Divisor Register 
 
-    uint32_t dir;         //*< DIO Direction Register 
+    uint32_t dir;         // DIO Direction Register 
 } ELVISIII_Dio;
 
 // Set the DIO Direction Register.

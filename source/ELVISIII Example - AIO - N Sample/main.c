@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments Corporation.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates using the analog input and output of N Sample (AIO - N Sample).
  * Read a group of values from one analog input channel on connector A.

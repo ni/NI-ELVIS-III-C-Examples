@@ -101,18 +101,18 @@ typedef enum
 // Registers for a particular analog input.
 typedef struct
 {
-    uint32_t cnfg;                          //*< AI Configuration Register 
-    uint32_t cntr;                          //*< AI Divisor Register 
-    uint32_t cnt;                           //*< AI Counter Register 
-    uint32_t rdy;                           //*< AI Ready Register 
-    uint32_t val[RSE_NUM + DIFF_NUM];       //*< AIO Value Register 
+    uint32_t cnfg;                          // AI Configuration Register 
+    uint32_t cntr;                          // AI Divisor Register 
+    uint32_t cnt;                           // AI Counter Register 
+    uint32_t rdy;                           // AI Ready Register 
+    uint32_t val[RSE_NUM + DIFF_NUM];       // AIO Value Register 
 } ELVISIII_Ai;
 
 // Registers for a particular analog output.
 typedef struct
 {
-    uint32_t go;        //*< AO Start Register 
-    uint32_t stat;      //*< AO Status Register 
+    uint32_t go;        // AO Start Register 
+    uint32_t stat;      // AO Status Register 
 } ELVISIII_Ao;
 
 // Convert unsigned int value of a fixed-point to double value.

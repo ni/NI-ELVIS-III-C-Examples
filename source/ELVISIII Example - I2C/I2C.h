@@ -45,15 +45,15 @@ typedef enum
 // Registers for a particular I2C.
 typedef struct
 {
-    uint32_t addr;     //*< I2C slave address register
-    uint32_t cnfg;     //*< I2C configuration register
-    uint32_t cntl;     //*< I2C control register
-    uint32_t cntr;     //*< I2C counter register
-    uint32_t stat;     //*< I2C status register
-    uint32_t dato;     //*< I2C data out register
-    uint32_t dati;        //*< I2C data in register
-    uint32_t go;          //*< I2C execution register
-    uint32_t sel;      //*< System Select Register 
+    uint32_t addr;     // I2C slave address register
+    uint32_t cnfg;     // I2C configuration register
+    uint32_t cntl;     // I2C control register
+    uint32_t cntr;     // I2C counter register
+    uint32_t stat;     // I2C status register
+    uint32_t dato;     // I2C data out register
+    uint32_t dati;        // I2C data in register
+    uint32_t go;          // I2C execution register
+    uint32_t sel;      // System Select Register 
 } ELVISIII_I2c;
 
 // Configure the I2C block.

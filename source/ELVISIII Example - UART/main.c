@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments Corporation.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates using the UART. Writes a character to the UART bus, prints any
  * returned character to the console.

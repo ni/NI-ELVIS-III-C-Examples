@@ -18,22 +18,22 @@ extern "C" {
 // Flags that indicate whether the Button IRQ is triggered by the rising edge, falling edge, or both edges.
 typedef enum
 {
-    Irq_Button_RisingEdge,       //*< IRQ is triggered by the rising edge 
-    Irq_Button_FallingEdge,      //*< IRQ is triggered by the falling edge 
-    Irq_Button_Edge,             //*< IRQ is triggered by both the rising and falling edge 
+    Irq_Button_RisingEdge,       // IRQ is triggered by the rising edge 
+    Irq_Button_FallingEdge,      // IRQ is triggered by the falling edge 
+    Irq_Button_Edge,             // IRQ is triggered by both the rising and falling edge 
 } Irq_Button_Type;
 
 // Registers and settings for a particular button IRQ I/O.
 // Explanation of each Registers is written below.
 typedef struct
 {
-    uint32_t btnCount;                //*< Button IRQ count register 
-    uint32_t btnIrqNumber;            //*< Button IRQ number register 
-    uint32_t btnIrqEnable;            //*< Button IRQ enable register 
-    uint32_t btnIrqRisingEdge;        //*< Button IRQ rising edge-triggered register 
-    uint32_t btnIrqFallingEdge;       //*< Button IRQ falling edge-triggered register 
+    uint32_t btnCount;                // Button IRQ count register 
+    uint32_t btnIrqNumber;            // Button IRQ number register 
+    uint32_t btnIrqEnable;            // Button IRQ enable register 
+    uint32_t btnIrqRisingEdge;        // Button IRQ rising edge-triggered register 
+    uint32_t btnIrqFallingEdge;       // Button IRQ falling edge-triggered register 
 
-    Irq_Channel btnChannel;           //*< Button IRQ supported I/O 
+    Irq_Channel btnChannel;           // Button IRQ supported I/O 
 } ELVISIII_IrqButton;
 
 // Configure the Button IRQ.

@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments Corporation.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates using the analog input and output (AIO).
  * Writes an initial value on connector A.Reads the write value from connector A.

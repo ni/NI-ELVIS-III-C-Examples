@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments Corporation.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates using the digital input and output in N Sample (DIO - N Sample).
  * Read a groups of values from a DI FIFO (connector A, channel 0).

@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates how to use the timer IRQ. Once the timer IRQ occurs (5 s), print
  * the IRQ number, triggered times and main loop count number in the console.

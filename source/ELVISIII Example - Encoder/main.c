@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments Corporation.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates using the encoder. Reads a step and direction signal from the
  * encoder on connector A. Prints the values to the console.

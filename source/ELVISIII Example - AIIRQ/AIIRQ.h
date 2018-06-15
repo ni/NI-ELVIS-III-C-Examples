@@ -65,36 +65,36 @@ typedef enum
 // Flags that indicate whether the AI IRQ pin is triggered by the rising or falling edge.
 typedef enum
 {
-    Irq_Ai_RisingEdge,            //*< IRQ is triggered by the rising edge 
-    Irq_Ai_FallingEdge            //*< IRQ is triggered by the falling edge 
+    Irq_Ai_RisingEdge,            // IRQ is triggered by the rising edge
+    Irq_Ai_FallingEdge            // IRQ is triggered by the falling edge
 } Irq_Ai_Type;
 
 // Flags that indicate and configure AI IRQ.
 typedef enum
 {
-    Irq_Ai_A0_Enable = 0x01,       //*< The AI0 IRQ enable option 
-    Irq_Ai_A1_Enable = 0x04,       //*< The AI1 IRQ enable option 
+    Irq_Ai_A0_Enable = 0x01,       // The AI0 IRQ enable option
+    Irq_Ai_A1_Enable = 0x04,       // The AI1 IRQ enable option
 
-    Irq_Ai_A0_Type = 0x02,         //*< The AI0 IRQ triggered type option 
-    Irq_Ai_A1_Type = 0x08          //*< The AI1 IRQ triggered type option 
+    Irq_Ai_A0_Type = 0x02,         // The AI0 IRQ triggered type option
+    Irq_Ai_A1_Type = 0x08          // The AI1 IRQ triggered type option
 } Irq_Ai_Configure;
 
 // Registers and settings for a particular AI IRQ.
 // Explanation of each registers is written below.
 typedef struct
 {
-    uint32_t cnfg;                           //*< AI Configuration Register 
-    uint32_t cntr;                           //*< AI Divisor Register 
-    uint32_t cnt;                            //*< AI Counter Register 
-    uint32_t rdy;                            //*< AI Ready Register 
-    uint32_t val[AIIRQ_NUM];                 //*< AIO Value Register 
+    uint32_t cnfg;                           // AI Configuration Register
+    uint32_t cntr;                           // AI Divisor Register
+    uint32_t cnt;                            // AI Counter Register
+    uint32_t rdy;                            // AI Ready Register
+    uint32_t val[AIIRQ_NUM];                 // AIO Value Register
 
-    uint32_t aiIrqNumber[AIIRQ_NUM];         //*< AI IRQ Number Register 
-    uint32_t aiHysteresis[AIIRQ_NUM];        //*< AI IRQ Hysteresis Register 
-    uint32_t aiThreshold[AIIRQ_NUM];         //*< AI IRQ Threshold Register 
-    uint32_t aiIrqConfigure;                 //*< AI IRQ Enable and Trigger Type Configuration Register 
+    uint32_t aiIrqNumber[AIIRQ_NUM];         // AI IRQ Number Register
+    uint32_t aiHysteresis[AIIRQ_NUM];        // AI IRQ Hysteresis Register
+    uint32_t aiThreshold[AIIRQ_NUM];         // AI IRQ Threshold Register
+    uint32_t aiIrqConfigure;                 // AI IRQ Enable and Trigger Type Configuration Register
 
-    Irq_Channel aiChannel;                   //*< AI IRQ supported I/O 
+    Irq_Channel aiChannel;                   // AI IRQ supported I/O
 } ELVISIII_IrqAi;
 
 // Convert double value to unsigned int value to represent a fixed-point.

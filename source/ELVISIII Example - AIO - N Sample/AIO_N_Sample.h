@@ -114,15 +114,15 @@ typedef enum
 // not possible to read from an analog output and write to an analog input.
 typedef struct
 {
-    uint32_t cnfg;                          //*< AI Configuration Register 
+    uint32_t cnfg;                          // AI Configuration Register 
 
-    uint32_t ai_cntr;                       //*< AI Divisor Register 
-    uint32_t ao_cntr;                       //*< AO Divisor Register 
+    uint32_t ai_cntr;                       // AI Divisor Register 
+    uint32_t ao_cntr;                       // AO Divisor Register 
 
-    uint32_t cnt;                           //*< AI Counter Register 
+    uint32_t cnt;                           // AI Counter Register 
 
-    uint32_t ai_enable;                     //*< AI DMA Enable Register 
-    uint32_t ao_enable;                     //*< AO DMA Enable Register 
+    uint32_t ai_enable;                     // AI DMA Enable Register 
+    uint32_t ao_enable;                     // AO DMA Enable Register 
 } ELVISIII_Aio;
 
 // Set the number of valid analog input channels.

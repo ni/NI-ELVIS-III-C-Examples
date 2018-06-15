@@ -38,18 +38,18 @@ typedef enum
 // Port information for a particular UART.
 typedef struct
 {
-    const char* name;         //*< Resource name on UART port
-    ViSession   defaultRM;    //*< Default resource manager session
-    ViSession   session;      //*< ViSession reference
+    const char* name;         // Resource name on UART port
+    ViSession   defaultRM;    // Default resource manager session
+    ViSession   session;      // ViSession reference
 } ELVISIII_Uart;
 
 // Registers and settings for a particular UART.
 // Explanation of each Registers is written below.
 typedef struct
 {
-    uint32_t enable;         //*< UART Enable Register 
-    uint32_t stat;           //*< UART Status Register 
-    uint32_t console;        //*< UART Console Enable Register 
+    uint32_t enable;         // UART Enable Register 
+    uint32_t stat;           // UART Status Register 
+    uint32_t console;        // UART Console Enable Register 
 } ELVISIII_Connector;
 
 #ifdef __cplusplus

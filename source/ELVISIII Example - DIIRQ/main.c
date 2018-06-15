@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates how to use the DI IRQ. Once the DI IRQ occurs, print
  * the IRQ number, trigger times and main loop count number in the console.

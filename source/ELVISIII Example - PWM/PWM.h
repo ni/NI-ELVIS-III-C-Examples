@@ -53,42 +53,42 @@ typedef enum
 // Flags that indicate which of the PWM configure functions are set.
 typedef enum
 {
-    Pwm_Invert = 0x01,  //*< The waveform inversion option is set 
-    Pwm_Mode = 0x04     //*< The waveform mode option is set 
+    Pwm_Invert = 0x01,  // The waveform inversion option is set 
+    Pwm_Mode = 0x04     // The waveform mode option is set 
 } Pwm_ConfigureMask;
 
 // PWM configure register (waveform generation) options.
 typedef enum
 {
-    Pwm_NotInverted = 0x00,     //*< PWM signal is not inverted 
-    Pwm_Inverted = 0x01,        //*< PWM signal is inverted 
-    Pwm_Disabled = 0x00,        //*< No PWM generation 
-    Pwm_Enabled = 0x04,         //*< Asymmetric PWM generation 
+    Pwm_NotInverted = 0x00,     // PWM signal is not inverted 
+    Pwm_Inverted = 0x01,        // PWM signal is inverted 
+    Pwm_Disabled = 0x00,        // No PWM generation 
+    Pwm_Enabled = 0x04,         // Asymmetric PWM generation 
 } Pwm_ConfigureSettings;
 
 // Clock divider options.
 typedef enum
 {
-    Pwm_Off = 0x00,     //*< No clock 
-    Pwm_1x = 0x01,      //*< 1x (f_clk) 
-    Pwm_2x = 0x02,      //*< 2x (f_clk / 2) 
-    Pwm_4x = 0x03,      //*< 4x (f_clk / 4) 
-    Pwm_8x = 0x04,      //*< 8x (f_clk / 8) 
-    Pwm_16x = 0x05,     //*< 16x (f_clk / 16) 
-    Pwm_32x = 0x06,     //*< 32x (f_clk / 32) 
-    Pwm_64x = 0x07      //*< 64x (f_clk / 64) 
+    Pwm_Off = 0x00,     // No clock 
+    Pwm_1x = 0x01,      // 1x (f_clk) 
+    Pwm_2x = 0x02,      // 2x (f_clk / 2) 
+    Pwm_4x = 0x03,      // 4x (f_clk / 4) 
+    Pwm_8x = 0x04,      // 8x (f_clk / 8) 
+    Pwm_16x = 0x05,     // 16x (f_clk / 16) 
+    Pwm_32x = 0x06,     // 32x (f_clk / 32) 
+    Pwm_64x = 0x07      // 64x (f_clk / 64) 
 } Pwm_ClockDivider;
 
 // Registers and settings for a particular PWM.
 // Explanation of each Registers is written below.
 typedef struct
 {
-    uint32_t cnfg[PWM_NUM];     //*< Counter Configuration Register 
-    uint32_t cs[PWM_NUM];       //*< Selects Speed of the Clock Register 
-    uint32_t max[PWM_NUM];      //*< Maximum Value of the Counter Register 
-    uint32_t cmp[PWM_NUM];      //*< Output Compare Value Register 
-    uint32_t cntr[PWM_NUM];     //*< Current Value of the Counter Register 
-    uint32_t sel;               //*< System Select Register 
+    uint32_t cnfg[PWM_NUM];     // Counter Configuration Register 
+    uint32_t cs[PWM_NUM];       // Selects Speed of the Clock Register 
+    uint32_t max[PWM_NUM];      // Maximum Value of the Counter Register 
+    uint32_t cmp[PWM_NUM];      // Output Compare Value Register 
+    uint32_t cntr[PWM_NUM];     // Current Value of the Counter Register 
+    uint32_t sel;               // System Select Register 
 } ELVISIII_Pwm;
 
 // Sets the PWM waveform and and invert configuration options.
