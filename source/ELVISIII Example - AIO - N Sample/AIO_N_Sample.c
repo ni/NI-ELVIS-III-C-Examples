@@ -306,7 +306,6 @@ void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate
     }
 
     // Generate the divisor, cast this value directly to a unsigned 32-bit value.
-
     uint32_t divisor = (uint32_t)(ClockRate / SampleRate);
 
     // Write the divisor value to the AO Divisor Register.
