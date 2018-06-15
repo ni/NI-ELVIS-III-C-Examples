@@ -96,10 +96,10 @@ typedef enum
 /**
  * Specify the voltage range of the AI channel.
  *
- * ±10 V: 00b
- * ±5 V: 01b
- * ±2 V: 10b
- * ±1 V: 11b
+ * Â±10 V: 00b
+ * Â±5 V: 01b
+ * Â±2 V: 10b
+ * Â±1 V: 11b
  */
 typedef enum
 {
