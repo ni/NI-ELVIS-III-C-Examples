@@ -17,7 +17,6 @@
 #define MAX_SAMPLE_RATE 8000000
 #define MIN_SAMPLE_RATE 1000
 
-
 #if NiFpga_Cpp
 extern "C" {
 #endif
@@ -25,135 +24,104 @@ extern "C" {
 //DO FIFO
 typedef enum
 {
-	HostToTarget_FIFO_FXP_B = 0,
-	HostToTarget_FIFO_FXP_A = 1,
+    HostToTarget_FIFO_FXP_B = 0,
+    HostToTarget_FIFO_FXP_A = 1,
 } HostToTarget_FIFO_FXP;
-
 
 //DI FIFO
 typedef enum
 {
-	TargetToHost_FIFO_FXP_B = 2,
-	TargetToHost_FIFO_FXP_A = 3,
+    TargetToHost_FIFO_FXP_B = 2,
+    TargetToHost_FIFO_FXP_A = 3,
 } TargetToHost_FIFO_FXP;
 
-
 /**
- * Specify which DIO channel.
+ * Specify the numbers of DIO channels.
  *
- * Di_Channel0: 0
- * Di_Channel1: 1
+ * Dio_Channel0: 0
+ * Dio_Channel1: 1
  * ...
- * Di_Channel20: 19
+ * Dio_Channel20: 19
  */
 typedef enum
 {
-	Di_Channel0  = 0,
-	Di_Channel1  = 1,
-	Di_Channel2  = 2,
-	Di_Channel3  = 3,
-	Di_Channel4  = 4,
-	Di_Channel5  = 5,
-	Di_Channel6  = 6,
-	Di_Channel7  = 7,
-	Di_Channel8  = 8,
-	Di_Channel9  = 9,
-	Di_Channel10 = 10,
-	Di_Channel11 = 11,
-	Di_Channel12 = 12,
-	Di_Channel13 = 13,
-	Di_Channel14 = 14,
-	Di_Channel15 = 15,
-	Di_Channel16 = 16,
-	Di_Channel17 = 17,
-	Di_Channel18 = 18,
-	Di_Channel19 = 19,
-} Di_Channel;
-
+    Dio_Channel0  = 0,
+    Dio_Channel1  = 1,
+    Dio_Channel2  = 2,
+    Dio_Channel3  = 3,
+    Dio_Channel4  = 4,
+    Dio_Channel5  = 5,
+    Dio_Channel6  = 6,
+    Dio_Channel7  = 7,
+    Dio_Channel8  = 8,
+    Dio_Channel9  = 9,
+    Dio_Channel10 = 10,
+    Dio_Channel11 = 11,
+    Dio_Channel12 = 12,
+    Dio_Channel13 = 13,
+    Dio_Channel14 = 14,
+    Dio_Channel15 = 15,
+    Dio_Channel16 = 16,
+    Dio_Channel17 = 17,
+    Dio_Channel18 = 18,
+    Dio_Channel19 = 19,
+} Dio_Channel;
 
 /**
- * Registers and settings for a particular DIO.
+ * Registers and settings for a particular DIO N Sample.
  * DI and DO share the same structure.
  * Explanation of each Registers is written below.
  */
 typedef struct
 {
-	uint32_t di_enable;   /**< DI DMA Enable Register */
-	uint32_t do_enable;   /**< DO DMA Enable Register */
+    uint32_t di_enable;   // DI DMA Enable Register 
+    uint32_t do_enable;   // DO DMA Enable Register 
 
-	uint32_t di_cntr;     /**< DI Divisor Register */
-	uint32_t do_cntr;     /**< DO Divisor Register */
+    uint32_t di_cntr;     // DI Divisor Register 
+    uint32_t do_cntr;     // DO Divisor Register 
 
-	uint32_t dir;         /**< DIO Direction Register */
+    uint32_t dir;         // DIO Direction Register 
 } ELVISIII_Dio;
 
+// Set the DIO Direction Register.
+void Di_Direction(ELVISIII_Dio* bank, Dio_Channel channel);
 
-/**
- * Set the DIO Direction Register.
- */
-void Di_Direction(ELVISIII_Dio* connector, Di_Channel channel);
+// Generate the divisor for the DI sample rate.
+void Di_Divisor(ELVISIII_Dio* bank, uint32_t ClockRate, uint32_t SampleRate);
 
+// Set the DI DMA Enable Flag for one bank.
+void Di_Enable(ELVISIII_Dio* bank);
 
-/**
- * Set the DI Divisor Register.
- */
-void Di_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate);
+// Read groups of DI values as a DI FIFO from a single channel.
+void Di_ReadFifo(ELVISIII_Dio*         bank,
+                 TargetToHost_FIFO_FXP fifo,
+                  uint64_t*             fxp_buffer_receive,
+                  size_t                fifo_size,
+                  uint32_t              timeout,
+                  size_t*               elementsRemaining);
 
+// Convert fixed-point values of the FIFO to boolean values.
+void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fxp_buffer_receive, size_t fifo_size, NiFpga_Bool value[]);
 
-/**
- * Configure the DI DMA Enable Register.
- */
-void Di_Enable(ELVISIII_Dio* connector);
+// Set the Direction of the DIO channel as an input.
+void Do_Direction(ELVISIII_Dio* bank, Dio_Channel channel);
 
+// Generate the divisor for the DO sample rate.
+void Do_Divisor(ELVISIII_Dio* bank, uint32_t ClockRate, uint32_t SampleRate);
 
-/**
- * Read FXP from a DI FIFO.
- */
-void Di_ReadFifo(ELVISIII_Dio*         connector,
-		         TargetToHost_FIFO_FXP fifo,
-			 	 uint64_t*             fxp_buffer_recv,
-			 	 size_t                fifo_size,
-			 	 uint32_t              timeout,
-			 	 size_t*               elementsRemaining);
+// Set the DMA Enable value for a DO channel.
+void Do_Enable(ELVISIII_Dio* bank, Dio_Channel channel);
 
-
-/**
- * Get groups of values from one channel.
- */
-void Di_GetVal(Di_Channel channel, uint64_t* fxp_buffer_recv, size_t fifo_size, NiFpga_Bool val[]);
-
-
-/**
- * Set the DIO Direction Register.
- */
-void Do_Direction(ELVISIII_Dio* connector, Di_Channel channel);
-
-
-/**
- * Set the DI Divisor Register.
- */
-void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate);
-
-
-/**
- * Configure the DO DMA Enable Register.
- */
-void Do_Enable(ELVISIII_Dio* connector, Di_Channel channel);
-
-
-/**
- * Write FXP to a DO FIFO.
- */
-void Do_WriteFifo(ELVISIII_Dio* 		connector,
-		          HostToTarget_FIFO_FXP fifo,
-			 	  const uint64_t*       fxp_buffer_recv,
-			 	  size_t                fifo_size,
-			 	  uint32_t              timeout,
-			 	  size_t*               elementsRemaining);
-
+// Write groups of DO values as a DO FIFO to a single channel.
+void Do_WriteFifo(ELVISIII_Dio*         bank,
+                  HostToTarget_FIFO_FXP fifo,
+                   const uint64_t*       fxp_buffer_send,
+                   size_t                fifo_size,
+                   uint32_t              timeout,
+                   size_t*               elementsRemaining);
 
 #if NiFpga_Cpp
 }
 #endif
 
-#endif /* DIO_h_ */
+#endif // DIO_h_
