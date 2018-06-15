@@ -37,16 +37,14 @@ extern "C" {
 /**
  * Specify which AI channel to configure.
  *
- * RSE (the fourth bit is 1):
  * Ai_Channel 0 : 1 000b
  * Ai_Channel 1 : 1 001b
  */
 typedef enum
 {
-	Ai_Channel0 = 0x08,
-	Ai_Channel1 = 0x09,
+    Ai_Channel0 = 0x08,
+    Ai_Channel1 = 0x09,
 } Ai_Channel;
-
 
 /**
  * Specify the voltage range of the AI channel.
@@ -58,84 +56,60 @@ typedef enum
  */
 typedef enum
 {
-	Ai_Range0 = 0x00,
-	Ai_Range1 = 0x10,
-	Ai_Range2 = 0x20,
-	Ai_Range3 = 0x30,
+    Ai_Range0 = 0x00,
+    Ai_Range1 = 0x10,
+    Ai_Range2 = 0x20,
+    Ai_Range3 = 0x30,
 } Ai_Range;
 
-
-/**
- * Flags that indicate whether the AI IRQ pin is triggered by the rising or falling edge.
- */
+// Flags that indicate whether the AI IRQ pin is triggered by the rising or falling edge.
 typedef enum
 {
-    Irq_Ai_RisingEdge,            /**< IRQ is triggered by the rising edge */
-    Irq_Ai_FallingEdge            /**< IRQ is triggered by the falling edge */
+    Irq_Ai_RisingEdge,            //*< IRQ is triggered by the rising edge 
+    Irq_Ai_FallingEdge            //*< IRQ is triggered by the falling edge 
 } Irq_Ai_Type;
 
-
-/**
- * Flags that indicate and configure AI IRQ.
- */
+// Flags that indicate and configure AI IRQ.
 typedef enum
 {
-    Irq_Ai_A0_Enable = 0x01,       /**< The AI0 IRQ enable option */
-    Irq_Ai_A1_Enable = 0x04,       /**< The AI1 IRQ enable option */
+    Irq_Ai_A0_Enable = 0x01,       //*< The AI0 IRQ enable option 
+    Irq_Ai_A1_Enable = 0x04,       //*< The AI1 IRQ enable option 
 
-    Irq_Ai_A0_Type = 0x02,         /**< The AI0 IRQ triggered type option */
-    Irq_Ai_A1_Type = 0x08          /**< The AI1 IRQ triggered type option */
+    Irq_Ai_A0_Type = 0x02,         //*< The AI0 IRQ triggered type option 
+    Irq_Ai_A1_Type = 0x08          //*< The AI1 IRQ triggered type option 
 } Irq_Ai_Configure;
 
-
-/**
- * Registers and settings for a particular AI IRQ.
- * Explanation of each registers is written below.
- */
+// Registers and settings for a particular AI IRQ.
+// Explanation of each registers is written below.
 typedef struct
 {
-	uint32_t cnfg;                           /**< AI Configuration Register */
-	uint32_t cntr;                           /**< AI Divisor Register */
-	uint32_t cnt;                            /**< AI Counter Register */
-	uint32_t rdy;                            /**< AI Ready Register */
-	uint32_t val[AIIRQ_NUM];        		 /**< AIO Value Register */
-	
-    uint32_t aiIrqNumber[AIIRQ_NUM];         /**< AI IRQ Number Register */
-    uint32_t aiHysteresis[AIIRQ_NUM];        /**< AI IRQ Hysteresis Register */
-    uint32_t aiThreshold[AIIRQ_NUM];         /**< AI IRQ Threshold Register */
-    uint32_t aiIrqConfigure;                 /**< AI IRQ Enable and Trigger Type Configuration Register */
+    uint32_t cnfg;                           //*< AI Configuration Register 
+    uint32_t cntr;                           //*< AI Divisor Register 
+    uint32_t cnt;                            //*< AI Counter Register 
+    uint32_t rdy;                            //*< AI Ready Register 
+    uint32_t val[AIIRQ_NUM];                 //*< AIO Value Register 
 
-    Irq_Channel aiChannel;                   /**< AI IRQ supported I/O */
+    uint32_t aiIrqNumber[AIIRQ_NUM];         //*< AI IRQ Number Register 
+    uint32_t aiHysteresis[AIIRQ_NUM];        //*< AI IRQ Hysteresis Register 
+    uint32_t aiThreshold[AIIRQ_NUM];         //*< AI IRQ Threshold Register 
+    uint32_t aiIrqConfigure;                 //*< AI IRQ Enable and Trigger Type Configuration Register 
+
+    Irq_Channel aiChannel;                   //*< AI IRQ supported I/O 
 } ELVISIII_IrqAi;
 
+// Convert double value to unsigned int value to represent a fixed-point.
+unsigned int ConvertDoubleToUnsignedInt(double value);
 
-/**
- * double ----> Fix Point (signed)
- */
-unsigned int sDouble2Fxp(double value);
-
-
-/**
- * Set the AI Counter Register.
- */
+// Set the number of valid AI channels.
 void Ai_Counter(ELVISIII_IrqAi* connector, uint8_t counter);
 
-
-/**
- * Set the AI Configuration Register.
- */
+// Set the AI configuration options.
 void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range);
 
-
-/**
- * Set the AI Divisor Register.
- */
+// Generate the divisor for sample rate.
 void Ai_Divisor(ELVISIII_IrqAi* connector, uint32_t ClockRate, uint32_t SampleRate);
 
-
-/**
- * Configure the AI IRQ number, threshold and hysteresis and trigger type.
- */
+// Configure the AI IRQ number, threshold and hysteresis and trigger type.
 int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
                           NiFpga_IrqContext* irqContext,
                           uint8_t            irqNumber,
@@ -143,10 +117,7 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
                           double             hysteresis,
                           Irq_Ai_Type        type);
 
-
-/**
- * Disable the IRQ configuration on the specified IRQ channel and number.
- */
+// Disable the IRQ configuration on the specified IRQ channel and number.
 int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*    connector,
                              NiFpga_IrqContext irqContext,
                              uint8_t           irqNumber);
@@ -155,4 +126,4 @@ int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*    connector,
 }
 #endif
 
-#endif /* AIIRQ_h_ */
+#endif // AIIRQ_h_ 
