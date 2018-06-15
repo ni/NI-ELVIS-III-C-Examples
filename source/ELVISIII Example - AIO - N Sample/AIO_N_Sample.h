@@ -137,18 +137,20 @@ void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate
 // Set the DMA Enable Flag for one connector.
 void Ai_Enable(ELVISIII_Aio* connector);
 
+
 // Read groups of AI values as an AI FIFO from a single channel.
-void Ai_ReadFifo(ELVISIII_Aio*                connector,
+void Ai_ReadFifo(ELVISIII_Aio*                 connector,
                  TargetToHost_FIFO_FXP         fifo,
                   uint64_t*                    fxp_buffer_receive,
                   size_t                       fifo_size,
-                  uint32_t                      timeout,
+                  uint32_t                     timeout,
                   size_t*                      elementsRemaining);
 
 // Convert fixed-point values of the FIFO to double values.
 void ConvertUnsignedLongLongIntToDouble(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value);
 
 // Generate the divisor for the AO sample rate.
+
 void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate);
 
 // Set the DMA Enable value for an analog output channel.

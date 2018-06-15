@@ -38,7 +38,7 @@ ELVISIII_Ao Ao = {AOSYSGO, AOSYSSTAT};
 /**
  * Convert unsigned int value to double value.
  *
- * @param[in]  value    Unsigned int value of a fixed-point.
+ * @param[in]  value	Unsigned int value of a fixed-point.
  *
  * @return a double value.
  */
@@ -86,7 +86,7 @@ unsigned int ConvertDoubleToUnsignedInt(double value)
  * Set the number of valid channels on the connector.
  *
  * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  counter        The number of valid channels on the connector.
+ * @param[in]  counter      The number of valid channels on the connector.
  */
 void Ai_Counter(ELVISIII_Ai* connector, uint8_t counter)
 {
@@ -126,8 +126,8 @@ void Ai_Counter(ELVISIII_Ai* connector, uint8_t counter)
  * Configure the range of the analog input channel.
  *
  * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
- * @param[in]  range        Enum containing 4 kinds of ranges (±10 V, ±5 V, ±2 V, ±1 V).
+ * @param[in]  channel      Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
+ * @param[in]  range        Enum containing 4 kinds of ranges (Â±10 V, Â±5 V, Â±2 V, Â±1 V).
  */
 void Ai_Configure(ELVISIII_Ai* connector, Ai_Channel channel, Ai_Range range)
 {
@@ -223,7 +223,7 @@ void Ai_Configure(ELVISIII_Ai* connector, Ai_Channel channel, Ai_Range range)
  *
  * @param[in]  connector        A struct containing the registers for one connecter.
  * @param[in]  ClockRate        The onboard clock rate of FPGA.
- * @param[in]  SampleRate        The analog sample rate.
+ * @param[in]  SampleRate       The analog sample rate.
  */
 void Ai_Divisor(ELVISIII_Ai* connector, uint32_t ClockRate, uint32_t SampleRate)
 {
@@ -278,7 +278,7 @@ void Ai_Divisor(ELVISIII_Ai* connector, uint32_t ClockRate, uint32_t SampleRate)
  * Read value from one analog input channel.
  *
  * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
+ * @param[in]  channel      Enum containing 12 kinds of channels (8 RSE + 4 DIFF).
  *
  * @return the voltage value in volts.
  */
@@ -311,8 +311,8 @@ double Aio_Read(ELVISIII_Ai* connector, Ai_Channel channel)
 /**
  * Write the value to AO Value Register.
  *
- * @param[in]  Ao        A struct containing the registers for analog output.
- * @param[in]  value    The voltage value to be written
+ * @param[in]  Ao               A struct containing the registers for analog output.
+ * @param[in]  value            The voltage value to be written
  * @param[in]  ValueRegister    Enum containing addresses for value registers.
  *
  */

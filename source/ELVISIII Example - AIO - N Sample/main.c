@@ -15,9 +15,9 @@
  *    Use the oscilloprobe to probe AO0 on connector B. Use AGND as ground.
  * 3. Open "Measurements Live" (measurementslive.ni.com) and connect to the NI ELVIS III device.
  * 4. In Instruments tab, open Function and Arbitrary Waveform Generator.
- *       Set a square wave in 500Hz, 4Vpp and 0V DC offset.
+ * 	  Set a square wave in 500Hz, 4Vpp and 0V DC offset.
  * 5. In Instruments tab, open Oscilloscope.
- *       Set Normal mode, analog edge type and 1V level.
+ * 	  Set Normal mode, analog edge type and 1V level.
  * 6. Run this program.
  *
  * Output:
