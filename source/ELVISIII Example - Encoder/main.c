@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments Corporation.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates using the encoder. Reads a step and direction signal from the
  * encoder on connector A. Prints the values to the console.
@@ -28,16 +27,14 @@
 #include "NiELVISIIIv10.h"
 
 #if !defined(LoopDuration)
-#define LoopDuration    60  /* How long to output the signal, in seconds */
+#define LoopDuration    60  // How long to output the signal, in seconds 
 #endif
 
 #if !defined(LoopStep)
-#define LoopStep        5   /* How long to monitor the signal, in seconds */
+#define LoopStep        5   // How long to monitor the signal, in seconds 
 #endif
 
 extern ELVISIII_Encoder connector_A;
-
-
 
 int main(int argc, char **argv)
 {
@@ -52,34 +49,26 @@ int main(int argc, char **argv)
 
     printf("Encoder:\n");
 
-    /*
-     * Open the ELVIS III NiFpga Session.
-     * This function MUST be called before all other functions. After this call
-     * is complete the ELVIS III target will be ready to be used.
-     */
+    // Open the ELVIS III NiFpga Session.
+    // This function MUST be called before all other functions. After this call
+    // is complete the ELVIS III target will be ready to be used.
     status = NiELVISIIIv10_Open();
     if (NiELVISIIIv10_IsNotSuccess(status))
     {
         return status;
     }
 
-    /**
-     * Write the value to the Encoder Channel 0 on connector A.
-     */
+    // Write the value to the Encoder Channel 0 on connector A.
     Encoder_Select(&connector_A, Encoder_Channel0);
 
-    /*
-     * Enable the encoder and configure to read step and direction signals.
-     */
+    // Enable the encoder and configure to read step and direction signals.
     Encoder_Configure(&connector_A, Encoder_Channel0,
                       Encoder_Enable | Encoder_SignalMode,
                       Encoder_Enabled | Encoder_StepDirection);
 
-    /*
-     * Normally, the main function runs a long running or infinite loop.
-     * Keep the program running so that you can measure the output using
-     * an external instrument.
-     */
+    // Normally, the main function runs a long running or infinite loop.
+    // Keep the program running so that you can measure the output using
+    // an external instrument.
     time(&currentTime);
     finalTime = currentTime + LoopDuration;
     printTime = currentTime;
@@ -87,7 +76,7 @@ int main(int argc, char **argv)
     {
         time(&currentTime);
 
-        /* Don't print every loop iteration. */
+        // Don't print every loop iteration. 
         if (currentTime > printTime)
         {
             steps = Encoder_Counter(&connector_A, Encoder_Channel0);
@@ -106,14 +95,10 @@ int main(int argc, char **argv)
         }
     }
 
-    /*
-     * Close the ELVISIII NiFpga Session.
-     * This function MUST be called after all other functions.
-     */
+    // Close the ELVISIII NiFpga Session.
+    // This function MUST be called after all other functions.
     status = NiELVISIIIv10_Close();
 
-    /*
-     * Returns 0 if successful.
-     */
+    // Returns 0 if successful.
     return status;
 }

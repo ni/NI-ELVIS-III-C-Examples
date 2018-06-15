@@ -26,14 +26,10 @@
  */
 extern NiFpga_Session NiELVISIIIv10_session;
 
-/*
- * Initialize the register addresses of DIO in connector A.
- */
+// Initialize the register addresses of DIO in connector A.
 ELVISIII_Dio connector_A = {DIADMA_ENA, 98328, DIADMA_CNTR, DOADMA_CNTR, 98304};
 
-/*
- * Initialize the register addresses of DIO in connector B.
- */
+// Initialize the register addresses of DIO in connector B.
 ELVISIII_Dio connector_B = {DIBDMA_ENA, 99508, DIBDMA_CNTR, DOBDMA_CNTR, 99532};
 
 /**
@@ -63,40 +59,26 @@ void Di_Direction(ELVISIII_Dio* connector, Dio_Channel channel)
     uint32_t dirValue = 0;
     uint32_t dirMask  = 0;
 
-    /*
-     * Get the value of the DI Direction Register.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Get the value of the DI Direction Register.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->dir, &dirValue);
 
-    /*
-     * Check if there was an error writing to the read register.
-     *
-     * If there was an error then print an error message to stdout and return.
-     */
+    // Check if there was an error writing to the read register.
+    // If there was an error then print an error message to stdout and return.
     NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the DI Direction Register!");
 
-    /*
-     * Clear the appropriate bit in the direction register to turn the channel into an input (0).
-     * DIO0 = bit0, DIO1 = bit1, etc.
-     */
+    // Clear the appropriate bit in the direction register to turn the channel into an input (0).
+    // DIO0 = bit0, DIO1 = bit1, etc.
     dirMask = 1 << bit;
     dirMask = ~dirMask;
     dirValue = dirValue & dirMask;
 
-    /*
-     * Write the new value to the DI Direction Register to ensure that the proper bit is turned into an input.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Write the new value to the DI Direction Register to ensure that the proper bit is turned into an input.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->dir, dirValue);
 
-    /*
-     * Check if there was an error writing to the write register.
-     *
-     * If there was an error then print an error message to stdout and return.
-     */
+    // Check if there was an error writing to the write register.
+    // If there was an error then print an error message to stdout and return.
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the DI Direction Register!");
 
     return;
@@ -115,9 +97,7 @@ void Di_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
     bool flag = true;
     uint16_t Divisor = 0;
 
-    /*
-     * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
-     */
+    // Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
     if (SampleRate > MAX_SAMPLE_RATE)
     {
         SampleRate = MAX_SAMPLE_RATE;
@@ -130,37 +110,23 @@ void Di_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 
     uint16_t divisor = (uint16_t)(ClockRate / SampleRate);
 
-    /*
-     * Write the divisor value to the DI Divisor Register.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Write the divisor value to the DI Divisor Register.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_WriteU16(NiELVISIIIv10_session, connector->di_cntr, divisor);
 
-    /*
-     * Check if there was an error writing to the write register.
-     *
-     * If there was an error then print an error message to stdout and return.
-     */
+    // Check if there was an error writing to the write register.
+    // If there was an error then print an error message to stdout and return.
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the DI Counter Register!");
 
-    /*
-     * Make sure that the Value has been written into the proper Register.
-     */
+    // Make sure that the Value has been written into the proper Register.
     while (flag)
     {
-        /*
-         * Read the value from the DI Divisor Register.
-         *
-         * The returned NiFpga_Status value is stored for error checking.
-         */
+        // Read the value from the DI Divisor Register.
+        // The returned NiFpga_Status value is stored for error checking.
         status = NiFpga_ReadU16(NiELVISIIIv10_session, connector->di_cntr, &Divisor);
 
-        /*
-         * Check if there was an error reading from the register.
-         *
-         * If there was an error then print an error message to stdout and return.
-         */
+        // Check if there was an error reading from the register.
+        // If there was an error then print an error message to stdout and return.
         NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the DI Counter Register!");
 
         if (Divisor == divisor)
@@ -181,18 +147,12 @@ void Di_Enable(ELVISIII_Dio* connector)
 {
     NiFpga_Status status;
 
-    /*
-     * Write the new value to the DI DMA Enable Register.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Write the new value to the DI DMA Enable Register.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->di_enable, NiFpga_True);
 
-    /*
-     * Check if there was an error writing to the write register.
-     *
-     * If there was an error then print an error message to stdout and return.
-     */
+    // Check if there was an error writing to the write register.
+    // If there was an error then print an error message to stdout and return.
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the DI DMA Enable Register!");
 
     return;
@@ -228,11 +188,8 @@ void Di_ReadFifo(ELVISIII_Dio*         connector,
 {
     NiFpga_Status status;
 
-    /*
-     * Read Groups of fixed-point values from a DI FIFO.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Read Groups of fixed-point values from a DI FIFO.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_ReadFifoU64(NiELVISIIIv10_session,
                                 fifo,
                                 fxp_buffer_receive,
@@ -240,15 +197,11 @@ void Di_ReadFifo(ELVISIII_Dio*         connector,
                                 timeout,
                                 elementsRemaining);
 
-    /*
-     * Check if there was an error reading from register.
-     *
-     * If there was an error then print an error message to stdout and return.
-     */
+    // Check if there was an error reading from register.
+    // If there was an error then print an error message to stdout and return.
     NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not read from the DI FIFO!");
 
     return;
-
 }
 
 /**
@@ -265,9 +218,7 @@ void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fxp_buffer_
     uint8_t bit = channel;
     int i;
 
-    /*
-     * Get the proper bit.
-     */
+    // Get the proper bit.
     for(i = 0; i < fifo_size; ++i)
     {
         value[i] = (NiFpga_Bool)((fxp_buffer_receive[i] & (1 << bit)) >> bit);
@@ -302,38 +253,24 @@ void Do_Direction(ELVISIII_Dio* connector, Dio_Channel channel)
     uint32_t dirValue;
     uint8_t bit = channel;
 
-    /*
-     * Get the value from the DIO Direction Register.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Get the value from the DIO Direction Register.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->dir, &dirValue);
 
-    /*
-     * Check if there was an error reading from the DIO Direction Register.
-     *
-     * If there was an error then the rest of the function cannot complete correctly so print an error message to stdout and return from the function early.
-     */
+    // Check if there was an error reading from the DIO Direction Register.
+    // If there was an error then the rest of the function cannot complete correctly so print an error message to stdout and return from the function early.
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the DIO Direction Register!");
 
-    /*
-     * Set the appropriate bit in the direction register to turn the channel into an output.
-     * DIO0 = bit0, DIO1 = bit1, etc.
-     */
+    // Set the appropriate bit in the direction register to turn the channel into an output.
+    // DIO0 = bit0, DIO1 = bit1, etc.
     dirValue = dirValue | (1 << bit);
 
-    /*
-     * Write the value to the DIO Direction Register.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Write the value to the DIO Direction Register.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->dir, dirValue);
 
-    /*
-     * Check if there was an error writing to the DIO Direction Register.
-     *
-     * If there was an error then the rest of the function cannot complete correctly so print an error message to stdout and return from the function early.
-     */
+    // Check if there was an error writing to the DIO Direction Register.
+    // If there was an error then the rest of the function cannot complete correctly so print an error message to stdout and return from the function early.
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the DIO Direction Register!");
 
     return;
@@ -352,9 +289,7 @@ void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
     bool flag = true;
     uint16_t Divisor = 0;
 
-    /*
-     * Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
-     */
+    // Control the range of the sample rate from MIN_SAMPLE_RATE to MAX_SAMPLE_RATE.
     if (SampleRate > MAX_SAMPLE_RATE)
     {
         SampleRate = MAX_SAMPLE_RATE;
@@ -367,37 +302,23 @@ void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate
 
     uint16_t divisor = (uint16_t)(ClockRate / SampleRate);
 
-    /*
-     * Write the divisor value to the DO Divisor Register.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Write the divisor value to the DO Divisor Register.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_WriteU16(NiELVISIIIv10_session, connector->do_cntr, divisor);
 
-    /*
-     * Check if there was an error writing to the write register.
-     *
-     * If there was an error then print an error message to stdout and return.
-     */
+    // Check if there was an error writing to the write register.
+    // If there was an error then print an error message to stdout and return.
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the DO Counter Register!");
 
-    /*
-     * Make sure that the Value has been written into the proper Register.
-     */
+    // Make sure that the Value has been written into the proper Register.
     while (flag)
     {
-        /*
-         * Read the value from the DO Divisor Register.
-         *
-         * The returned NiFpga_Status value is stored for error checking.
-         */
+        // Read the value from the DO Divisor Register.
+        // The returned NiFpga_Status value is stored for error checking.
         status = NiFpga_ReadU16(NiELVISIIIv10_session, connector->do_cntr, &Divisor);
 
-        /*
-         * Check if there was an error reading from the register.
-         *
-         * If there was an error then print an error message to stdout and return.
-         */
+        // Check if there was an error reading from the register.
+        // If there was an error then print an error message to stdout and return.
         NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the DO Counter Register!");
 
         if (Divisor == divisor)
@@ -423,38 +344,24 @@ void Do_Enable(ELVISIII_Dio* connector, Dio_Channel channel)
     uint8_t bit = channel;
     uint32_t config;
 
-    /*
-     * Read the value from the DO DMA Enable Register.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Read the value from the DO DMA Enable Register.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->do_enable, &config);
 
-    /*
-     * Check if there was an error reading from the DO register.
-     *
-     * If there was an error then print an error message to stdout and return.
-     */
+    // Check if there was an error reading from the DO register.
+    // If there was an error then print an error message to stdout and return.
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the DO DMA Enable Register!");
 
-    /*
-     * Set the appropriate bit in the DO DMA Enable Register to turn the channel into an output.
-     * DIO0 = bit0, DIO1 = bit1, etc.
-     */
+    // Set the appropriate bit in the DO DMA Enable Register to turn the channel into an output.
+    // DIO0 = bit0, DIO1 = bit1, etc.
     config = config | (1 << bit);
 
-    /*
-     * Write the new value to the DO DMA Enable Register.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     */
+    // Write the new value to the DO DMA Enable Register.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->do_enable, config);
 
-    /*
-     * Check if there was an error writing to the write register.
-     *
-     * If there was an error then print an error message to stdout and return.
-     */
+    // Check if there was an error writing to the write register.
+    // If there was an error then print an error message to stdout and return.
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the DO DMA Enable Register!");
 
     return;
@@ -489,12 +396,8 @@ void Do_WriteFifo(ELVISIII_Dio*         connector,
 {
     NiFpga_Status status;
 
-    /*
-     * Write Groups of fix point values to a DO FIFO.
-     *
-     * The returned NiFpga_Status value is stored for error checking.
-     *
-     */
+    // Write Groups of fix point values to a DO FIFO.
+    // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_WriteFifoU64(NiELVISIIIv10_session,
                                  fifo,
                                  fxp_buffer_send,
@@ -502,11 +405,8 @@ void Do_WriteFifo(ELVISIII_Dio*         connector,
                                  timeout,
                                  elementsRemaining);
 
-    /*
-     * Check if there was an error writing to register.
-     *
-     * If there was an error then print an error message to stdout and return.
-     */
+    // Check if there was an error writing to register.
+    // If there was an error then print an error message to stdout and return.
     NiELVISIIIv10_ReturnValueIfNotSuccess(status, 0.0, "Could not write to the DO FIFO!");
 
     return;

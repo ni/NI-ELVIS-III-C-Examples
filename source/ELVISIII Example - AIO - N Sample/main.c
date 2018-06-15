@@ -2,8 +2,7 @@
  * Copyright (c) 2018,
  * National Instruments Corporation.
  * All rights reserved.
- */
-/**
+ *
  * Overview:
  * Demonstrates using the analog input and output of N Sample (AIO - N Sample).
  * Read a group of values from one analog input channel on connector A.
@@ -37,7 +36,7 @@
 #include "NiELVISIIIv10.h"
 
 #if !defined(LoopDuration)
-#define LoopDuration    60  /* How long to output the signal, in seconds */
+#define LoopDuration    60  // How long to output the signal, in seconds 
 #endif
 
 //Default FIFO size.
@@ -46,128 +45,97 @@
 extern ELVISIII_Aio connector_A;
 extern ELVISIII_Aio connector_B;
 
-
 int main(int argc, char **argv)
 {
-	NiFpga_Status status;
+    NiFpga_Status status;
 
-	double value[FIFO_SIZE];
-	uint64_t fxp_buffer_receive[FIFO_SIZE];
+    double value[FIFO_SIZE];
+    uint64_t fxp_buffer_receive[FIFO_SIZE];
 
-	double send[] = {2, 2, 2, 2, -2, -2, -2, -2};
-	uint64_t FixPoint_buffer_send[FIFO_SIZE];
+    double send[] = {2, 2, 2, 2, -2, -2, -2, -2};
+    uint64_t fxp_buffer_send[FIFO_SIZE];
 
-	time_t currentTime;
-	time_t finalTime;
+    time_t currentTime;
+    time_t finalTime;
 
-	printf("AnalogInputOutput - N Sample:\n");
+    printf("AnalogInputOutput - N Sample:\n");
 
-	/*
-	 * Open the ELVIS III NiFpga Session.
-	 * This function MUST be called before all other functions. After this call
-	 * is complete the ELVIS III target will be ready to be used.
-	 */
-	status = NiELVISIIIv10_Open();
-	if (NiELVISIIIv10_IsNotSuccess(status))
-	{
-	    return status;
-	}
+    // Open the ELVIS III NiFpga Session.
+    // This function MUST be called before all other functions. After this call
+    // is complete the ELVIS III target will be ready to be used.
+    status = NiELVISIIIv10_Open();
+    if (NiELVISIIIv10_IsNotSuccess(status))
+    {
+        return status;
+    }
 
-	/*
-	 * Set the number of valid channels on connector A.
-	 */
-	Ai_Counter(&connector_A, 1);
+    // Set the number of valid channels on connector A.
+    Ai_Counter(&connector_A, 1);
 
-	/*
-	 * Configure the range of the AI channel on connector A.
-	 */
-	Ai_Configure(&connector_A, Ai_Channel0, Ai_Range0);
+    // Configure the range of the AI channel on connector A.
+    Ai_Configure(&connector_A, Ai_Channel0, Ai_Range0);
 
-	/*
-	 * Configure the divisor for the AI sample rate on connector A.
-	 */
-	Ai_Divisor(&connector_A, 40000000, 1000);
+    // Configure the divisor for the AI sample rate on connector A.
+    Ai_Divisor(&connector_A, 40000000, 1000);
 
-	/*
-	 * Set the DMA Enable Flag for connector A.
-	 */
-	Ai_Enable(&connector_A);
+    // Set the DMA Enable Flag for connector A.
+    Ai_Enable(&connector_A);
 
-	/*
-	 * Read fixed-point values from an AI FIFO on connector A.
-	 */
-	Ai_ReadFifo(&connector_A,
-			    TargetToHost_FIFO_FXP_A,
-			    fxp_buffer_receive,
-				FIFO_SIZE,
-				NiFpga_InfiniteTimeout,
-				NULL);
+    // Read fixed-point values from an AI FIFO on connector A.
+    Ai_ReadFifo(&connector_A,
+                TargetToHost_FIFO_FXP_A,
+                fxp_buffer_receive,
+                FIFO_SIZE,
+                NiFpga_InfiniteTimeout,
+                NULL);
 
-	/*
-	 * Convert fixed-point values of the FIFO to double values.
-	 * The fixed-point value is an unsigned long long int value.
-	 */
-	ConvertUnsignedLongLongIntToDouble(fxp_buffer_receive, FIFO_SIZE, value);
+    // Convert fixed-point values of the FIFO to double values.
+    // The fixed-point value is an unsigned long long int value.
+    ConvertUnsignedLongLongIntToDouble(fxp_buffer_receive, FIFO_SIZE, value);
 
-	/*
-	 * Print out the values of A/AI0.
-	 */
-	printf("Channel%d:\n", Ai_Channel0 - RSE_NUM);
-	int i;
-	for (i = 0; i < FIFO_SIZE; ++i)
-	{
-		printf("%f ", value[i]);
-		if ((i + 1) % 10 == 0)
-			printf("\n");
-	}
-	printf("\n");
+    // Print out the values of A/AI0.
+    printf("Channel%d:\n", Ai_Channel0 - RSE_NUM);
+    int i;
+    for (i = 0; i < FIFO_SIZE; ++i)
+    {
+        printf("%f ", value[i]);
+        if ((i + 1) % 10 == 0)
+            printf("\n");
+    }
+    printf("\n");
 
-	/*
-	 * Configure the divisor for the AO sample rate on connector B.
-	 */
-	Ao_Divisor(&connector_B, 40000000, 1000);
+    // Configure the divisor for the AO sample rate on connector B.
+    Ao_Divisor(&connector_B, 40000000, 1000);
 
-	/**
-	 * Set the DMA Enable Flag for AO0 on connector B.
-	 */
-	Ao_Enable(&connector_B, Ao_Channel0);
+    // Set the DMA Enable Flag for AO0 on connector B.
+    Ao_Enable(&connector_B, Ao_Channel0);
 
-	/*
-	 * Convert double values to fixed-point values of the FIFO.
-	 * The fixed-point value is an unsigned long long int value.
-	 */
-	ConvertDoubleToUnsignedLongLongInt(send, fxp_buffer_send, sizeof(send)/sizeof(uint64_t));
+    // Convert double values to fixed-point values of the FIFO.
+    // The fixed-point value is an unsigned long long int value.
+    ConvertDoubleToUnsignedLongLongInt(send, fxp_buffer_send, sizeof(send)/sizeof(uint64_t));
 
-	/*
-	 * Write fixed-point values to an AO FIFO on connector B.
-	 */
-	Ao_WriteFifo(&connector_B,
-				 HostToTarget_FIFO_FixPoint_B,
-				 FixPoint_buffer_send,
-				 (sizeof(FixPoint_buffer_send)/sizeof(uint64_t)),
-				 NiFpga_InfiniteTimeout,
-				 NULL);
+    // Write fixed-point values to an AO FIFO on connector B.
+    Ao_WriteFifo(&connector_B,
+                 HostToTarget_FIFO_FXP_B,
+                 fxp_buffer_send,
+                 (sizeof(fxp_buffer_send)/sizeof(uint64_t)),
+                 NiFpga_InfiniteTimeout,
+                 NULL);
 
-	/*
-	 * Normally, the main function runs a long running or infinite loop.
-	 * Keep the program running so that you can measure the output using
-	 * an external instrument.
-	 */
-	time(&currentTime);
-	finalTime = currentTime + LoopDuration;
-	while (currentTime < finalTime)
-	{
-		time(&currentTime);
-	}
+    // Normally, the main function runs a long running or infinite loop.
+    // Keep the program running so that you can measure the output using
+    // an external instrument.
+    time(&currentTime);
+    finalTime = currentTime + LoopDuration;
+    while (currentTime < finalTime)
+    {
+        time(&currentTime);
+    }
 
-	/*
-	 * Close the ELVISIII NiFpga Session.
-	 * This function MUST be called after all other functions.
-	 */
-	status = NiELVISIIIv10_Close();
+    // Close the ELVISIII NiFpga Session.
+    // This function MUST be called after all other functions.
+    status = NiELVISIIIv10_Close();
 
-	/*
-	 * Returns 0 if successful.
-	 */
-	return status;
+    // Returns 0 if successful.
+    return status;
 }

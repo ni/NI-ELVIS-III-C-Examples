@@ -19,7 +19,6 @@
 //AI channel selection number (DIFF mode)
 #define DIFF_NUM 4
 
-
 //AI Fixed-point
 #define AI_WordLength 24
 #define AI_IntegerWordLength 5
@@ -43,15 +42,12 @@ typedef enum
     HostToTarget_FIFO_FXP_A = 5,
 } HostToTarget_FIFO_FXP;
 
-
 //AI FIFO Fixed-point
 typedef enum
 {
     TargetToHost_FIFO_FXP_B = 6,
     TargetToHost_FIFO_FXP_A = 7,
 } TargetToHost_FIFO_FXP;
-
-
 
 /**
  * Specify the numbers of AI channels.
@@ -90,16 +86,12 @@ typedef enum
     Ai_Channel3_7 = 0x03,
 } Ai_Channel;
 
-
-/**
- * Specify the numbers of AO channels.
- */
+// Specify the numbers of AO channels.
 typedef enum
 {
     Ao_Channel0 = 0b01,
     Ao_Channel1 = 0b10,
 }Ao_Channel;
-
 
 /**
  * Specify the voltage range of the AI channel.
@@ -117,99 +109,66 @@ typedef enum
     Ai_Range3 = 0x30,
 } Ai_Range;
 
-
-/**
- * Registers for a particular AIO N Sample.
- * Analog input and analog output of N Sample share the same structure, but it is
- * not possible to read from an analog output and write to an analog
- * input.
- */
+// Registers for a particular AIO N Sample.
+// Analog input and analog output of N Sample share the same structure, but it is
+// not possible to read from an analog output and write to an analog input.
 typedef struct
 {
-    uint32_t cnfg;                          /**< AI Configuration Register */
+    uint32_t cnfg;                          // AI Configuration Register 
 
-    uint32_t ai_cntr;                       /**< AI Divisor Register */
-    uint32_t ao_cntr;                       /**< AO Divisor Register */
+    uint32_t ai_cntr;                       // AI Divisor Register 
+    uint32_t ao_cntr;                       // AO Divisor Register 
 
-    uint32_t cnt;                           /**< AI Counter Register */
+    uint32_t cnt;                           // AI Counter Register 
 
-    uint32_t ai_enable;                     /**< AI DMA Enable Register */
-    uint32_t ao_enable;                     /**< AO DMA Enable Register */
+    uint32_t ai_enable;                     // AI DMA Enable Register 
+    uint32_t ao_enable;                     // AO DMA Enable Register 
 } ELVISIII_Aio;
 
-
-/**
- * Set the number of valid analog input channels.
- */
+// Set the number of valid analog input channels.
 void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter);
 
-
-/**
- * Set the AI configuration options.
- */
+// Set the AI configuration options.
 void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range);
 
-
-/**
- * Generate the divisor for the AI sample rate.
- */
+// Generate the divisor for the AI sample rate.
 void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate);
 
-
-/**
- * Set the DMA Enable Flag for one connector.
- */
+// Set the DMA Enable Flag for one connector.
 void Ai_Enable(ELVISIII_Aio* connector);
 
 
-/**
- * Read groups of AI values as an AI FIFO from a single channel.
- */
-void Ai_ReadFifo(ELVISIII_Aio*        		connector,
-		         TargetToHost_FIFO_FXP 		fifo,
-			 	 uint64_t*            		fxp_buffer_receive,
-			 	 size_t               		fifo_size,
-			 	 uint32_t              		timeout,
-			 	 size_t*              		elementsRemaining);
+// Read groups of AI values as an AI FIFO from a single channel.
+void Ai_ReadFifo(ELVISIII_Aio*                 connector,
+                 TargetToHost_FIFO_FXP         fifo,
+                  uint64_t*                    fxp_buffer_receive,
+                  size_t                       fifo_size,
+                  uint32_t                     timeout,
+                  size_t*                      elementsRemaining);
 
-
-/**
- * Convert fixed-point values of the FIFO to double values.
- */
+// Convert fixed-point values of the FIFO to double values.
 void ConvertUnsignedLongLongIntToDouble(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value);
 
+// Generate the divisor for the AO sample rate.
 
-/**
- * Generate the divisor for the AO sample rate.
- */
 void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate);
 
-
-/**
- * Set the DMA Enable value for an analog output channel.
- */
+// Set the DMA Enable value for an analog output channel.
 void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel);
 
-
-/**
- * Convert double values to fixed-point values of the FIFO.
- */
+// Convert double values to fixed-point values of the FIFO.
 void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send, size_t fifo_size);
 
-
-/**
- * Write groups of AO values as an AO FIFO to a single channel.
- */
-void Ao_WriteFifo(ELVISIII_Aio*         	connector,
-		          HostToTarget_FIFO_FXP 	fifo,
-			 	  const uint64_t*       	fxp_buffer_send,
-			 	  size_t                	fifo_size,
-			 	  uint32_t              	timeout,
-			 	  size_t*               	elementsRemaining);
-
+// Write groups of AO values as an AO FIFO to a single channel.
+void Ao_WriteFifo(ELVISIII_Aio*             connector,
+                  HostToTarget_FIFO_FXP     fifo,
+                   const uint64_t*           fxp_buffer_send,
+                   size_t                    fifo_size,
+                   uint32_t                  timeout,
+                   size_t*                   elementsRemaining);
 
 #if NiFpga_Cpp
 }
 #endif
 
-#endif /* AIO_N_Sample_h_ */
+#endif // AIO_N_Sample_h_ 
