@@ -55,23 +55,19 @@ typedef enum
  */
 typedef struct
 {
-    uint32_t dir;         /**< DIO Direction Register */
-    uint32_t in;          /**< DI Value Register */
-    uint32_t out;         /**< DO Value Register */
+    uint32_t dir;         // DIO Direction Register 
+    uint32_t in;          // DI Value Register 
+    uint32_t out;         // DO Value Register 
 } ELVISIII_Dio;
 
-/**
- * Read the value from one channel.
- */
+// Read the value from one channel.
 NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Dio_Channel channel);
 
-/**
- * Write the value into one channel.
- */
+// Write the value into one channel.
 void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Dio_Channel channel);
 
 #if NiFpga_Cpp
 }
 #endif
 
-#endif /* DIO_h_ */
+#endif // DIO_h_ 

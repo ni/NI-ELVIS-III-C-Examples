@@ -89,9 +89,7 @@ typedef enum
     Ai_Range3 = 0x30,
 } Ai_Range;
 
-/**
- * Specify the AO Value Register addresses.
- */
+// Specify the AO Value Register addresses.
 typedef enum
 {
     AO_A0_VAL = 99540,
@@ -100,71 +98,46 @@ typedef enum
     AO_B1_VAL = 99544,
 } Ao_ValueRegister;
 
-/**
- * Registers for a particular analog input.
- */
+// Registers for a particular analog input.
 typedef struct
 {
-    uint32_t cnfg;                          /**< AI Configuration Register */
-    uint32_t cntr;                          /**< AI Divisor Register */
-    uint32_t cnt;                           /**< AI Counter Register */
-    uint32_t rdy;                           /**< AI Ready Register */
-    uint32_t val[RSE_NUM + DIFF_NUM];       /**< AIO Value Register */
+    uint32_t cnfg;                          // AI Configuration Register 
+    uint32_t cntr;                          // AI Divisor Register 
+    uint32_t cnt;                           // AI Counter Register 
+    uint32_t rdy;                           // AI Ready Register 
+    uint32_t val[RSE_NUM + DIFF_NUM];       // AIO Value Register 
 } ELVISIII_Ai;
 
-/**
- * Registers for a particular analog output.
- */
+// Registers for a particular analog output.
 typedef struct
 {
-    uint32_t go;        /**< AO Start Register */
-    uint32_t stat;      /**< AO Status Register */
+    uint32_t go;        // AO Start Register 
+    uint32_t stat;      // AO Status Register 
 } ELVISIII_Ao;
 
-
-/**
- * Convert unsigned int value of a fixed-point to double value.
- */
+// Convert unsigned int value of a fixed-point to double value.
 double ConvertUnsignedIntToDouble(unsigned int value);
 
-
-/**
- * Convert double value to unsigned int value to represent a fixed-point.
- */
+// Convert double value to unsigned int value to represent a fixed-point.
 unsigned int ConvertDoubleToUnsignedInt(double value);
 
-
-/**
- * Set the number of valid analog input channels.
- */
+// Set the number of valid analog input channels.
 void Ai_Counter(ELVISIII_Ai* connector, uint8_t counter);
 
-
-/**
- * Set the AI configuration options.
- */
+// Set the AI configuration options.
 void Ai_Configure(ELVISIII_Ai* connector, Ai_Channel channel, Ai_Range range);
 
-
-/**
- * Generate the divisor for sample rate.
- */
+// Generate the divisor for sample rate.
 void Ai_Divisor(ELVISIII_Ai* connector, uint32_t ClockRate, uint32_t SampleRate);
 
-
-/**
- * Read the value from one channel.
- */
+// Read the value from one channel.
 double Aio_Read(ELVISIII_Ai* connector, Ai_Channel channel);
 
-/**
- * Write the value to one AO Value Register.
- */
+// Write the value to one AO Value Register.
 void Aio_Write(ELVISIII_Ao* Ao, double value, Ao_ValueRegister ValueRegister);
-
 
 #if NiFpga_Cpp
 }
 #endif
 
-#endif /* AIO_h_ */
+#endif // AIO_h_ 
