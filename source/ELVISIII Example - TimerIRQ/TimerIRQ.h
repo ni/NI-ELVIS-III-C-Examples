@@ -38,6 +38,9 @@ int32_t Irq_RegisterTimerIrq(ELVISIII_IrqTimer* irqChannel,
 // Clear the timer IRQ setting.
 int32_t Irq_UnregisterTimerIrq(ELVISIII_IrqTimer* irqChannel,
                                NiFpga_IrqContext  irqContext);
+							 
+// Wait for the timer IRQ in a new thread.
+void *Timer_Irq_Thread(void* resource);
 
 #if NiFpga_Cpp
 }

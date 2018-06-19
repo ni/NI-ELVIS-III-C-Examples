@@ -79,6 +79,9 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    bank,
 int32_t Irq_UnregisterDiIrq(ELVISIII_IrqDi*   bank,
                             NiFpga_IrqContext irqContext,
                             uint8_t           irqNumber);
+							
+// Wait for the DI IRQ in a new thread.
+void *DI_Irq_Thread(void* resource);
 
 #if NiFpga_Cpp
 }
