@@ -8,10 +8,10 @@
  * digital temperature sensor and writes the response to the console.
  *
  * Instructions:
- * 1. Connect a TMP102 digital temperature sensor to the I2C pins on connector A.
- * 2. Connect I2C.SCL  to DIO14 on connector A.
- * 3. Connect I2C.SDA  to DIO15 on connector A.
- * 4. Connect GND of the sensor to DGND on connector A.
+ * 1. Connect a TMP102 digital temperature sensor to the I2C pins on bank A.
+ * 2. Connect I2C.SCL  to DIO14 on bank A.
+ * 3. Connect I2C.SDA  to DIO15 on bank A.
+ * 4. Connect GND of the sensor to DGND on bank A.
  * 4. Connect a DC voltage input (+3.3 V) to the sensor.
  * 2. Run the program.
  *
@@ -30,7 +30,7 @@
 #define LoopDuration    60  // How long to output the signal, in seconds 
 #endif
 
-extern ELVISIII_I2c connector_A;
+extern ELVISIII_I2c bank_A;
 
 int main(int argc, char **argv)
 {
@@ -52,20 +52,20 @@ int main(int argc, char **argv)
         return status;
     }
 
-    // Write the value to the System Select Register on connector A.
-    I2c_Select(&connector_A);
+    // Write the value to the System Select Register on bank A.
+    I2c_Select(&bank_A);
 
     // Set the speed of the I2C block.
-    I2c_Counter(&connector_A, 187);
+    I2c_Counter(&bank_A, 187);
 
     // Configure the I2C block.
-    I2c_Configure(&connector_A, I2c_Enabled);
+    I2c_Configure(&bank_A, I2c_Enabled);
 
     // Send 2 bytes to the slave device.
-    I2c_Write(&connector_A, slaveWriteAddress, data, 2);
+    I2c_Write(&bank_A, slaveWriteAddress, data, 2);
 
     // Read 10 bytes from the slave device.
-    I2c_Read(&connector_A, slaveReadAddress, data, 2);
+    I2c_Read(&bank_A, slaveReadAddress, data, 2);
 
     // Print the data received from the slave.
     printf("Received data:");

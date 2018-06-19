@@ -10,7 +10,7 @@
  *
  * Instructions:
  * 1. Install an oscilloprobe on one of the Function Generator on NI ELVIS III device.
- *    Use the oscilloprobe to probe DIO0 on connector A. Use DGND as ground.
+ *    Use the oscilloprobe to probe DIO0 on bank A. Use DGND as ground.
  * 2. Open "Measurements Live" (measurementslive.ni.com) and connect to the NI ELVIS III device.
  * 3. In Instruments tab, open Function and Arbitrary Waveform Generator and set a square wave.
  * 4. Run this program and observe the console.
@@ -34,7 +34,7 @@
 #define LoopSteps             3    // How long to step between printing, in seconds 
 #endif
 
-extern ELVISIII_IrqDi connector_A;
+extern ELVISIII_IrqDi bank_A;
 
 // Resources for the new thread.
 typedef struct
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 
     printf("Digital Input IRQ:\n");
 
-    connector_A.dioChannel = Irq_Dio_A0;
+    bank_A.dioChannel = Irq_Dio_A0;
 
     // Initiate the IRQ number resource of the new thread.
     irqThread0.irqNumber = IrqNumber;
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 
     // Configure the DI0 IRQ and return a status message to indicate if the configuration is successful,
     // the error code is defined in IRQConfigure.h.
-    status = Irq_RegisterDiIrq(&connector_A,
+    status = Irq_RegisterDiIrq(&bank_A,
                                &(irqThread0.irqContext),
                                IrqNumber,
                                Count,
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
     // Distable DI0, so you can configure this I/O next time.
     // Every IrqConfigure() function should have its corresponding clear function,
     // and their parameters should also match.
-    status = Irq_UnregisterDiIrq(&connector_A,
+    status = Irq_UnregisterDiIrq(&bank_A,
                                  irqThread0.irqContext,
                                  IrqNumber);
 

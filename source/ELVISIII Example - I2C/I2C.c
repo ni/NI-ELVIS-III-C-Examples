@@ -26,26 +26,26 @@
  */
 extern NiFpga_Session NiELVISIIIv10_session;
 
-// Initialize the register addresses of I2C in connector A.
-ELVISIII_I2c connector_A = {I2CAADDR, I2CACNFG, I2CACNTL, I2CACNTR, I2CASTAT, I2CADATO, I2CADATI, I2CAGO, SYSSELECTA};
+// Initialize the register addresses of I2C in bank A.
+ELVISIII_I2c bank_A = {I2CAADDR, I2CACNFG, I2CACNTL, I2CACNTR, I2CASTAT, I2CADATO, I2CADATI, I2CAGO, SYSSELECTA};
 
-// Initialize the register addresses of I2C in connector B.
-ELVISIII_I2c connector_B = {I2CBADDR, I2CBCNFG, I2CBCNTL, I2CBCNTR, I2CBSTAT, I2CBDATO, I2CBDATI, I2CBGO, SYSSELECTB};
+// Initialize the register addresses of I2C in bank B.
+ELVISIII_I2c bank_B = {I2CBADDR, I2CBCNFG, I2CBCNTL, I2CBCNTR, I2CBSTAT, I2CBDATO, I2CBDATI, I2CBGO, SYSSELECTB};
 
 /**
  * Configure the I2C block.
  * Set options for the I2C configuration register.
  *
- * @param[in]  connector      A struct containing the registers for one connecter.
+ * @param[in]  bank         A struct containing the registers for one connecter.
  * @param[in]  settings     Settings configured on the register.
  */
-void I2c_Configure(ELVISIII_I2c* connector, I2c_ConfigureSettings settings)
+void I2c_Configure(ELVISIII_I2c* bank, I2c_ConfigureSettings settings)
 {
     NiFpga_Status status;
 
     // Write the new value of the configure register to the device.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cnfg, settings);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->cnfg, settings);
 
     // Check if there was an error writing to I2C Configuration register.
     // If there was an error then print an error message to stdout.
@@ -69,16 +69,16 @@ void I2c_Configure(ELVISIII_I2c* connector, I2c_ConfigureSettings settings)
  *
  * This formula and its rationale can be found in the documentation.
  *
- * @param[in]  connector      A struct containing the registers for one connecter.
+ * @param[in]  bank         A struct containing the registers for one connecter.
  * @param[in]  speed        The I2C speed configured on the I2C channel
  */
-void I2c_Counter(ELVISIII_I2c* connector, uint8_t speed)
+void I2c_Counter(ELVISIII_I2c* bank, uint8_t speed)
 {
     NiFpga_Status status;
 
     // Write the new value of the counter register to the device.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cntr, speed);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->cntr, speed);
 
     // Check if there was an error writing to I2C Counter Register.
     // If there was an error then print an error message to stdout.
@@ -92,12 +92,12 @@ void I2c_Counter(ELVISIII_I2c* connector, uint8_t speed)
  *
  * @warning The data array being passed in must be at least as big as the number of bytes being written.
  *
- * @param[in]  connector      A struct containing the registers for one connecter.
+ * @param[in]  bank          A struct containing the registers for one connecter.
  * @param[in]  address       The address of the I2C slave device.
  * @param[in]  data          A pointer to an array holding the data to write.
  * @param[in]  numBytes      The number of bytes to be written to the slave.
  */
-void I2c_Write(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t numBytes)
+void I2c_Write(ELVISIII_I2c* bank, uint8_t address, uint8_t* data, uint32_t numBytes)
 {
     NiFpga_Status status;
 
@@ -122,7 +122,7 @@ void I2c_Write(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t
     address = (address << 1) & 0xFE;
 
     // Set the address of the slave device.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->addr, address);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->addr, address);
 
     // Check if writing to the I2C Address Register was successful.
     // If there was an error then the rest of the function cannot complete
@@ -169,7 +169,7 @@ void I2c_Write(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t
         }
 
         // Write the data byte to be transmitted.
-        status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->dato, data[index]);
+        status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->dato, data[index]);
 
         // Check if writing to the data out register was successful.
         // If there was an error then the rest of the bytes cannot be sent so
@@ -185,7 +185,7 @@ void I2c_Write(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t
         }
 
         // Write the control byte.
-        status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cntl, control);
+        status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->cntl, control);
         if (NiELVISIIIv10_IsNotSuccess(status))
         {
             error = NiFpga_True;
@@ -197,7 +197,7 @@ void I2c_Write(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t
         // Start the I2C operation.
         // Write a true value. The value will automatically be reset to false
         // after the I2C block starts the operation.
-        status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->go, NiFpga_True);
+        status = NiFpga_WriteBool(NiELVISIIIv10_session, bank->go, NiFpga_True);
         if (NiELVISIIIv10_IsNotSuccess(status))
         {
             error = NiFpga_True;
@@ -211,7 +211,7 @@ void I2c_Write(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t
         do
         {
             // Get the status of the I2C block.
-            status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->stat, &stat);
+            status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->stat, &stat);
             if (NiELVISIIIv10_IsNotSuccess(status))
             {
                 error = NiFpga_True;
@@ -260,12 +260,12 @@ void I2c_Write(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t
  *
  * @warning The data array passed in must be big enough to accommodate the number of bytes being read.
  *
- * @param[in]      connector      A struct containing the registers for one connecter.
+ * @param[in]      bank          A struct containing the registers for one connecter.
  * @param[in]      address       The address of the I2C slave device.
  * @param[in,out]  data          A pointer to an array to fill with the data read.
  * @param[in]      numBytes      The number of bytes to be read from the slave.
  */
-void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t numBytes)
+void I2c_Read(ELVISIII_I2c* bank, uint8_t address, uint8_t* data, uint32_t numBytes)
 {
     NiFpga_Status status;
 
@@ -289,7 +289,7 @@ void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t 
     address = (address << 1) | 0x01;
 
     // Set the address of the slave device
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->addr, address);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->addr, address);
 
     // Check if writing to the address register was successful.
     // If there was an error then the rest of the function cannot complete
@@ -341,7 +341,7 @@ void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t 
         }
 
         // Write the control byte.
-        status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cntl, control);
+        status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->cntl, control);
         if (NiELVISIIIv10_IsNotSuccess(status))
         {
             error = NiFpga_True;
@@ -353,7 +353,7 @@ void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t 
         // Start the I2C operation.
         // Write a true value. The value will automatically be reset to false
         // after the I2C block starts the operation.
-        status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->go, NiFpga_True);
+        status = NiFpga_WriteBool(NiELVISIIIv10_session, bank->go, NiFpga_True);
         if (NiELVISIIIv10_IsNotSuccess(status))
         {
             error = NiFpga_True;
@@ -367,7 +367,7 @@ void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t 
         do
         {
             // Get the status of the I2C block.
-            status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->stat, &stat);
+            status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->stat, &stat);
             if (NiELVISIIIv10_IsNotSuccess(status))
             {
                 error = NiFpga_True;
@@ -408,7 +408,7 @@ void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t 
             else
             {
                 // Read the data byte received.
-                status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->dati, &data[index]);
+                status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->dati, &data[index]);
 
                 // Check if reading from the data in register was successful.
                 // If there was an error then the rest of the bytes cannot be
@@ -438,7 +438,7 @@ void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t 
     // skipped.
     if (timeout || error)
     {
-        status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cntl, I2c_Stop);
+        status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->cntl, I2c_Stop);
         NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the I2C Control Register!");
     }
 
@@ -448,9 +448,9 @@ void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t 
 /**
  * Write the value to the System Select Register.
  *
- * @param[in]  connector        A struct containing the registers for one connecter.
+ * @param[in]  bank        A struct containing the registers for one connecter.
  */
-void I2c_Select(ELVISIII_I2c* connector)
+void I2c_Select(ELVISIII_I2c* bank)
 {
     NiFpga_Status status;
     uint8_t selectReg;
@@ -459,7 +459,7 @@ void I2c_Select(ELVISIII_I2c* connector)
     // To output on a physical pin, select the I2C on the appropriate SELECT Register.
     // See the MUX example for simplified code to enable-disable onboard devices.
     // Read the value of the SYSSELECTA/SYSSELECTB Register.
-    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->sel, &selectReg);
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->sel, &selectReg);
 
     // Check if there was an error reading from the System Select Register.
     // If there was an error then print an error message to stdout.
@@ -474,7 +474,7 @@ void I2c_Select(ELVISIII_I2c* connector)
     selectReg = selectReg | ~0x0fffffff;
 
     // Write the new value to the SYSSELECTA/SYSSELECTB Register.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->sel, selectReg);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->sel, selectReg);
 
     // Check if there was an error reading from the System Select Register.
     // If there was an error then print an error message to stdout.

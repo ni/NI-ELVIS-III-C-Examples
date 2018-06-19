@@ -50,14 +50,14 @@ typedef struct
     uint32_t enable;         // UART Enable Register 
     uint32_t stat;           // UART Status Register 
     uint32_t console;        // UART Console Enable Register 
-} ELVISIII_Connector;
+} ELVISIII_Bank;
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// Set the UART Enable Flag for one connector.
-void Uart_Enable(ELVISIII_Connector* connector);
+// Set the UART Enable Flag for one bank.
+void Uart_Enable(ELVISIII_Bank* bank);
 
 // Opens a UART session.
 int32_t Uart_Open(ELVISIII_Uart*      port,

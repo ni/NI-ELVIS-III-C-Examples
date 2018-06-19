@@ -25,27 +25,27 @@
  */
 extern NiFpga_Session NiELVISIIIv10_session;
 
-// Initialize the register addresses of SPI in connector A.
-ELVISIII_Spi connector_A = {SPIACNFG, SPIACNT, SPIAGO, SPIASTAT, SPIADATO, SPIADATI, SYSSELECTA};
+// Initialize the register addresses of SPI in bank A.
+ELVISIII_Spi bank_A = {SPIACNFG, SPIACNT, SPIAGO, SPIASTAT, SPIADATO, SPIADATI, SYSSELECTA};
 
-// Initialize the register addresses of SPI in connector B.
-ELVISIII_Spi connector_B = {SPIBCNFG, SPIBCNT, SPIBGO, SPIBSTAT, SPIBDATO, SPIBDATI, SYSSELECTB};
+// Initialize the register addresses of SPI in bank B.
+ELVISIII_Spi bank_B = {SPIBCNFG, SPIBCNT, SPIBGO, SPIBSTAT, SPIBDATO, SPIBDATI, SYSSELECTB};
 
 /**
  * Sets options for the SPI configuration register.
  *
- * @param[in]  connector      A struct containing the registers on the SPI channel to modify.
+ * @param[in]  bank         A struct containing the registers on the SPI channel to modify.
  * @param[in]  mask         Array of flags that indicate which of the configure settings are valid.
  * @param[in]  settings     Array of flags that indicate the configuration settings.
  */
-void Spi_Configure(ELVISIII_Spi* connector, Spi_ConfigureMask mask, Spi_ConfigureSettings settings)
+void Spi_Configure(ELVISIII_Spi* bank, Spi_ConfigureMask mask, Spi_ConfigureSettings settings)
 {
     NiFpga_Status status;
     uint16_t cnfgValue;
 
     // Get the current value of the Configuration Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_ReadU16(NiELVISIIIv10_session, connector->cnfg, &cnfgValue);
+    status = NiFpga_ReadU16(NiELVISIIIv10_session, bank->cnfg, &cnfgValue);
 
     // Check if there was an error reading from the SPI registers.
     // If there was an error then the rest of the function cannot complete
@@ -62,7 +62,7 @@ void Spi_Configure(ELVISIII_Spi* connector, Spi_ConfigureMask mask, Spi_Configur
     cnfgValue = cnfgValue | settings;
 
     // Write the new value of the Configuration Register to the device.
-    status = NiFpga_WriteU16(NiELVISIIIv10_session, connector->cnfg, cnfgValue);
+    status = NiFpga_WriteU16(NiELVISIIIv10_session, bank->cnfg, cnfgValue);
 
     // Check if there was an error writing to SPI Configuration Register.
     // If there was an error then print an error message to stdout.
@@ -79,15 +79,15 @@ void Spi_Configure(ELVISIII_Spi* connector, Spi_ConfigureMask mask, Spi_Configur
  *
  * where f_SPI = 80 MHz.
  *
- * @param[in]  connector      Only connector_A or connector_B can be used unless you know the addresses of certain registers.
- * @param[in]  counterMax      The maximum counter value.
+ * @param[in]  bank          Only bank_A or bank_B can be used unless you know the addresses of certain registers.
+ * @param[in]  counterMax    The maximum counter value.
  */
-void Spi_CounterMaximum(ELVISIII_Spi* connector, uint16_t counterMax)
+void Spi_CounterMaximum(ELVISIII_Spi* bank, uint16_t counterMax)
 {
     NiFpga_Status status;
 
     // Write the value to the SPI Counter Register.
-    status = NiFpga_WriteU16(NiELVISIIIv10_session, connector->cnt, counterMax);
+    status = NiFpga_WriteU16(NiELVISIIIv10_session, bank->cnt, counterMax);
 
     // Check if there was an error writing to SPI Counter Register.
     // If there was an error then print an error message to stdout.
@@ -99,24 +99,24 @@ void Spi_CounterMaximum(ELVISIII_Spi* connector, uint16_t counterMax)
 /**
  * Transmits data.
  *
- * @param[in]  connector      A struct containing the registers on the SPI channel to modify.
- * @param[in]  dataOut         Data to output.
- * @param[in]  dataIn         Data to input.
+ * @param[in]  bank        A struct containing the registers on the SPI channel to modify.
+ * @param[in]  dataOut     Data to output.
+ * @param[in]  dataIn      Data to input.
  */
-void Spi_Transmit(ELVISIII_Spi* connector, uint16_t dataOut, uint16_t* dataIn)
+void Spi_Transmit(ELVISIII_Spi* bank, uint16_t dataOut, uint16_t* dataIn)
 {
     NiFpga_Status status;
     uint8_t spiStatus;
 
     // Set the value of the data to output.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU16(NiELVISIIIv10_session, connector->dato, dataOut);
+    status = NiFpga_WriteU16(NiELVISIIIv10_session, bank->dato, dataOut);
 
     // Start the data transmission.
     // NiFpga_MergeStatus is used to propagate any errors from previous
     // function calls. Errors are not anticipated so error checking is not done
     // after every NiFpga function call but only at specific points.
-    NiFpga_MergeStatus(&status, NiFpga_WriteBool(NiELVISIIIv10_session, connector->go, NiFpga_True));
+    NiFpga_MergeStatus(&status, NiFpga_WriteBool(NiELVISIIIv10_session, bank->go, NiFpga_True));
 
     // Check if there was an error writing to the SPI Execute Register.
     // If there was an error then the rest of the function cannot complete
@@ -131,7 +131,7 @@ void Spi_Transmit(ELVISIII_Spi* connector, uint16_t dataOut, uint16_t* dataIn)
     {
         // Read the status register to check if it inverted.
         // The returned NiFpga_Status value is stored for error checking.
-        status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->stat, &spiStatus);
+        status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->stat, &spiStatus);
 
     } while ((spiStatus & Spi_Busy) && !NiELVISIIIv10_IsNotSuccess(status));
 
@@ -146,7 +146,7 @@ void Spi_Transmit(ELVISIII_Spi* connector, uint16_t dataOut, uint16_t* dataIn)
     {
         // Get the value of the data Input Register.
         // The returned NiFpga_Status value is stored for error checking.
-        status = NiFpga_ReadU16(NiELVISIIIv10_session, connector->dati, dataIn);
+        status = NiFpga_ReadU16(NiELVISIIIv10_session, bank->dati, dataIn);
 
         // Check if there was an error reading from the SPI registers.
         // If there was an error then print an error message to stdout.
@@ -159,9 +159,9 @@ void Spi_Transmit(ELVISIII_Spi* connector, uint16_t dataOut, uint16_t* dataIn)
 /**
  * Write the value to the System Select Register.
  *
- * @param[in]  connector      A struct containing the registers on the SPI channel to modify.
+ * @param[in]  bank      A struct containing the registers on the SPI channel to modify.
  */
-void Spi_Select(ELVISIII_Spi* connector)
+void Spi_Select(ELVISIII_Spi* bank)
 {
     NiFpga_Status status;
     uint64_t selectReg;
@@ -169,7 +169,7 @@ void Spi_Select(ELVISIII_Spi* connector)
     // SPI connections are on pins shared with other onboard devices. To use
     // on a physical pin, select the SPI on the appropriate SELECT register.
     // Read the value of the SYSSELECTA register.
-    status = NiFpga_ReadU64(NiELVISIIIv10_session, connector->sel, &selectReg);
+    status = NiFpga_ReadU64(NiELVISIIIv10_session, bank->sel, &selectReg);
 
     NiELVISIIIv10_ReturnValueIfNotSuccess(status, status, "Could not read from the System Select Register!");
 
@@ -182,7 +182,7 @@ void Spi_Select(ELVISIII_Spi* connector)
     selectReg = selectReg | ~0x03ff;
 
     // Write the updated value of the SYSSELECTA register.
-    status = NiFpga_WriteU64(NiELVISIIIv10_session, connector->sel, selectReg);
+    status = NiFpga_WriteU64(NiELVISIIIv10_session, bank->sel, selectReg);
 
     // Check if there was an error reading from the System Select Register.
     // If there was an error then print an error message to stdout.

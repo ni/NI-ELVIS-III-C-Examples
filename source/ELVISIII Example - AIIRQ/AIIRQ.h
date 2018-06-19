@@ -101,16 +101,16 @@ typedef struct
 unsigned int ConvertDoubleToUnsignedInt(double value);
 
 // Set the number of valid AI channels.
-void Ai_Counter(ELVISIII_IrqAi* connector, uint8_t counter);
+void Ai_Counter(ELVISIII_IrqAi* bank, uint8_t counter);
 
 // Set the AI configuration options.
-void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range);
+void Ai_Configure(ELVISIII_IrqAi* bank, Ai_Channel channel, Ai_Range range);
 
 // Generate the divisor for sample rate.
-void Ai_Divisor(ELVISIII_IrqAi* connector, uint32_t ClockRate, uint32_t SampleRate);
+void Ai_Divisor(ELVISIII_IrqAi* bank, uint32_t ClockRate, uint32_t SampleRate);
 
 // Configure the AI IRQ number, threshold and hysteresis and trigger type.
-int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
+int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    bank,
                           NiFpga_IrqContext* irqContext,
                           uint8_t            irqNumber,
                           double             threshold,
@@ -118,7 +118,7 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
                           Irq_Ai_Type        type);
 
 // Disable the IRQ configuration on the specified IRQ channel and number.
-int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*    connector,
+int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*    bank,
                              NiFpga_IrqContext irqContext,
                              uint8_t           irqNumber);
 

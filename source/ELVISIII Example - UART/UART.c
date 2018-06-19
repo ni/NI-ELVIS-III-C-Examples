@@ -20,18 +20,18 @@
  */
 extern NiFpga_Session NiELVISIIIv10_session;
 
-// Initialize the register addresses of UART in connector A.
-ELVISIII_Connector connector_A = {UARTAENA, UARTASTAT, CONSOLEENA};
+// Initialize the register addresses of UART in bank A.
+ELVISIII_Bank bank_A = {UARTAENA, UARTASTAT, CONSOLEENA};
 
-// Initialize the register addresses of UART in connector B.
-ELVISIII_Connector connector_B = {UARTBENA, UARTBSTAT, CONSOLEENA};
+// Initialize the register addresses of UART in bank B.
+ELVISIII_Bank bank_B = {UARTBENA, UARTBSTAT, CONSOLEENA};
 
 /**
- *  Set the UART Enable Flag for one connector.
+ *  Set the UART Enable Flag for one bank.
  *
- * @param[in]  connector      A struct containing the registers for one connecter.
+ * @param[in]  bank      A struct containing the registers for one connecter.
  */
-void Uart_Enable(ELVISIII_Connector* connector)
+void Uart_Enable(ELVISIII_Bank* bank)
 {
     NiFpga_Status status;
     NiFpga_Bool Enable;
@@ -39,7 +39,7 @@ void Uart_Enable(ELVISIII_Connector* connector)
 
     // Read the value from the Console Enable Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_ReadBool(NiELVISIIIv10_session, connector->console, &Enable);
+    status = NiFpga_ReadBool(NiELVISIIIv10_session, bank->console, &Enable);
 
     // Check if there was an error reading from the Console Enable Register.
     // If there was an error then print an error message to stdout.
@@ -49,7 +49,7 @@ void Uart_Enable(ELVISIII_Connector* connector)
     {
         // Write the value to the Console Enable Register.
         // The returned NiFpga_Status value is stored for error checking.
-        status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->console, NiFpga_False);
+        status = NiFpga_WriteBool(NiELVISIIIv10_session, bank->console, NiFpga_False);
 
         // Check if there was an error writing to the Console Enable Register.
         // If there was an error then print an error message to stdout.
@@ -58,7 +58,7 @@ void Uart_Enable(ELVISIII_Connector* connector)
 
     // Write the value to the UART Enable Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteBool(NiELVISIIIv10_session, connector->enable, NiFpga_True);
+    status = NiFpga_WriteBool(NiELVISIIIv10_session, bank->enable, NiFpga_True);
 
     // Check if there was an error writing to the UART Enable Register.
     // If there was an error then print an error message to stdout.
@@ -67,7 +67,7 @@ void Uart_Enable(ELVISIII_Connector* connector)
     while(flag)
     {
         // Read the value from the UART Enable Register.
-        NiFpga_ReadBool(NiELVISIIIv10_session, connector->enable, &Enable);
+        NiFpga_ReadBool(NiELVISIIIv10_session, bank->enable, &Enable);
 
         // Check if there was an error reading from the UART Enable Register.
         // If there was an error then print an error message to stdout.
@@ -85,7 +85,7 @@ void Uart_Enable(ELVISIII_Connector* connector)
 /**
  * Opens a UART session on an VISA implemented port.
  *
- * @param[in]  port           UART port information.
+ * @param[in]  port            UART port information.
  * @param[in]  baud            Baud rate (bps).
  * @param[in]  dataBits        Number of bits per frame.
  * @param[in]  stopBits        Stop bit configuration.

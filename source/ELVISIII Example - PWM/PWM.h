@@ -92,22 +92,22 @@ typedef struct
 } ELVISIII_Pwm;
 
 // Sets the PWM waveform and and invert configuration options.
-void Pwm_Configure(ELVISIII_Pwm* connector, Pwm_Channel channel, Pwm_ConfigureMask mask, Pwm_ConfigureSettings settings);
+void Pwm_Configure(ELVISIII_Pwm* bank, Pwm_Channel channel, Pwm_ConfigureMask mask, Pwm_ConfigureSettings settings);
 
 // Sets the PWM clock select divider, that is, the frequency of the PWM internal clock.
-void Pwm_ClockSelect(ELVISIII_Pwm* connector, Pwm_Channel channel, Pwm_ClockDivider divider);
+void Pwm_ClockSelect(ELVISIII_Pwm* bank, Pwm_Channel channel, Pwm_ClockDivider divider);
 
 // Sets the maximum value of the PWM counter.
-void Pwm_CounterMaximum(ELVISIII_Pwm* connector, Pwm_Channel channel, uint16_t counterMax);
+void Pwm_CounterMaximum(ELVISIII_Pwm* bank, Pwm_Channel channel, uint16_t counterMax);
 
 // Sets the period of the PWM counter with output.
-void Pwm_CounterCompare(ELVISIII_Pwm* connector, Pwm_Channel channel, uint16_t counterCompare);
+void Pwm_CounterCompare(ELVISIII_Pwm* bank, Pwm_Channel channel, uint16_t counterCompare);
 
 // Gets the value of the PWM counter.
-uint16_t Pwm_Counter(ELVISIII_Pwm* connector, Pwm_Channel channel);
+uint16_t Pwm_Counter(ELVISIII_Pwm* bank, Pwm_Channel channel);
 
 // Write the value to the System Select Register.
-void Pwm_Select(ELVISIII_Pwm* connector, Pwm_Channel channel);
+void Pwm_Select(ELVISIII_Pwm* bank, Pwm_Channel channel);
 
 #if NiFpga_Cpp
 }

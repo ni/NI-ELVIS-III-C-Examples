@@ -26,11 +26,11 @@
  */
 extern NiFpga_Session NiELVISIIIv10_session;
 
-// Initialize the register addresses of DI in connector A.
-ELVISIII_Dio connector_A = {98304, 98312, 98320};
+// Initialize the register addresses of DI in bank A.
+ELVISIII_Dio bank_A = {98304, 98312, 98320};
 
-// Initialize the register addresses of DI in connector B.
-ELVISIII_Dio connector_B = {99532, 99524, 99516};
+// Initialize the register addresses of DI in bank B.
+ELVISIII_Dio bank_B = {99532, 99524, 99516};
 
 /**
  * Read the value from one channel.
@@ -49,12 +49,12 @@ ELVISIII_Dio connector_B = {99532, 99524, 99516};
  * of the DIR register. A value of 0 makes the channel an input, a value of 1
  * sets the channel as an output.
  *
- * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  channel      Enum containing 20 kinds of channels (DIO0 - DIO19).
+ * @param[in]  bank      A struct containing the registers for one connecter.
+ * @param[in]  channel   Enum containing 20 kinds of channels (DIO0 - DIO19).
  *
  * @return the logical value of the voltage on the channel.
  */
-NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Dio_Channel channel)
+NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* bank, Dio_Channel channel)
 {
     NiFpga_Status status;
 
@@ -65,7 +65,7 @@ NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Dio_Channel channel)
 
     // Get the value of the DI Direction Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->dir, &dirValue);
+    status = NiFpga_ReadU32(NiELVISIIIv10_session, bank->dir, &dirValue);
 
     // Check if there was an error writing to the read register.
     // If there was an error then print an error message to stdout and return.
@@ -79,7 +79,7 @@ NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Dio_Channel channel)
 
     // Write the new value to the DI Direction Register to ensure that the proper bit is turned into an input.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->dir, dirValue);
+    status = NiFpga_WriteU32(NiELVISIIIv10_session, bank->dir, dirValue);
 
     // Check if there was an error writing to the write register.
     // If there was an error then print an error message to stdout and return.
@@ -88,7 +88,7 @@ NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Dio_Channel channel)
     // Get the value of the DI Value Register.
     // NiFpga_MergeStatus is used to propagate any errors from previous function calls.
     // Errors are not anticipated so error checking is not done after every NiFpga function call but only at specific points.
-    NiFpga_MergeStatus(&status, NiFpga_ReadU32(NiELVISIIIv10_session, connector->in, &inValue));
+    NiFpga_MergeStatus(&status, NiFpga_ReadU32(NiELVISIIIv10_session, bank->in, &inValue));
 
     // Check if there was an error writing to or reading from the DI Registers.
     // If there was an error then the rest of the function cannot complete correctly so print an error message to stdout and return from the function early.
@@ -118,12 +118,12 @@ NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Dio_Channel channel)
  * of the DIR register. A value of 0 makes the channel an input, a value of 1
  * sets the channel as an output.
  *
- * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  value          the value used to write into the DO Value Register.
+ * @param[in]  bank         A struct containing the registers for one connecter.
+ * @param[in]  value        the value used to write into the DO Value Register.
  * @param[in]  channel      Enum containing 20 kinds of channels (DIO0 - DIO19).
  *
  */
-void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Dio_Channel channel)
+void Dio_WriteBit(ELVISIII_Dio* bank, NiFpga_Bool value, Dio_Channel channel)
 {
     NiFpga_Status status;
 
@@ -133,12 +133,12 @@ void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Dio_Channel channe
 
     // Get the value from the DO Value Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->out, &outValue);
+    status = NiFpga_ReadU32(NiELVISIIIv10_session, bank->out, &outValue);
 
     // Get the value from the DI Direction register.
     // NiFpga_MergeStatus is used to propagate any errors from previous function calls.
     // Errors are not anticipated so error checking is not done after every NiFpga function call but only at specific points.
-    NiFpga_MergeStatus(&status, NiFpga_ReadU32(NiELVISIIIv10_session, connector->dir, &dirValue));
+    NiFpga_MergeStatus(&status, NiFpga_ReadU32(NiELVISIIIv10_session, bank->dir, &dirValue));
 
     // Check if there was an error reading from the DIO registers.
     // If there was an error then the rest of the function cannot complete correctly so print an error message to stdout and return from the function early.
@@ -157,10 +157,10 @@ void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Dio_Channel channe
     outValue = outValue | (value << bit);
 
     // Write the new value of the output register to the device.
-    NiFpga_MergeStatus(&status, NiFpga_WriteU32(NiELVISIIIv10_session, connector->out, outValue));
+    NiFpga_MergeStatus(&status, NiFpga_WriteU32(NiELVISIIIv10_session, bank->out, outValue));
 
     // Write the new value of the direction register to the device to ensure that the DIO channel is set as an output channel.
-    NiFpga_MergeStatus(&status, NiFpga_WriteU32(NiELVISIIIv10_session, connector->dir, dirValue));
+    NiFpga_MergeStatus(&status, NiFpga_WriteU32(NiELVISIIIv10_session, bank->dir, dirValue));
 
     // Check if there was an error writing to DIO channel registers.
     // If there was an error then print an error message to stdout.

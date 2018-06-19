@@ -126,20 +126,19 @@ typedef struct
 } ELVISIII_Aio;
 
 // Set the number of valid analog input channels.
-void Ai_Counter(ELVISIII_Aio* connector, uint8_t counter);
+void Ai_Counter(ELVISIII_Aio* bank, uint8_t counter);
 
 // Set the AI configuration options.
-void Ai_Configure(ELVISIII_Aio* connector, Ai_Channel channel, Ai_Range range);
+void Ai_Configure(ELVISIII_Aio* bank, Ai_Channel channel, Ai_Range range);
 
 // Generate the divisor for the AI sample rate.
-void Ai_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate);
+void Ai_Divisor(ELVISIII_Aio* bank, uint32_t ClockRate, uint32_t SampleRate);
 
-// Set the DMA Enable Flag for one connector.
-void Ai_Enable(ELVISIII_Aio* connector);
-
+// Set the DMA Enable Flag for one bank.
+void Ai_Enable(ELVISIII_Aio* bank);
 
 // Read groups of AI values as an AI FIFO from a single channel.
-void Ai_ReadFifo(ELVISIII_Aio*                 connector,
+void Ai_ReadFifo(ELVISIII_Aio*                bank,
                  TargetToHost_FIFO_FXP         fifo,
                   uint64_t*                    fxp_buffer_receive,
                   size_t                       fifo_size,
@@ -150,17 +149,16 @@ void Ai_ReadFifo(ELVISIII_Aio*                 connector,
 void ConvertUnsignedLongLongIntToDouble(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value);
 
 // Generate the divisor for the AO sample rate.
-
-void Ao_Divisor(ELVISIII_Aio* connector, uint32_t ClockRate, uint32_t SampleRate);
+void Ao_Divisor(ELVISIII_Aio* bank, uint32_t ClockRate, uint32_t SampleRate);
 
 // Set the DMA Enable value for an analog output channel.
-void Ao_Enable(ELVISIII_Aio* connector, Ao_Channel channel);
+void Ao_Enable(ELVISIII_Aio* bank, Ao_Channel channel);
 
 // Convert double values to fixed-point values of the FIFO.
 void ConvertDoubleToUnsignedLongLongInt(double *value, uint64_t *fxp_buffer_send, size_t fifo_size);
 
 // Write groups of AO values as an AO FIFO to a single channel.
-void Ao_WriteFifo(ELVISIII_Aio*             connector,
+void Ao_WriteFifo(ELVISIII_Aio*             bank,
                   HostToTarget_FIFO_FXP     fifo,
                    const uint64_t*           fxp_buffer_send,
                    size_t                    fifo_size,

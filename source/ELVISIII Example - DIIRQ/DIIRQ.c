@@ -26,8 +26,8 @@
  */
 extern NiFpga_Session NiELVISIIIv10_session;
 
-// Initialize the register addresses of DI IRQ in connector A.
-ELVISIII_IrqDi connector_A = {{IRQDIO_A_0CNT, IRQDIO_A_1CNT, IRQDIO_A_2CNT, IRQDIO_A_3CNT},
+// Initialize the register addresses of DI IRQ in bank A.
+ELVISIII_IrqDi bank_A = {{IRQDIO_A_0CNT, IRQDIO_A_1CNT, IRQDIO_A_2CNT, IRQDIO_A_3CNT},
                               {IRQDIO_A_0NO, IRQDIO_A_1NO, IRQDIO_A_2NO, IRQDIO_A_3NO},
                                IRQDIO_A_70ENA,
                                IRQDIO_A_70RISE,
@@ -36,7 +36,7 @@ ELVISIII_IrqDi connector_A = {{IRQDIO_A_0CNT, IRQDIO_A_1CNT, IRQDIO_A_2CNT, IRQD
 /**
  * Reserve the interrupt from FPGA and configure DI IRQ.
  *
- * @param[in]  connector    A structure containing the registers and settings for a particular analog IRQ I/O to modify.
+ * @param[in]  bank         A structure containing the registers and settings for a particular analog IRQ I/O to modify.
  * @param[in]  irqContext   IRQ context under which you need to reserve.
  * @param[in]  irqNumber    The IRQ number (IRQNO_MIN-IRQNO_MAX).
  * @param[in]  count        The incremental times that you use to trigger the interrupt.
@@ -44,7 +44,7 @@ ELVISIII_IrqDi connector_A = {{IRQDIO_A_0CNT, IRQDIO_A_1CNT, IRQDIO_A_2CNT, IRQD
  *
  * @return the configuration status.
  */
-int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
+int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    bank,
                           NiFpga_IrqContext* irqContext,
                           uint8_t            irqNumber,
                           uint32_t           count,
@@ -76,7 +76,7 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
 
     // Check if the IRQ number or channel value already exists in the resource list,
     // return the configuration status and print error message.
-    status = Irq_CheckReserved(connector->dioChannel, irqNumber);
+    status = Irq_CheckReserved(bank->dioChannel, irqNumber);
     if (status == NiELVISIIIv10_Status_IrqNumberNotUsable)
     {
         printf("You have already registered an interrupt with the same interrupt number.\n");
@@ -89,26 +89,26 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
     }
 
     // Write the value to the DI IRQ number register.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->dioIrqNumber[connector->dioChannel - 2], irqNumber);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->dioIrqNumber[bank->dioChannel - 2], irqNumber);
 
     // Check if there was an error when your wrote to the DI IRQ number register.
     // If there was an error, print an error message to stdout and return the configuration status.
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to DI IRQ Number Register!");
 
     // Write the value to the DI IRQ count register.
-    status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->dioCount[connector->dioChannel - 2], count);
+    status = NiFpga_WriteU32(NiELVISIIIv10_session, bank->dioCount[bank->dioChannel - 2], count);
 
     // Check if there was an error when you reserved an IRQ.
     // If there was an error, print an error message to stdout and return the configuration status.
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to DI IRQ Count Register!");
 
     // Get the current value of the DI rising-configure register.
-    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->dioIrqRisingEdge, &cnfgValue);
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->dioIrqRisingEdge, &cnfgValue);
     typeValue = (uint16_t) cnfgValue;
 
     // Get the current value of the DI falling-configure register.
     // Merge it with the rising-configure register and write to typeValue.
-    NiFpga_MergeStatus(&status, NiFpga_ReadU8(NiELVISIIIv10_session, connector->dioIrqFallingEdge, &cnfgValue));
+    NiFpga_MergeStatus(&status, NiFpga_ReadU8(NiELVISIIIv10_session, bank->dioIrqFallingEdge, &cnfgValue));
     typeValue = typeValue | (cnfgValue << 8);
 
     // Check if there was an error reading from the DI Rising/Falling Register.
@@ -118,14 +118,14 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not read from the DI Rise/Fall Register!");
 
     // Get the current value of the DI configure register.
-    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->dioIrqEnable, &cnfgValue);
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->dioIrqEnable, &cnfgValue);
 
     // Check if there was an error when you reserved an IRQ.
     // If there was an error, print an error message to stdout and return the configuration status.
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not read from the DI Configuration Register!");
 
     // Configure the IRQ triggered-type for the particular digital IRQ I、O.
-    if (connector->dioChannel == Irq_Dio_A0)
+    if (bank->dioChannel == Irq_Dio_A0)
     {
         // Clear the value of the masked bits in the DI configure register, then
         // set which IO is enabled.
@@ -147,7 +147,7 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
             typeValue = typeValue | Irq_Dio_A0_Edge;
         }
     }
-    else if (connector->dioChannel == Irq_Dio_A1)
+    else if (bank->dioChannel == Irq_Dio_A1)
     {
         // Clear the value of the masked bits in the DI configure register, then
         // set which IO is enabled.
@@ -170,7 +170,7 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
             typeValue = typeValue | Irq_Dio_A1_Edge;
         }
     }
-    else if (connector->dioChannel == Irq_Dio_A2)
+    else if (bank->dioChannel == Irq_Dio_A2)
     {
         // Clear the value of the masked bits in the DI configure register, then
         // set which IO is enabled.
@@ -193,7 +193,7 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
             typeValue = typeValue | Irq_Dio_A2_Edge;
         }
     }
-    else if (connector->dioChannel == Irq_Dio_A3)
+    else if (bank->dioChannel == Irq_Dio_A3)
     {
         // Clear the value of the masked bits in the DI configure register, then
         // set which IO is enabled.
@@ -218,24 +218,24 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
     }
 
     // Write the new value of the DI Enabling Register to the device.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->dioIrqEnable, cnfgValue);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->dioIrqEnable, cnfgValue);
 
     // Check if there was an error writing to DI Enabling Register.
     // If there was an error then print an error message to stdout and return configuration status.
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to the DI Enabling Register!");
 
     // Write the new value of the DI rise-configure register to the device.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->dioIrqRisingEdge, (uint8_t) typeValue);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->dioIrqRisingEdge, (uint8_t) typeValue);
 
     // Write the new value of the DI fall-configure register to the device.
-    NiFpga_MergeStatus(&status, NiFpga_WriteU8(NiELVISIIIv10_session, connector->dioIrqFallingEdge, (uint8_t)(typeValue >> 8)));
+    NiFpga_MergeStatus(&status, NiFpga_WriteU8(NiELVISIIIv10_session, bank->dioIrqFallingEdge, (uint8_t)(typeValue >> 8)));
 
     // Check if there was an error writing to DI Rise/Fall Configuration Register.
     // If there was an error then print an error message to stdout.
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to the DI Rise/Fall Configuration Register!");
 
     // Add the channel value and IRQ number in the list.
-    Irq_AddReserved(connector->dioChannel, irqNumber);
+    Irq_AddReserved(bank->dioChannel, irqNumber);
 
     return NiELVISIIIv10_Status_Success;
 }
@@ -245,13 +245,13 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
  * clear according channel value and IRQ number in the resource list.
  * So the IO can be configured in the next time.
  *
- * @param[in]  connector      A struct containing the registers and settings for a particular analog IRQ IO to modify.
- * @param[in]  irqContext      IRQ context with to unreserve.
+ * @param[in]  bank         A struct containing the registers and settings for a particular analog IRQ IO to modify.
+ * @param[in]  irqContext   IRQ context with to unreserve.
  * @param[in]  irqNumber    The IRQ number (IRQNO_MIN-IRQNO_MAX).
  *
  * @return the configuration status.
  */
-int32_t Irq_UnregisterDiIrq(ELVISIII_IrqDi*   connector,
+int32_t Irq_UnregisterDiIrq(ELVISIII_IrqDi*   bank,
                             NiFpga_IrqContext irqContext,
                             uint8_t           irqNumber)
 {
@@ -267,7 +267,7 @@ int32_t Irq_UnregisterDiIrq(ELVISIII_IrqDi*   connector,
     }
 
     // Check if the specified IRQ resource is registered.
-    status = Irq_CheckReserved(connector->dioChannel, irqNumber);
+    status = Irq_CheckReserved(bank->dioChannel, irqNumber);
     if (status == NiELVISIIIv10_Status_Success)
     {
         // Did not find the resource in the list
@@ -276,32 +276,32 @@ int32_t Irq_UnregisterDiIrq(ELVISIII_IrqDi*   connector,
     }
 
     // Get the current value of the DI configure register.
-    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->dioIrqEnable, &cnfgValue);
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->dioIrqEnable, &cnfgValue);
 
     // Check if there was an error reading from the DI Configuration register.
     // If there was an error then print an error message to stdout and return configuration status.
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not read from the DI Configuration Register!");
 
     // Disable the specified channel.
-    if (connector->dioChannel == Irq_Dio_A0)
+    if (bank->dioChannel == Irq_Dio_A0)
     {
         // Clear the value of the masked bits in the DI configure register. This is
         // done so DI0 is disabled.
         cnfgValue = cnfgValue & (~Irq_Dio_A0_Enable);
     }
-    else if (connector->dioChannel == Irq_Dio_A1)
+    else if (bank->dioChannel == Irq_Dio_A1)
     {
         // Clear the value of the masked bits in the DI configure register. This is
         // done so DI1 is disabled.
         cnfgValue = cnfgValue & (~Irq_Dio_A1_Enable);
     }
-    else if (connector->dioChannel == Irq_Dio_A2)
+    else if (bank->dioChannel == Irq_Dio_A2)
     {
         // Clear the value of the masked bits in the DI configure register. This is
         // done so DI2 is disabled.
         cnfgValue = cnfgValue & (~Irq_Dio_A2_Enable);
     }
-    else if (connector->dioChannel == Irq_Dio_A3)
+    else if (bank->dioChannel == Irq_Dio_A3)
     {
         // Clear the value of the masked bits in the DI configure register. This is
         // done so DI3 is disabled.
@@ -309,7 +309,7 @@ int32_t Irq_UnregisterDiIrq(ELVISIII_IrqDi*   connector,
     }
 
     // Write the new value of the DI configure register to the device.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->dioIrqEnable, cnfgValue);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->dioIrqEnable, cnfgValue);
 
     // Check if there was an error writing to DI Configuration register.
     // If there was an error then print an error message to stdout and return configuration status.

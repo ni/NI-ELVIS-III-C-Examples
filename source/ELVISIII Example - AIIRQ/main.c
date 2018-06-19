@@ -9,7 +9,7 @@
  * The output is maintained for 60 s.
  *
  * Instructions:
- * 1. Connect a signal, such as sine wave, to AI0 on connector A.
+ * 1. Connect a signal, such as sine wave, to AI0 on bank A.
  * 2. Run this program and observe the console.
  *
  * Output:
@@ -32,7 +32,7 @@
 #define LoopSteps             3    // How long to step between printing, in seconds
 #endif
 
-extern ELVISIII_IrqAi connector_A;
+extern ELVISIII_IrqAi bank_A;
 
 // Resources for the new thread.
 typedef struct
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     printf("Analog Input IRQ:\n");
 
     // Specify the AI IRQ supported I/O.
-    connector_A.aiChannel = Irq_Ai_A0;
+    bank_A.aiChannel = Irq_Ai_A0;
 
     // Initiate the IRQ number resource of the new thread.
     irqThread0.irqNumber = IrqNumberConfigure;
@@ -77,18 +77,18 @@ int main(int argc, char **argv)
         return status;
     }
 
-    // Set the number of valid channels on connector A.
-    Ai_Counter(&connector_A, 2);
+    // Set the number of valid channels on bank A.
+    Ai_Counter(&bank_A, 2);
 
-    // Configure the range of the A/AI0 on connector A.
-    Ai_Configure(&connector_A, Ai_Channel0, Ai_Range0);
+    // Configure the range of the A/AI0 on bank A.
+    Ai_Configure(&bank_A, Ai_Channel0, Ai_Range0);
 
-    // Configure the divisor for the analog sample rate on connector A.
-    Ai_Divisor(&connector_A, 40000000, 1000);
+    // Configure the divisor for the analog sample rate on bank A.
+    Ai_Divisor(&bank_A, 40000000, 1000);
 
     // Configure the AI0 IRQ and return a status message to indicate if the configuration is successful,
     // the error code is defined in IRQConfigure.h.
-    status = Irq_RegisterAiIrq(&connector_A,
+    status = Irq_RegisterAiIrq(&bank_A,
                                &(irqThread0.irqContext),
                                IrqNumberConfigure,
                                ThresholdConfigure,
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
     // Disable AI0, so you can configure this I/O next time.
     // Every IrqConfigure() function should have its corresponding clear function,
     // and their parameters should also match.
-    status = Irq_UnregisterAiIrq(&connector_A,
+    status = Irq_UnregisterAiIrq(&bank_A,
                                  irqThread0.irqContext,
                                  IrqNumberConfigure);
 

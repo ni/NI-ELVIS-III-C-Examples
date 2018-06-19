@@ -69,14 +69,14 @@ typedef struct
 } ELVISIII_IrqDi;
 
 // Configure the DI IRQ.
-int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    connector,
+int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    bank,
                           NiFpga_IrqContext* irqContext,
                           uint8_t            irqNumber,
                           uint32_t           count,
                           Irq_Dio_Type       type);
 
 // Clear the DI IRQ configuration setting.
-int32_t Irq_UnregisterDiIrq(ELVISIII_IrqDi*   connector,
+int32_t Irq_UnregisterDiIrq(ELVISIII_IrqDi*   bank,
                             NiFpga_IrqContext irqContext,
                             uint8_t           irqNumber);
 

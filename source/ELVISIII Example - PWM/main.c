@@ -5,10 +5,10 @@
  *
  * Overview:
  * Demonstrates using the PWM.
- * Generates a PWM signal from PWM 0 on connector A.
+ * Generates a PWM signal from PWM 0 on bank A.
  *
  * Instructions:
- * 1. Connect an oscilloscope to the PWM 0 pin on connector A.
+ * 1. Connect an oscilloscope to the PWM 0 pin on bank A.
  * 2. Open MeasurementsLive website and connect the ELVISIII.
  * 4. In Instruments tab, Open Oscilloscope, generate a PWM signal.
  * 3. Run this program.
@@ -28,7 +28,7 @@
 #define LoopDuration    60  // How long to output the signal, in seconds 
 #endif
 
-extern ELVISIII_Pwm connector_A;
+extern ELVISIII_Pwm bank_A;
 
 int main(int argc, char **argv)
 {
@@ -49,27 +49,27 @@ int main(int argc, char **argv)
     }
 
     // Set the waveform, enabling the PWM onboard device.
-    Pwm_Configure(&connector_A, Pwm_Channel0, Pwm_Invert | Pwm_Mode, Pwm_NotInverted | Pwm_Enabled);
+    Pwm_Configure(&bank_A, Pwm_Channel0, Pwm_Invert | Pwm_Mode, Pwm_NotInverted | Pwm_Enabled);
 
     // Set the clock divider. The internal PWM counter will increments at f_clk / 4
     // where: f_clk = the frequency of the myRIO FPGA clock (40 MHz default)
-    Pwm_ClockSelect(&connector_A, Pwm_Channel0, Pwm_4x);
+    Pwm_ClockSelect(&bank_A, Pwm_Channel0, Pwm_4x);
 
     // Set the maximum counter value. The counter counts from 0 to 1000.
     // The counter increments at 40 MHz / 4 = 10 MHz and the counter counts
     // from 0 to 1000. The frequency of the PWM waveform is 10 MHz / 1000 = 10 kHz.
-    Pwm_CounterMaximum(&connector_A, Pwm_Channel0, 1000);
+    Pwm_CounterMaximum(&bank_A, Pwm_Channel0, 1000);
 
     // Set the comparison counter value. The PWM counter counts from 0 to 1000
     // and outputs from 0 to the comparison value (250).
     // The duty cycle is 250 / 1000 = 25%.
-    Pwm_CounterCompare(&connector_A, Pwm_Channel0, 250);
+    Pwm_CounterCompare(&bank_A, Pwm_Channel0, 250);
 
-    // Write the value to PWM channel 0 on connector A.
-    Pwm_Select(&connector_A, Pwm_Channel0);
+    // Write the value to PWM channel 0 on bank A.
+    Pwm_Select(&bank_A, Pwm_Channel0);
 
     // Print the counter value.
-    printf("%d\n", Pwm_Counter(&connector_A, Pwm_Channel0));
+    printf("%d\n", Pwm_Counter(&bank_A, Pwm_Channel0));
 
     // Normally, the main function runs a long running or infinite loop.
     // Keep the program running so that you can measure the output using

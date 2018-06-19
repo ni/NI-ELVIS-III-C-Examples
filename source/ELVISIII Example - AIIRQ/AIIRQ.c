@@ -43,8 +43,8 @@
  */
 extern NiFpga_Session NiELVISIIIv10_session;
 
-// Initialize the register addresses of AIIRQ in connector A.
-ELVISIII_IrqAi connector_A = {AIACNFG, AIACNTR, AIACNT, AIAVALRDY, {99764, 99768}, {IRQAI_A_0NO, IRQAI_A_1NO}, {99700, 99696}, {99708, 99712}, IRQAI_ACNFG};
+// Initialize the register addresses of AIIRQ in bank A.
+ELVISIII_IrqAi bank_A = {AIACNFG, AIACNTR, AIACNT, AIAVALRDY, {99764, 99768}, {IRQAI_A_0NO, IRQAI_A_1NO}, {99700, 99696}, {99708, 99712}, IRQAI_ACNFG};
 
 /*
  * Convert double value to unsigned int value.
@@ -59,12 +59,12 @@ unsigned int ConvertDoubleToUnsignedInt(double value)
 }
 
 /**
- * Set the number of valid channels on the connector.
+ * Set the number of valid channels on the bank.
  *
- * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  counter        The number of valid channels on the connector.
+ * @param[in]  bank       A struct containing the registers for one connecter.
+ * @param[in]  counter    The number of valid channels on the bank.
  */
-void Ai_Counter(ELVISIII_IrqAi* connector, uint8_t counter)
+void Ai_Counter(ELVISIII_IrqAi* bank, uint8_t counter)
 {
     NiFpga_Status status;
     bool flag = true;
@@ -72,7 +72,7 @@ void Ai_Counter(ELVISIII_IrqAi* connector, uint8_t counter)
 
     // Write the counter value to the AI Counter Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cnt, counter);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->cnt, counter);
 
     // Check if there was an error writing to the write register.
     // If there was an error then print an error message to stdout and return.
@@ -83,7 +83,7 @@ void Ai_Counter(ELVISIII_IrqAi* connector, uint8_t counter)
     {
         // Read the value from the AI Counter Register.
         // The returned NiFpga_Status value is stored for error checking.
-        status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->cnt, &Counter);
+        status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->cnt, &Counter);
 
         // Check if there was an error reading from the register.
         // If there was an error then print an error message to stdout and return.
@@ -101,11 +101,11 @@ void Ai_Counter(ELVISIII_IrqAi* connector, uint8_t counter)
 /**
  * Configure the range of the analog input channel.
  *
- * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 2 kinds of channels (AI0, AI1).
+ * @param[in]  bank         A struct containing the registers for one connecter.
+ * @param[in]  channel      Enum containing 2 kinds of channels (AI0, AI1).
  * @param[in]  range        Enum containing 4 kinds of ranges (±10 V, ±5 V, ±2 V, ±1 V).
  */
-void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range)
+void Ai_Configure(ELVISIII_IrqAi* bank, Ai_Channel channel, Ai_Range range)
 {
     NiFpga_Status status;
 
@@ -123,7 +123,7 @@ void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range)
 
     // Get the initial values from the AI Configuration Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, connector->cnfg, Config, RSE_NUM + DIFF_NUM);
+    status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, bank->cnfg, Config, RSE_NUM + DIFF_NUM);
 
     // Check if there was an error writing to the read register.
     // If there was an error then print an error message to stdout and return.
@@ -134,7 +134,7 @@ void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range)
 
     // Write the configuration values to the AI Configuration Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteArrayU8(NiELVISIIIv10_session, connector->cnfg, (const uint8_t*)(Config), RSE_NUM + DIFF_NUM);
+    status = NiFpga_WriteArrayU8(NiELVISIIIv10_session, bank->cnfg, (const uint8_t*)(Config), RSE_NUM + DIFF_NUM);
 
     // Check if there was an error writing to the write register.
     // If there was an error then print an error message to stdout and return.
@@ -142,7 +142,7 @@ void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range)
 
     // Read the value from the AI Counter Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->cnt, &Counter);
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->cnt, &Counter);
 
     // Check if there was an error reading from the register.
     // If there was an error then print an error message to stdout and return.
@@ -154,7 +154,7 @@ void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range)
     {
         // Get the value from the AI Ready Register (true or false).
         // The returned NiFpga_Status value is stored for error checking.
-        status = NiFpga_ReadBool(NiELVISIIIv10_session, connector->rdy, &rdy);
+        status = NiFpga_ReadBool(NiELVISIIIv10_session, bank->rdy, &rdy);
 
         // Check if there was an error writing to the read register.
         // If there was an error then print an error message to stdout and return.
@@ -162,7 +162,7 @@ void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range)
 
         // Get the values from the AI Configuration Register.
         // The returned NiFpga_Status value is stored for error checking.
-        status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, connector->cnfg, ConfigValue, RSE_NUM + DIFF_NUM);
+        status = NiFpga_ReadArrayU8(NiELVISIIIv10_session, bank->cnfg, ConfigValue, RSE_NUM + DIFF_NUM);
 
         // Check if there was an error writing to the read register.
         // If there was an error then print an error message to stdout and return.
@@ -188,11 +188,11 @@ void Ai_Configure(ELVISIII_IrqAi* connector, Ai_Channel channel, Ai_Range range)
 /**
  * Configure the divisor for the analog sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  connector        A struct containing the registers for one connecter.
- * @param[in]  ClockRate        The onboard clock rate of FPGA.
- * @param[in]  SampleRate        The analog sample rate.
+ * @param[in]  bank           A struct containing the registers for one connecter.
+ * @param[in]  ClockRate      The onboard clock rate of FPGA.
+ * @param[in]  SampleRate     The analog sample rate.
  */
-void Ai_Divisor(ELVISIII_IrqAi* connector, uint32_t ClockRate, uint32_t SampleRate)
+void Ai_Divisor(ELVISIII_IrqAi* bank, uint32_t ClockRate, uint32_t SampleRate)
 {
     NiFpga_Status status;
     bool flag = true;
@@ -214,7 +214,7 @@ void Ai_Divisor(ELVISIII_IrqAi* connector, uint32_t ClockRate, uint32_t SampleRa
 
     // Write the divisor value to the AI Divisor Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->cntr, divisor);
+    status = NiFpga_WriteU32(NiELVISIIIv10_session, bank->cntr, divisor);
 
     // Check if there was an error writing to the write register.
     // If there was an error then print an error message to stdout and return.
@@ -225,7 +225,7 @@ void Ai_Divisor(ELVISIII_IrqAi* connector, uint32_t ClockRate, uint32_t SampleRa
     {
         // Read the value from the AI Divisor Register.
         // The returned NiFpga_Status value is stored for error checking.
-        status = NiFpga_ReadU32(NiELVISIIIv10_session, connector->cntr, &Divisor);
+        status = NiFpga_ReadU32(NiELVISIIIv10_session, bank->cntr, &Divisor);
 
         // Check if there was an error reading from the register.
         // If there was an error then print an error message to stdout and return.
@@ -252,7 +252,7 @@ void Ai_Divisor(ELVISIII_IrqAi* connector, uint32_t ClockRate, uint32_t SampleRa
  *
  * @return  the configuration status.
  */
-int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
+int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    bank,
                           NiFpga_IrqContext* irqContext,
                           uint8_t            irqNumber,
                           double             threshold,
@@ -286,7 +286,7 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
 
     // Check if the IRQ number or channel value already existed in the resource list,
     // return configuration status, and print an error message.
-    status = Irq_CheckReserved(connector->aiChannel, irqNumber);
+    status = Irq_CheckReserved(bank->aiChannel, irqNumber);
     if (status == NiELVISIIIv10_Status_IrqNumberNotUsable)
     {
         printf("You have already registered an interrupt with the same interrupt number.\n");
@@ -300,7 +300,7 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
 
     // Write the value to the AI IRQ number register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->aiIrqNumber[connector->aiChannel], irqNumber);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->aiIrqNumber[bank->aiChannel], irqNumber);
 
     // Check if there was an error when you wrote to the AI IRQ Number Register.
     // If there was an error, print an error message to stdout and return configuration status.
@@ -330,7 +330,7 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
 
     // Write the value to the AI Threshold Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->aiThreshold[connector->aiChannel], Threshold);
+    status = NiFpga_WriteU32(NiELVISIIIv10_session, bank->aiThreshold[bank->aiChannel], Threshold);
 
     // Check if there was an error when you wrote to the AI Threshold Register.
     // If there was an error, print an error message to stdout and return configuration status.
@@ -341,7 +341,7 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
 
     // Write the value to the AI hysteresis register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU32(NiELVISIIIv10_session, connector->aiHysteresis[connector->aiChannel], Hysteresis);
+    status = NiFpga_WriteU32(NiELVISIIIv10_session, bank->aiHysteresis[bank->aiChannel], Hysteresis);
 
     // Check if there was an error when you wrote to the AI threshold register.
     // If there was an error, print an error message to stdout and return configuration status.
@@ -349,14 +349,14 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
 
     // Get the current value of the AI configure register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->aiIrqConfigure, &cnfgValue);
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->aiIrqConfigure, &cnfgValue);
 
     // Check if there was an error when you wrote to the AI threshold register.
     // If there was an error, print an error message to stdout and return configuration status.
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not read from the AI Configuration Register!");
 
     // Configure the IRQ triggered-type for the particular analog IRQ I/O.
-    if (connector->aiChannel == Irq_Ai_A0)
+    if (bank->aiChannel == Irq_Ai_A0)
     {
         // Clear the value of the masked bits in the AI Configuration Register. This is
         // done so that the correct value can be set later on.
@@ -374,7 +374,7 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
             cnfgValue = cnfgValue | Irq_Ai_A0_Enable;
         }
     }
-    else if (connector->aiChannel == Irq_Ai_A1)
+    else if (bank->aiChannel == Irq_Ai_A1)
     {
         // Clear the value of the masked bits in the AI Configuration Register. This is
         // done so that the correct value can be set later on.
@@ -395,14 +395,14 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
 
     // Write the new value of the AI configure register to the device.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->aiIrqConfigure, cnfgValue);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->aiIrqConfigure, cnfgValue);
 
     // Check if there was an error when you wrote to the AI Threshold Register.
     // If there was an error, print an error message to stdout and return configuration status.
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not write to the AI Configuration Register!");
 
     // Add the channel value and IRQ number in the list.
-    Irq_AddReserved(connector->aiChannel, irqNumber);
+    Irq_AddReserved(bank->aiChannel, irqNumber);
 
     return NiELVISIIIv10_Status_Success;
 }
@@ -416,7 +416,7 @@ int32_t Irq_RegisterAiIrq(ELVISIII_IrqAi*    connector,
  *
  * @return the configuration status.
  */
-int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*   connector,
+int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*   bank,
                             NiFpga_IrqContext irqContext,
                             uint8_t           irqNumber)
 {
@@ -433,7 +433,7 @@ int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*   connector,
     }
 
     // Check if the specified IRQ resource is registered.
-    status = Irq_CheckReserved(connector->aiChannel, irqNumber);
+    status = Irq_CheckReserved(bank->aiChannel, irqNumber);
     if (status == NiELVISIIIv10_Status_Success)
     {
         // Did not find the resource in the list.
@@ -443,20 +443,20 @@ int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*   connector,
 
     // Get the current value of the AI Configuration Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->aiIrqConfigure, &cnfgValue);
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->aiIrqConfigure, &cnfgValue);
 
     // Check if there was an error when you wrote to the AI Threshold Register.
     // If there was an error, print an error message to stdout and return configuration status.
     NiELVISIIIv10_ReturnStatusIfNotSuccess(status, "Could not read from the AI Configuration Register!");
 
     // Disable the specified channel.
-    if (connector->aiChannel == Irq_Ai_A0)
+    if (bank->aiChannel == Irq_Ai_A0)
     {
         // Clear the value of the masked bits in the AI Configuration Register. This is
         // done so AI0 is disabled.
         cnfgValue = cnfgValue & (~Irq_Ai_A0_Enable);
     }
-    else if (connector->aiChannel == Irq_Ai_A1)
+    else if (bank->aiChannel == Irq_Ai_A1)
     {
         // Clear the value of the masked bits in the AI Configuration Register. This is
         // done so AI1 is disabled.
@@ -465,7 +465,7 @@ int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*   connector,
 
     // Write the new value of the AI Configuration Register to the device.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->aiIrqConfigure, cnfgValue);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->aiIrqConfigure, cnfgValue);
 
     // Check if there was an error when you wrote to the AI Threshold Register.
     // If there was an error, print an error message to stdout and return configuration status.

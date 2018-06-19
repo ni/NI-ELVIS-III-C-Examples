@@ -80,16 +80,16 @@ typedef struct
 } ELVISIII_Spi;
 
 // Sets the SPI configuration options.
-void Spi_Configure(ELVISIII_Spi* connector, Spi_ConfigureMask mask, Spi_ConfigureSettings settings);
+void Spi_Configure(ELVISIII_Spi* bank, Spi_ConfigureMask mask, Spi_ConfigureSettings settings);
 
 // Sets the maximum value of the SPI counter.
-void Spi_CounterMaximum(ELVISIII_Spi* connector, uint16_t counterMax);
+void Spi_CounterMaximum(ELVISIII_Spi* bank, uint16_t counterMax);
 
 // Transmits data.
-void Spi_Transmit(ELVISIII_Spi* connector, uint16_t dataOut, uint16_t* dataIn);
+void Spi_Transmit(ELVISIII_Spi* bank, uint16_t dataOut, uint16_t* dataIn);
 
 // Write the value to the System Select Register.
-void Spi_Select(ELVISIII_Spi* connector);
+void Spi_Select(ELVISIII_Spi* bank);
 
 #if NiFpga_Cpp
 }

@@ -91,19 +91,19 @@ typedef struct
 } ELVISIII_Encoder;
 
 // Set the encoder options.
-void Encoder_Configure(ELVISIII_Encoder*         connector,
+void Encoder_Configure(ELVISIII_Encoder*         bank,
                        Encoder_Channel           channel,
                        Encoder_ConfigureMask     mask,
                        Encoder_ConfigureSettings settings);
 
 // Gets the status of the encoder.
-uint8_t Encoder_Status(ELVISIII_Encoder* connector, Encoder_Channel channel);
+uint8_t Encoder_Status(ELVISIII_Encoder* bank, Encoder_Channel channel);
 
 // Gets the value of the counter (the number of steps the encoder has taken).
-uint32_t Encoder_Counter(ELVISIII_Encoder* connector, Encoder_Channel channel);
+uint32_t Encoder_Counter(ELVISIII_Encoder* bank, Encoder_Channel channel);
 
 // Write the value to the System Select Register.
-void Encoder_Select(ELVISIII_Encoder* connector, Encoder_Channel channel);
+void Encoder_Select(ELVISIII_Encoder* bank, Encoder_Channel channel);
 
 #if NiFpga_Cpp
 }

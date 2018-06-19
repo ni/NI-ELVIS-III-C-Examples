@@ -25,8 +25,8 @@
  */
 extern NiFpga_Session NiELVISIIIv10_session;
 
-// Initialize the register addresses of PWM in connector A.
-ELVISIII_Pwm connector_A = {{PWMA_0CNFG, PWMA_1CNFG, PWMA_2CNFG, PWMA_3CNFG, PWMA_4CNFG, PWMA_5CNFG, PWMA_6CNFG, PWMA_7CNFG, PWMA_8CNFG, PWMA_9CNFG,
+// Initialize the register addresses of PWM in bank A.
+ELVISIII_Pwm bank_A = {{PWMA_0CNFG, PWMA_1CNFG, PWMA_2CNFG, PWMA_3CNFG, PWMA_4CNFG, PWMA_5CNFG, PWMA_6CNFG, PWMA_7CNFG, PWMA_8CNFG, PWMA_9CNFG,
                              PWMA_10CNFG, PWMA_11CNFG, PWMA_12CNFG, PWMA_13CNFG, PWMA_14CNFG, PWMA_15CNFG, PWMA_16CNFG, PWMA_17CNFG, PWMA_18CNFG, PWMA_19CNFG},
                             {PWMA_0CS, PWMA_1CS, PWMA_2CS, PWMA_3CS, PWMA_4CS, PWMA_5CS, PWMA_6CS, PWMA_7CS, PWMA_8CS, PWMA_9CS,
                              PWMA_10CS, PWMA_11CS, PWMA_12CS, PWMA_13CS, PWMA_14CS, PWMA_15CS, PWMA_16CS, PWMA_17CS, PWMA_18CS, PWMA_19CS},
@@ -38,8 +38,8 @@ ELVISIII_Pwm connector_A = {{PWMA_0CNFG, PWMA_1CNFG, PWMA_2CNFG, PWMA_3CNFG, PWM
                              PWMA_10CNTR, PWMA_11CNTR, PWMA_12CNTR, PWMA_13CNTR, PWMA_14CNTR, PWMA_15CNTR, PWMA_16CNTR, PWMA_17CNTR, PWMA_18CNTR, PWMA_19CNTR},
                              SYSSELECTA};
 
-// Initialize the register addresses of PWM in connector B.
-ELVISIII_Pwm connector_B = {{PWMB_0CNFG, PWMB_1CNFG, PWMB_2CNFG, PWMB_3CNFG, PWMB_4CNFG, PWMB_5CNFG, PWMB_6CNFG, PWMB_7CNFG, PWMB_8CNFG, PWMB_9CNFG,
+// Initialize the register addresses of PWM in bank B.
+ELVISIII_Pwm bank_B = {{PWMB_0CNFG, PWMB_1CNFG, PWMB_2CNFG, PWMB_3CNFG, PWMB_4CNFG, PWMB_5CNFG, PWMB_6CNFG, PWMB_7CNFG, PWMB_8CNFG, PWMB_9CNFG,
                              PWMB_10CNFG, PWMB_11CNFG, PWMB_12CNFG, PWMB_13CNFG, PWMB_14CNFG, PWMB_15CNFG, PWMB_16CNFG, PWMB_17CNFG, PWMB_18CNFG, PWMB_19CNFG},
                             {PWMB_0CS, PWMB_1CS, PWMB_2CS, PWMB_3CS, PWMB_4CS, PWMB_5CS, PWMB_6CS, PWMB_7CS, PWMB_8CS, PWMB_9CS,
                              PWMB_10CS, PWMB_11CS, PWMB_12CS, PWMB_13CS, PWMB_14CS, PWMB_15CS, PWMB_16CS, PWMB_17CS, PWMB_18CS, PWMB_19CS},
@@ -59,22 +59,22 @@ ELVISIII_Pwm connector_B = {{PWMB_0CNFG, PWMB_1CNFG, PWMB_2CNFG, PWMB_3CNFG, PWM
  * Pwm_Disabled disables PWM output
  * Pwm_Enabled enabled PWM output
  *
- * @param[in]  connector      A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 20 kinds of PWM channels.
+ * @param[in]  bank         A struct containing the registers for one connecter.
+ * @param[in]  channel      Enum containing 20 kinds of PWM channels.
  * @param[in]  mask         Array of flags that indicate which of the configure settings are valid.
  *                          This can be one or more of the following values: Pwm_Invert, Pwm_Mode.
  * @param[in]  settings     Array of flags that indicate the configuration settings.
  *                          If mask sets Pwm_Invert, set either Pwm_NotInverted or Pwm_Inverted.
  *                          If mask sets Pwm_Mode, set one of Pwm_Disabled, Pwm_Enabled.
  */
-void Pwm_Configure(ELVISIII_Pwm* connector, Pwm_Channel channel, Pwm_ConfigureMask mask, Pwm_ConfigureSettings settings)
+void Pwm_Configure(ELVISIII_Pwm* bank, Pwm_Channel channel, Pwm_ConfigureMask mask, Pwm_ConfigureSettings settings)
 {
     NiFpga_Status status;
     uint8_t cnfgValue;
 
     // Get the current value of the Configuration Register.
     // The returned NiFpga_Status value is stored for error checking.
-    status = NiFpga_ReadU8(NiELVISIIIv10_session, connector->cnfg[channel], &cnfgValue);
+    status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->cnfg[channel], &cnfgValue);
 
     // Check if there was an error reading from the PWM registers.
     // If there was an error then the rest of the function cannot complete
@@ -92,7 +92,7 @@ void Pwm_Configure(ELVISIII_Pwm* connector, Pwm_Channel channel, Pwm_ConfigureMa
     cnfgValue = cnfgValue | settings;
 
     // Write the new value of the configure register to the device.
-    NiFpga_MergeStatus(&status, NiFpga_WriteU8(NiELVISIIIv10_session, connector->cnfg[channel], cnfgValue));
+    NiFpga_MergeStatus(&status, NiFpga_WriteU8(NiELVISIIIv10_session, bank->cnfg[channel], cnfgValue));
 
     // Check if there was an error writing to PWM Configuration Register.
     // If there was an error then print an error message to stdout.
@@ -120,16 +120,16 @@ void Pwm_Configure(ELVISIII_Pwm* connector, Pwm_Channel channel, Pwm_ConfigureMa
  * | Pwm_32X  | f_clk / 32         | 1.25 MHz      |
  * | Pwm_64X  | f_clk / 64         | 625 kHz       |
  *
- * @param[in]  connector    A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 20 kinds of PWM channels.
+ * @param[in]  bank         A struct containing the registers for one connecter.
+ * @param[in]  channel      Enum containing 20 kinds of PWM channels.
  * @param[in]  divider      The PWM waveform clock divider.
  */
-void Pwm_ClockSelect(ELVISIII_Pwm* connector, Pwm_Channel channel, Pwm_ClockDivider divider)
+void Pwm_ClockSelect(ELVISIII_Pwm* bank, Pwm_Channel channel, Pwm_ClockDivider divider)
 {
     NiFpga_Status status;
 
     // Write the new value of the Clock Select Register to the device.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, connector->cs[channel], divider);
+    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->cs[channel], divider);
 
     // Check if there was an error writing to the PWM Clock Select Register.
     // If there was an error then print an error message to stdout.
@@ -149,16 +149,16 @@ void Pwm_ClockSelect(ELVISIII_Pwm* connector, Pwm_Channel channel, Pwm_ClockDivi
  * Pwm_Enabled:
  * The PWM counter counts to MAX, then resets to 0
  *
- * @param[in]  connector    A struct containing the registers for one connecter.
+ * @param[in]  bank           A struct containing the registers for one connecter.
  * @param[in]  channel        Enum containing 20 kinds of PWM channels.
- * @param[in]  counterMax      The maximum counter value.
+ * @param[in]  counterMax     The maximum counter value.
  */
-void Pwm_CounterMaximum(ELVISIII_Pwm* connector, Pwm_Channel channel, uint16_t counterMax)
+void Pwm_CounterMaximum(ELVISIII_Pwm* bank, Pwm_Channel channel, uint16_t counterMax)
 {
     NiFpga_Status status;
 
     // Write the new value to the PWM Maximum Count Register.
-    status = NiFpga_WriteU16(NiELVISIIIv10_session, connector->max[channel], counterMax);
+    status = NiFpga_WriteU16(NiELVISIIIv10_session, bank->max[channel], counterMax);
 
     // Check if there was an error writing to the PWM Maximum Count Register.
     // If there was an error then print an error message to stdout.
@@ -181,16 +181,16 @@ void Pwm_CounterMaximum(ELVISIII_Pwm* connector, Pwm_Channel channel, uint16_t c
  * Pwm_Enabled and Pwm_Inverted:
  * Sets the output when CNTR = CMP
  *
- * @param[in]  connector        A struct containing the registers for one connecter.
- * @param[in]  channel            Enum containing 20 kinds of PWM channels.
- * @param[in]  counterCompare      The comparison counter value.
+ * @param[in]  bank              A struct containing the registers for one connecter.
+ * @param[in]  channel           Enum containing 20 kinds of PWM channels.
+ * @param[in]  counterCompare    The comparison counter value.
  */
-void Pwm_CounterCompare(ELVISIII_Pwm* connector, Pwm_Channel channel, uint16_t counterCompare)
+void Pwm_CounterCompare(ELVISIII_Pwm* bank, Pwm_Channel channel, uint16_t counterCompare)
 {
     NiFpga_Status status;
 
     // Write the new value of the PWM Compare Register to the device.
-    status = NiFpga_WriteU16(NiELVISIIIv10_session, connector->cmp[channel], counterCompare);
+    status = NiFpga_WriteU16(NiELVISIIIv10_session, bank->cmp[channel], counterCompare);
 
     // Check if there was an error writing to the PWM Compare Register.
     // If there was an error then print an error message to stdout.
@@ -203,18 +203,18 @@ void Pwm_CounterCompare(ELVISIII_Pwm* connector, Pwm_Channel channel, uint16_t c
  * Gets the current value of the PWM counter.
  * The behavior of the counter depends on the waveform set by Pwm_Configure and the maximum counter value set by Pwm_CounterMaximum.\
  *
- * @param[in]  connector        A struct containing the registers for one connecter.
- * @param[in]  channel            Enum containing 20 kinds of PWM channels.
+ * @param[in]  bank       A struct containing the registers for one connecter.
+ * @param[in]  channel    Enum containing 20 kinds of PWM channels.
  *
  * @return the counter value.
  */
-uint16_t Pwm_Counter(ELVISIII_Pwm* connector, Pwm_Channel channel)
+uint16_t Pwm_Counter(ELVISIII_Pwm* bank, Pwm_Channel channel)
 {
     NiFpga_Status status;
     uint16_t cntrValue;
 
     // Get the value from the PWM Counter Register.
-    status = NiFpga_ReadU16(NiELVISIIIv10_session, connector->cntr[channel], &cntrValue);
+    status = NiFpga_ReadU16(NiELVISIIIv10_session, bank->cntr[channel], &cntrValue);
 
     // Check if there was an error writing to the PWM Counter Register.
     // If there was an error then print an error message to stdout.
@@ -226,10 +226,10 @@ uint16_t Pwm_Counter(ELVISIII_Pwm* connector, Pwm_Channel channel)
 /**
  * Write the value to the System Select Register.
  *
- * @param[in]  connector        A struct containing the registers for one connecter.
- * @param[in]  channel            Enum containing 20 kinds of PWM channels.
+ * @param[in]  bank        A struct containing the registers for one connecter.
+ * @param[in]  channel     Enum containing 20 kinds of PWM channels.
  */
-void Pwm_Select(ELVISIII_Pwm* connector, Pwm_Channel channel)
+void Pwm_Select(ELVISIII_Pwm* bank, Pwm_Channel channel)
 {
     NiFpga_Status status;
     uint64_t selectReg;
@@ -238,7 +238,7 @@ void Pwm_Select(ELVISIII_Pwm* connector, Pwm_Channel channel)
     // To output on a physical pin, select the PWM on the appropriate SELECT Register.
     // See the MUX example for simplified code to enable-disable onboard devices.
     // Read the value of the SYSSELECTA/SYSSELECTB Register.
-    status = NiFpga_ReadU64(NiELVISIIIv10_session, connector->sel, &selectReg);
+    status = NiFpga_ReadU64(NiELVISIIIv10_session, bank->sel, &selectReg);
 
     // Check if there was an error reading from the System Select Register.
     // If there was an error then print an error message to stdout.
@@ -253,7 +253,7 @@ void Pwm_Select(ELVISIII_Pwm* connector, Pwm_Channel channel)
     selectReg = selectReg | (0b01 << (channel * 2));
 
     // Write the new value to the SYSSELECTA/SYSSELECTB Register.
-    status = NiFpga_WriteU64(NiELVISIIIv10_session, connector->sel, selectReg);
+    status = NiFpga_WriteU64(NiELVISIIIv10_session, bank->sel, selectReg);
 
     // Check if there was an error reading from the System Select Register.
     // If there was an error then print an error message to stdout.

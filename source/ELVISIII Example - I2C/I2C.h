@@ -57,19 +57,19 @@ typedef struct
 } ELVISIII_I2c;
 
 // Configure the I2C block.
-void I2c_Configure(ELVISIII_I2c* connector, I2c_ConfigureSettings settings);
+void I2c_Configure(ELVISIII_I2c* bank, I2c_ConfigureSettings settings);
 
 // Set the speed of the I2C block.
-void I2c_Counter(ELVISIII_I2c* connector, uint8_t speed);
+void I2c_Counter(ELVISIII_I2c* bank, uint8_t speed);
 
 // Write a series of bytes to the I2C channel.
-void I2c_Write(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t numBytes);
+void I2c_Write(ELVISIII_I2c* bank, uint8_t address, uint8_t* data, uint32_t numBytes);
 
 // Read a series of bytes from the I2C channel.
-void I2c_Read(ELVISIII_I2c* connector, uint8_t address, uint8_t* data, uint32_t numBytes);
+void I2c_Read(ELVISIII_I2c* bank, uint8_t address, uint8_t* data, uint32_t numBytes);
 
 // Write the value to the System Select Register.
-void I2c_Select(ELVISIII_I2c* connector);
+void I2c_Select(ELVISIII_I2c* bank);
 
 #if NiFpga_Cpp
 }

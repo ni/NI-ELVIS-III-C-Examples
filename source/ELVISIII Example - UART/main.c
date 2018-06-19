@@ -8,9 +8,9 @@
  * returned character to the console.
  *
  * Instructions:
- * 1. Connect UART.TX of the UART to DIO16 on connector A.
- * 2. Connect UART.RX of the UART to DIO17 on connector A.
- * 3. Connect UART.GND of the UART to DGND on connector A.
+ * 1. Connect UART.TX of the UART to DIO16 on bank A.
+ * 2. Connect UART.RX of the UART to DIO17 on bank A.
+ * 3. Connect UART.GND of the UART to DGND on bank A.
  * 4. Connect a DC voltage input (+3.3 V) to the UART.
  * 5. Run the program.
  *
@@ -32,7 +32,7 @@
 #define LoopDuration    60  // How long to output the signal, in seconds 
 #endif
 
-extern ELVISIII_Connector connector_A;
+extern ELVISIII_Bank bank_A;
 
 int main(int argc, char **argv)
 {
@@ -61,8 +61,8 @@ int main(int argc, char **argv)
         return status;
     }
 
-    // Set the UART Enable Flag for one connector.
-    Uart_Enable(&connector_A);
+    // Set the UART Enable Flag for one bank.
+    Uart_Enable(&bank_A);
 
     // Opens a UART session.
     status = Uart_Open(&uart, BaudRate, DataBit, Uart_StopBits1_0, Uart_ParityNone);

@@ -8,10 +8,10 @@
  * returned bytes to the console.
  *
  * Instructions:
- * 1. Connect SPI.CLK of the SPI slave to DIO5 on connector A.
- * 2. Connect SPI.MISO of the SPI slave to DIO6 on connector A.
- * 3. Connect SPI.MOSI of the SPI slave to DIO7 on connector A.
- * 4. Connect SPI.GND of the SPI slave to DGND on connector A.
+ * 1. Connect SPI.CLK of the SPI slave to DIO5 on bank A.
+ * 2. Connect SPI.MISO of the SPI slave to DIO6 on bank A.
+ * 3. Connect SPI.MOSI of the SPI slave to DIO7 on bank A.
+ * 4. Connect SPI.GND of the SPI slave to DGND on bank A.
  * 5. Run the program.
  *
  * Output:
@@ -30,7 +30,7 @@
 #define LoopDuration    60  // How long to output the signal, in seconds 
 #endif
 
-extern ELVISIII_Spi connector_A;
+extern ELVISIII_Spi bank_A;
 
 int main(int argc, char **argv)
 {
@@ -59,11 +59,11 @@ int main(int argc, char **argv)
     }
 
     // Write the value to the System Select Register.
-    Spi_Select(&connector_A);
+    Spi_Select(&bank_A);
 
     // Configure the SPI as leading clock phase, low clock polarity, most
     // significant bit first, 8 bits, and with a clock divider of 8X.
-    Spi_Configure(&connector_A,
+    Spi_Configure(&bank_A,
                   Spi_ClockPhase | Spi_ClockPolarity | Spi_DataOrder | Spi_FrameLength | Spi_ClockDivider,
                   Spi_ClockPhaseLeading | Spi_ClockPolarityLow | Spi_DataOrderMsbFirst | Spi_FrameSize8 | Spi_Clock8x);
 
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     // The clock divider was previously set with a clock divider of 8X.
     // The counter increments at 40 MHz / 2 / 8 = 2.5 MHz and the counter
     // counts from 0 to 5624990000. The frequency of the SPI is 2.5 MHz / 62499 = 40 Hz.
-    Spi_CounterMaximum(&connector_A, 62499U);
+    Spi_CounterMaximum(&bank_A, 62499U);
 
     // Normally, the main function runs a long running or infinite loop.
     // Keep the program running so that you can measure the output using
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     finalTime = currentTime + LoopDuration;
     while (currentTime < finalTime)
     {
-        Spi_Transmit(&connector_A, writeMessage[writePos], &readChar);
+        Spi_Transmit(&bank_A, writeMessage[writePos], &readChar);
 
         // Increment the position in the message. Reset to the beginning after
         // reaching the end of the message. -1 to not write the null terminating

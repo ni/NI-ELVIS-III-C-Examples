@@ -61,10 +61,10 @@ typedef struct
 } ELVISIII_Dio;
 
 // Read the value from one channel.
-NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* connector, Dio_Channel channel);
+NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* bank, Dio_Channel channel);
 
 // Write the value into one channel.
-void Dio_WriteBit(ELVISIII_Dio* connector, NiFpga_Bool value, Dio_Channel channel);
+void Dio_WriteBit(ELVISIII_Dio* bank, NiFpga_Bool value, Dio_Channel channel);
 
 #if NiFpga_Cpp
 }

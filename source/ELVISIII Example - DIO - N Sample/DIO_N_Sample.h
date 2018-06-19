@@ -84,16 +84,16 @@ typedef struct
 } ELVISIII_Dio;
 
 // Set the DIO Direction Register.
-void Di_Direction(ELVISIII_Dio* connector, Dio_Channel channel);
+void Di_Direction(ELVISIII_Dio* bank, Dio_Channel channel);
 
 // Generate the divisor for the DI sample rate.
-void Di_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate);
+void Di_Divisor(ELVISIII_Dio* bank, uint32_t ClockRate, uint32_t SampleRate);
 
-// Set the DI DMA Enable Flag for one connector.
-void Di_Enable(ELVISIII_Dio* connector);
+// Set the DI DMA Enable Flag for one bank.
+void Di_Enable(ELVISIII_Dio* bank);
 
 // Read groups of DI values as a DI FIFO from a single channel.
-void Di_ReadFifo(ELVISIII_Dio*         connector,
+void Di_ReadFifo(ELVISIII_Dio*         bank,
                  TargetToHost_FIFO_FXP fifo,
                   uint64_t*             fxp_buffer_receive,
                   size_t                fifo_size,
@@ -104,16 +104,16 @@ void Di_ReadFifo(ELVISIII_Dio*         connector,
 void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fxp_buffer_receive, size_t fifo_size, NiFpga_Bool value[]);
 
 // Set the Direction of the DIO channel as an input.
-void Do_Direction(ELVISIII_Dio* connector, Dio_Channel channel);
+void Do_Direction(ELVISIII_Dio* bank, Dio_Channel channel);
 
 // Generate the divisor for the DO sample rate.
-void Do_Divisor(ELVISIII_Dio* connector, uint32_t ClockRate, uint32_t SampleRate);
+void Do_Divisor(ELVISIII_Dio* bank, uint32_t ClockRate, uint32_t SampleRate);
 
 // Set the DMA Enable value for a DO channel.
-void Do_Enable(ELVISIII_Dio* connector, Dio_Channel channel);
+void Do_Enable(ELVISIII_Dio* bank, Dio_Channel channel);
 
 // Write groups of DO values as a DO FIFO to a single channel.
-void Do_WriteFifo(ELVISIII_Dio*         connector,
+void Do_WriteFifo(ELVISIII_Dio*         bank,
                   HostToTarget_FIFO_FXP fifo,
                    const uint64_t*       fxp_buffer_send,
                    size_t                fifo_size,

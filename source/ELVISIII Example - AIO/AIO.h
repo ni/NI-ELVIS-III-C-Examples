@@ -122,16 +122,16 @@ double ConvertUnsignedIntToDouble(unsigned int value);
 unsigned int ConvertDoubleToUnsignedInt(double value);
 
 // Set the number of valid analog input channels.
-void Ai_Counter(ELVISIII_Ai* connector, uint8_t counter);
+void Ai_Counter(ELVISIII_Ai* bank, uint8_t counter);
 
 // Set the AI configuration options.
-void Ai_Configure(ELVISIII_Ai* connector, Ai_Channel channel, Ai_Range range);
+void Ai_Configure(ELVISIII_Ai* bank, Ai_Channel channel, Ai_Range range);
 
 // Generate the divisor for sample rate.
-void Ai_Divisor(ELVISIII_Ai* connector, uint32_t ClockRate, uint32_t SampleRate);
+void Ai_Divisor(ELVISIII_Ai* bank, uint32_t ClockRate, uint32_t SampleRate);
 
 // Read the value from one channel.
-double Aio_Read(ELVISIII_Ai* connector, Ai_Channel channel);
+double Aio_Read(ELVISIII_Ai* bank, Ai_Channel channel);
 
 // Write the value to one AO Value Register.
 void Aio_Write(ELVISIII_Ao* Ao, double value, Ao_ValueRegister ValueRegister);

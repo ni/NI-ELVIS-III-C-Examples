@@ -5,12 +5,12 @@
  *
  * Overview:
  * Demonstrates using the encoder. Reads a step and direction signal from the
- * encoder on connector A. Prints the values to the console.
+ * encoder on bank A. Prints the values to the console.
  *
  * Instructions:
- * 1. Connect ENC.A of the encoder to DIO0 on connector A.
- * 2. Connect ENC.B of the encoder to DIO1 on connector A.
- * 3. Connect GND of the encoder to DGND on connector A.
+ * 1. Connect ENC.A of the encoder to DIO0 on bank A.
+ * 2. Connect ENC.B of the encoder to DIO1 on bank A.
+ * 3. Connect GND of the encoder to DGND on bank A.
  * 4. Connect a DC voltage input (+5 V) to the encoder.
  * 2. Run this program.
  *
@@ -34,7 +34,7 @@
 #define LoopStep        5   // How long to monitor the signal, in seconds 
 #endif
 
-extern ELVISIII_Encoder connector_A;
+extern ELVISIII_Encoder bank_A;
 
 int main(int argc, char **argv)
 {
@@ -58,11 +58,11 @@ int main(int argc, char **argv)
         return status;
     }
 
-    // Write the value to the Encoder Channel 0 on connector A.
-    Encoder_Select(&connector_A, Encoder_Channel0);
+    // Write the value to the Encoder Channel 0 on bank A.
+    Encoder_Select(&bank_A, Encoder_Channel0);
 
     // Enable the encoder and configure to read step and direction signals.
-    Encoder_Configure(&connector_A, Encoder_Channel0,
+    Encoder_Configure(&bank_A, Encoder_Channel0,
                       Encoder_Enable | Encoder_SignalMode,
                       Encoder_Enabled | Encoder_StepDirection);
 
@@ -79,8 +79,8 @@ int main(int argc, char **argv)
         // Don't print every loop iteration. 
         if (currentTime > printTime)
         {
-            steps = Encoder_Counter(&connector_A, Encoder_Channel0);
-            if ((Encoder_Status(&connector_A, Encoder_Channel0) & Encoder_StDirection) == Encoder_Incrementing)
+            steps = Encoder_Counter(&bank_A, Encoder_Channel0);
+            if ((Encoder_Status(&bank_A, Encoder_Channel0) & Encoder_StDirection) == Encoder_Incrementing)
             {
                 direction = "incrementing";
             }
