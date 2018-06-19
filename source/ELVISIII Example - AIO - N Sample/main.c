@@ -15,9 +15,9 @@
  *    Use the oscilloprobe to probe AO0 on bank B. Use AGND as ground.
  * 3. Open "Measurements Live" (measurementslive.ni.com) and connect to the NI ELVIS III device.
  * 4. In Instruments tab, open Function and Arbitrary Waveform Generator.
- *       Set a square wave in 500Hz, 4Vpp and 0V DC offset.
+ * 	  Set a square wave in 500Hz, 4Vpp and 0V DC offset.
  * 5. In Instruments tab, open Oscilloscope.
- *       Set Normal mode, analog edge type and 1V level.
+ * 	  Set Normal mode, analog edge type and 1V level.
  * 6. Run this program.
  *
  * Output:
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     // Convert fixed-point values of the FIFO to double values.
     // The fixed-point value is an unsigned long long int value.
     ConvertUint64ArrayToDoubleArray(fxp_buffer_receive, FIFO_SIZE, value);
-
+	
     // Print out the values of A/AI0.
     printf("Channel%d:\n", Ai_Channel0 - RSE_NUM);
     int i;
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     // Convert double values to fixed-point values of the FIFO.
     // The fixed-point value is an unsigned long long int value.
     ConvertDoubleArrayToUint64Array(send, fxp_buffer_send, sizeof(send)/sizeof(uint64_t));
-
+	
     // Write fixed-point values to an AO FIFO on bank B.
     Ao_WriteFifo(&bank_B,
                  HostToTarget_FIFO_FXP_B,
