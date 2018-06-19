@@ -36,7 +36,7 @@ ELVISIII_IrqDi bank_A = {{IRQDIO_A_0CNT, IRQDIO_A_1CNT, IRQDIO_A_2CNT, IRQDIO_A_
 /**
  * Reserve the interrupt from FPGA and configure DI IRQ.
  *
- * @param[in]  bank    A structure containing the registers and settings for a particular analog IRQ I/O to modify.
+ * @param[in]  bank         A structure containing the registers and settings for a particular analog IRQ I/O to modify.
  * @param[in]  irqContext   IRQ context under which you need to reserve.
  * @param[in]  irqNumber    The IRQ number (IRQNO_MIN-IRQNO_MAX).
  * @param[in]  count        The incremental times that you use to trigger the interrupt.
@@ -245,8 +245,8 @@ int32_t Irq_RegisterDiIrq(ELVISIII_IrqDi*    bank,
  * clear according channel value and IRQ number in the resource list.
  * So the IO can be configured in the next time.
  *
- * @param[in]  bank      A struct containing the registers and settings for a particular analog IRQ IO to modify.
- * @param[in]  irqContext      IRQ context with to unreserve.
+ * @param[in]  bank         A struct containing the registers and settings for a particular analog IRQ IO to modify.
+ * @param[in]  irqContext   IRQ context with to unreserve.
  * @param[in]  irqNumber    The IRQ number (IRQNO_MIN-IRQNO_MAX).
  *
  * @return the configuration status.

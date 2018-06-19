@@ -61,8 +61,8 @@ unsigned int ConvertDoubleToUnsignedInt(double value)
 /**
  * Set the number of valid channels on the bank.
  *
- * @param[in]  bank    A struct containing the registers for one connecter.
- * @param[in]  counter        The number of valid channels on the bank.
+ * @param[in]  bank       A struct containing the registers for one connecter.
+ * @param[in]  counter    The number of valid channels on the bank.
  */
 void Ai_Counter(ELVISIII_IrqAi* bank, uint8_t counter)
 {
@@ -101,8 +101,8 @@ void Ai_Counter(ELVISIII_IrqAi* bank, uint8_t counter)
 /**
  * Configure the range of the analog input channel.
  *
- * @param[in]  bank    A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 2 kinds of channels (AI0, AI1).
+ * @param[in]  bank         A struct containing the registers for one connecter.
+ * @param[in]  channel      Enum containing 2 kinds of channels (AI0, AI1).
  * @param[in]  range        Enum containing 4 kinds of ranges (±10 V, ±5 V, ±2 V, ±1 V).
  */
 void Ai_Configure(ELVISIII_IrqAi* bank, Ai_Channel channel, Ai_Range range)
@@ -188,9 +188,9 @@ void Ai_Configure(ELVISIII_IrqAi* bank, Ai_Channel channel, Ai_Range range)
 /**
  * Configure the divisor for the analog sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  bank        A struct containing the registers for one connecter.
- * @param[in]  ClockRate        The onboard clock rate of FPGA.
- * @param[in]  SampleRate        The analog sample rate.
+ * @param[in]  bank           A struct containing the registers for one connecter.
+ * @param[in]  ClockRate      The onboard clock rate of FPGA.
+ * @param[in]  SampleRate     The analog sample rate.
  */
 void Ai_Divisor(ELVISIII_IrqAi* bank, uint32_t ClockRate, uint32_t SampleRate)
 {

@@ -85,7 +85,7 @@ void Uart_Enable(ELVISIII_Bank* bank)
 /**
  * Opens a UART session on an VISA implemented port.
  *
- * @param[in]  port           UART port information.
+ * @param[in]  port            UART port information.
  * @param[in]  baud            Baud rate (bps).
  * @param[in]  dataBits        Number of bits per frame.
  * @param[in]  stopBits        Stop bit configuration.

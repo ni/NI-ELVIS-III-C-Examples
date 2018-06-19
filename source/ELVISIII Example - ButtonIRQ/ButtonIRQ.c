@@ -32,7 +32,7 @@ ELVISIII_IrqButton irqButton = {IRQDI_BTNCNT, IRQDI_BTNNO, IRQDI_BTNENA, IRQDI_B
 /**
  * Reserve the interrupt from FPGA and configure Button IRQ.
  *
- * @param[in]  irqChannel    A struct containing the registers and settings for a particular button IRQ I/O to modify.
+ * @param[in]  irqChannel   A struct containing the registers and settings for a particular button IRQ I/O to modify.
  * @param[in]  irqContext   IRQ context under which you reserve the IRQ.
  * @param[in]  irqNumber    The IRQ number (IRQNO_MIN-IRQNO_MAX).
  * @param[in]  count        The incremental times that you want to use to trigger the interrupt.

@@ -36,7 +36,7 @@ ELVISIII_I2c bank_B = {I2CBADDR, I2CBCNFG, I2CBCNTL, I2CBCNTR, I2CBSTAT, I2CBDAT
  * Configure the I2C block.
  * Set options for the I2C configuration register.
  *
- * @param[in]  bank      A struct containing the registers for one connecter.
+ * @param[in]  bank         A struct containing the registers for one connecter.
  * @param[in]  settings     Settings configured on the register.
  */
 void I2c_Configure(ELVISIII_I2c* bank, I2c_ConfigureSettings settings)
@@ -69,7 +69,7 @@ void I2c_Configure(ELVISIII_I2c* bank, I2c_ConfigureSettings settings)
  *
  * This formula and its rationale can be found in the documentation.
  *
- * @param[in]  bank      A struct containing the registers for one connecter.
+ * @param[in]  bank         A struct containing the registers for one connecter.
  * @param[in]  speed        The I2C speed configured on the I2C channel
  */
 void I2c_Counter(ELVISIII_I2c* bank, uint8_t speed)
@@ -92,7 +92,7 @@ void I2c_Counter(ELVISIII_I2c* bank, uint8_t speed)
  *
  * @warning The data array being passed in must be at least as big as the number of bytes being written.
  *
- * @param[in]  bank      A struct containing the registers for one connecter.
+ * @param[in]  bank          A struct containing the registers for one connecter.
  * @param[in]  address       The address of the I2C slave device.
  * @param[in]  data          A pointer to an array holding the data to write.
  * @param[in]  numBytes      The number of bytes to be written to the slave.
@@ -260,7 +260,7 @@ void I2c_Write(ELVISIII_I2c* bank, uint8_t address, uint8_t* data, uint32_t numB
  *
  * @warning The data array passed in must be big enough to accommodate the number of bytes being read.
  *
- * @param[in]      bank      A struct containing the registers for one connecter.
+ * @param[in]      bank          A struct containing the registers for one connecter.
  * @param[in]      address       The address of the I2C slave device.
  * @param[in,out]  data          A pointer to an array to fill with the data read.
  * @param[in]      numBytes      The number of bytes to be read from the slave.

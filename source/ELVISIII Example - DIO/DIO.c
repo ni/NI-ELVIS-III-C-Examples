@@ -49,8 +49,8 @@ ELVISIII_Dio bank_B = {99532, 99524, 99516};
  * of the DIR register. A value of 0 makes the channel an input, a value of 1
  * sets the channel as an output.
  *
- * @param[in]  bank    A struct containing the registers for one connecter.
- * @param[in]  channel      Enum containing 20 kinds of channels (DIO0 - DIO19).
+ * @param[in]  bank      A struct containing the registers for one connecter.
+ * @param[in]  channel   Enum containing 20 kinds of channels (DIO0 - DIO19).
  *
  * @return the logical value of the voltage on the channel.
  */
@@ -118,8 +118,8 @@ NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* bank, Dio_Channel channel)
  * of the DIR register. A value of 0 makes the channel an input, a value of 1
  * sets the channel as an output.
  *
- * @param[in]  bank    A struct containing the registers for one connecter.
- * @param[in]  value          the value used to write into the DO Value Register.
+ * @param[in]  bank         A struct containing the registers for one connecter.
+ * @param[in]  value        the value used to write into the DO Value Register.
  * @param[in]  channel      Enum containing 20 kinds of channels (DIO0 - DIO19).
  *
  */

@@ -34,7 +34,7 @@ ELVISIII_Spi bank_B = {SPIBCNFG, SPIBCNT, SPIBGO, SPIBSTAT, SPIBDATO, SPIBDATI, 
 /**
  * Sets options for the SPI configuration register.
  *
- * @param[in]  bank      A struct containing the registers on the SPI channel to modify.
+ * @param[in]  bank         A struct containing the registers on the SPI channel to modify.
  * @param[in]  mask         Array of flags that indicate which of the configure settings are valid.
  * @param[in]  settings     Array of flags that indicate the configuration settings.
  */
@@ -79,8 +79,8 @@ void Spi_Configure(ELVISIII_Spi* bank, Spi_ConfigureMask mask, Spi_ConfigureSett
  *
  * where f_SPI = 80 MHz.
  *
- * @param[in]  bank      Only bank_A or bank_B can be used unless you know the addresses of certain registers.
- * @param[in]  counterMax      The maximum counter value.
+ * @param[in]  bank          Only bank_A or bank_B can be used unless you know the addresses of certain registers.
+ * @param[in]  counterMax    The maximum counter value.
  */
 void Spi_CounterMaximum(ELVISIII_Spi* bank, uint16_t counterMax)
 {
@@ -99,9 +99,9 @@ void Spi_CounterMaximum(ELVISIII_Spi* bank, uint16_t counterMax)
 /**
  * Transmits data.
  *
- * @param[in]  bank      A struct containing the registers on the SPI channel to modify.
- * @param[in]  dataOut         Data to output.
- * @param[in]  dataIn         Data to input.
+ * @param[in]  bank        A struct containing the registers on the SPI channel to modify.
+ * @param[in]  dataOut     Data to output.
+ * @param[in]  dataIn      Data to input.
  */
 void Spi_Transmit(ELVISIII_Spi* bank, uint16_t dataOut, uint16_t* dataIn)
 {

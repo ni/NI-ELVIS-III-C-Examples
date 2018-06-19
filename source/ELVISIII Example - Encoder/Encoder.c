@@ -40,8 +40,8 @@ ELVISIII_Encoder bank_B = {{ENCB_0CNFG, ENCB_1CNFG, ENCB_2CNFG, ENCB_3CNFG, ENCB
 /**
  * Sets options for the encoder configuration register.
  *
- * @param[in]  bank      A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 10 kinds of Encoder channels.
+ * @param[in]  bank         A struct containing the registers for one connecter.
+ * @param[in]  channel      Enum containing 10 kinds of Encoder channels.
  * @param[in]  mask         Array of flags that indicate which of the configure settings are valid.
  * @param[in]  settings     Array of flags that indicate the configuration settings.
  */
@@ -85,8 +85,8 @@ void Encoder_Configure(ELVISIII_Encoder*         bank,
 /**
  * Reads the encoder status, returning the status as bits.
  *
- * @param[in]  bank      A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 10 kinds of Encoder channels.
+ * @param[in]  bank       A struct containing the registers for one connecter.
+ * @param[in]  channel    Enum containing 10 kinds of Encoder channels.
  *
  * @return the status as a bit field.
  */
@@ -118,8 +118,8 @@ uint8_t Encoder_Status(ELVISIII_Encoder* bank, Encoder_Channel channel)
  * ENC_SET_AND_DIRECTION:
  * The counter increments when the direction input is low and decrements when the direction input is high.
  *
- * @param[in]  bank      A struct containing the registers for one connecter.
- * @param[in]  channel        Enum containing 10 kinds of Encoder channels.
+ * @param[in]  bank       A struct containing the registers for one connecter.
+ * @param[in]  channel    Enum containing 10 kinds of Encoder channels.
  *
  * @return the status as a bit field.
  */
@@ -145,7 +145,7 @@ uint32_t Encoder_Counter(ELVISIII_Encoder* bank, Encoder_Channel channel)
  * Write the value to the System Select Register.
  *
  * @param[in]  bank        A struct containing the registers for one connecter.
- * @param[in]  channel            Enum containing 10 kinds of Encoder channels.
+ * @param[in]  channel     Enum containing 10 kinds of Encoder channels.
  */
 void Encoder_Select(ELVISIII_Encoder* bank, Encoder_Channel channel)
 {

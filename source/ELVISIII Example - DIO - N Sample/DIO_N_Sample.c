@@ -48,8 +48,8 @@ ELVISIII_Dio bank_B = {DIBDMA_ENA, 99508, DIBDMA_CNTR, DOBDMA_CNTR, 99532};
  * of the DIR register. A value of 0 makes the channel an input, a value of 1
  * sets the channel as an output.
  *
- * @param[in]  bank    A struct containing the registers for one connecter.
- * @param[in]  channel      Enum containing 20 kinds of channels (DIO0 - DIO19).
+ * @param[in]  bank      A struct containing the registers for one connecter.
+ * @param[in]  channel   Enum containing 20 kinds of channels (DIO0 - DIO19).
  */
 void Di_Direction(ELVISIII_Dio* bank, Dio_Channel channel)
 {
@@ -87,9 +87,9 @@ void Di_Direction(ELVISIII_Dio* bank, Dio_Channel channel)
 /**
  * Configure the divisor for the DI sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  bank        A struct containing the registers for one connecter.
- * @param[in]  ClockRate        The onboard clock rate of FPGA.
- * @param[in]  SampleRate        The Sample Rate.
+ * @param[in]  bank          A struct containing the registers for one connecter.
+ * @param[in]  ClockRate     The onboard clock rate of FPGA.
+ * @param[in]  SampleRate    The Sample Rate.
  */
 void Di_Divisor(ELVISIII_Dio* bank, uint32_t ClockRate, uint32_t SampleRate)
 {
@@ -161,11 +161,11 @@ void Di_Enable(ELVISIII_Dio* bank)
 /**
  * Read groups of values from a DI FIFO.
  *
- * @param[in]  bank                    A struct containing the registers for one connecter.
- * @param[in]  fifo                            DI target-to-host FIFO from which to read
- * @param[in]  fxp_buffer_receive            groups of values in an DI FIFO, get from one channel.
+ * @param[in]  bank                         A struct containing the registers for one connecter.
+ * @param[in]  fifo                         DI target-to-host FIFO from which to read
+ * @param[in]  fxp_buffer_receive           groups of values in an DI FIFO, get from one channel.
  * @param[in]  fifo_size                    The size of DI FIFO.
- * @param[in]  timeout                        timeout in milliseconds, or NiFpga_InfiniteTimeout
+ * @param[in]  timeout                      timeout in milliseconds, or NiFpga_InfiniteTimeout
  * @param[in]  elementsRemaining            if non-NULL, outputs the number of elements
  *                                          remaining in the host memory part of the DMA FIFO
  *
@@ -208,8 +208,8 @@ void Di_ReadFifo(ELVISIII_Dio*         bank,
  * Convert unsigned long long int values of the fixed-points in the FIFO to boolean values.
  *
  * @param[in]  channel                  Enum containing 20 kinds of channels (DIO0 - DIO19).
- * @param[in]  fxp_buffer_receive        groups of fixed-point values get from one channel.
- *                                         The fixed-point value is an unsigned long long int value.
+ * @param[in]  fxp_buffer_receive       groups of fixed-point values get from one channel.
+ *                                      The fixed-point value is an unsigned long long int value.
  * @param[in]  fifo_size                The size of DI FIFO.
  * @param[in]  value                    groups of boolean value
  */
@@ -243,8 +243,8 @@ void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fxp_buffer_
  * of the DIR register. A value of 0 makes the channel an input, a value of 1
  * sets the channel as an output.
  *
- * @param[in]  bank    A struct containing the registers for one connecter.
- * @param[in]  channel      Enum containing 20 kinds of channels (DIO0 - DIO19).
+ * @param[in]  bank       A struct containing the registers for one connecter.
+ * @param[in]  channel    Enum containing 20 kinds of channels (DIO0 - DIO19).
  */
 void Do_Direction(ELVISIII_Dio* bank, Dio_Channel channel)
 {
@@ -279,9 +279,9 @@ void Do_Direction(ELVISIII_Dio* bank, Dio_Channel channel)
 /**
  * Configure the divisor for the DO sample rate.The default onboard clock rate of FPGA is 40 MHz.
  *
- * @param[in]  bank        A struct containing the registers for one connecter.
- * @param[in]  ClockRate        The onboard clock rate of FPGA.
- * @param[in]  SampleRate        The Sample Rate.
+ * @param[in]  bank          A struct containing the registers for one connecter.
+ * @param[in]  ClockRate     The onboard clock rate of FPGA.
+ * @param[in]  SampleRate    The Sample Rate.
  */
 void Do_Divisor(ELVISIII_Dio* bank, uint32_t ClockRate, uint32_t SampleRate)
 {
@@ -334,8 +334,8 @@ void Do_Divisor(ELVISIII_Dio* bank, uint32_t ClockRate, uint32_t SampleRate)
  * Set the DMA Enable value for a DO channel.The value controls
  * whether the DMA is enabled for a specific digital output channel.
  *
- * @param[in]  bank    A struct containing the registers for one connecter.
- * @param[in]  channel      Enum containing 20 kinds of channels (DIO0 - DIO19).
+ * @param[in]  bank      A struct containing the registers for one connecter.
+ * @param[in]  channel   Enum containing 20 kinds of channels (DIO0 - DIO19).
  */
 void Do_Enable(ELVISIII_Dio* bank, Dio_Channel channel)
 {
@@ -370,11 +370,11 @@ void Do_Enable(ELVISIII_Dio* bank, Dio_Channel channel)
 /**
  * Write groups of values to a DO FIFO.
  *
- * @param[in]  bank                A struct containing the registers for one connecter.
- * @param[in]  fifo                        DO host-to-target FIFO from which to write
- * @param[in]  fxp_buffer_send            groups of values to be written.
+ * @param[in]  bank                     A struct containing the registers for one connecter.
+ * @param[in]  fifo                     DO host-to-target FIFO from which to write
+ * @param[in]  fxp_buffer_send          groups of values to be written.
  * @param[in]  fifo_size                The size of DO FIFO.
- * @param[in]  timeout                    timeout in milliseconds, or NiFpga_InfiniteTimeout
+ * @param[in]  timeout                  timeout in milliseconds, or NiFpga_InfiniteTimeout
  * @param[in]  elementsRemaining        if non-NULL, outputs the number of elements
  *                                      remaining in the host memory part of the DMA FIFO
  * ------------------------------------------
