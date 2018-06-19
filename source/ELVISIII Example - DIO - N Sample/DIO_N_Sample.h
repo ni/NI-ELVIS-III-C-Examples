@@ -95,13 +95,13 @@ void Di_Enable(ELVISIII_Dio* bank);
 // Read groups of DI values as a DI FIFO from a single channel.
 void Di_ReadFifo(ELVISIII_Dio*         bank,
                  TargetToHost_FIFO_FXP fifo,
-                  uint64_t*             fxp_buffer_receive,
+                  U64_t*             fxp_buffer_receive,
                   size_t                fifo_size,
                   uint32_t              timeout,
                   size_t*               elementsRemaining);
 
 // Convert fixed-point values of the FIFO to boolean values.
-void ConvertUint64ArrayToBoolArray(Dio_Channel channel, uint64_t* fxp_buffer_receive, size_t fifo_size, NiFpga_Bool value[]);
+void ConvertU64ArrayToBoolArray(Dio_Channel channel, U64_t* fxp_buffer_receive, size_t fifo_size, NiFpga_Bool value[]);
 
 // Set the Direction of the DIO channel as an input.
 void Do_Direction(ELVISIII_Dio* bank, Dio_Channel channel);
@@ -115,7 +115,7 @@ void Do_Enable(ELVISIII_Dio* bank, Dio_Channel channel);
 // Write groups of DO values as a DO FIFO to a single channel.
 void Do_WriteFifo(ELVISIII_Dio*         bank,
                   HostToTarget_FIFO_FXP fifo,
-                   const uint64_t*       fxp_buffer_send,
+                   const U64_t*       fxp_buffer_send,
                    size_t                fifo_size,
                    uint32_t              timeout,
                    size_t*               elementsRemaining);

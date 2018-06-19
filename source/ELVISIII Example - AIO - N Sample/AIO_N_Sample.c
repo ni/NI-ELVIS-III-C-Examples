@@ -228,7 +228,7 @@ void Ai_Enable(ELVISIII_Aio* bank)
  */
 void Ai_ReadFifo(ELVISIII_Aio*             bank,
                  TargetToHost_FIFO_FXP     fifo,
-                  uint64_t*                fxp_buffer_receive,
+                  U64_t*                fxp_buffer_receive,
                   size_t                   fifo_size,
                   uint32_t                 timeout,
                   size_t*                  elementsRemaining)
@@ -259,7 +259,7 @@ void Ai_ReadFifo(ELVISIII_Aio*             bank,
  * @param[in]  fifo_size                    The size of the AI FIFO.
  * @param[in]  value                        Double value.
  */
-void ConvertUint64ArrayToDoubleArray(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value)
+void ConvertU64ArrayToDoubleArray(U64_t *fxp_buffer_receive, size_t fifo_size, double *value)
 {
     int i;
     uint32_t temp;
@@ -370,7 +370,7 @@ void Ao_Enable(ELVISIII_Aio* bank, Ao_Channel channel)
  *                                      The fixed-point value is an unsigned long long int value.
  * @param[in]  fifo_size                The size of the AO FIFO.
  */
-void ConvertDoubleArrayToUint64Array(double *value, uint64_t *fxp_buffer_send, size_t fifo_size)
+void ConvertDoubleArrayToU64Array(double *value, U64_t *fxp_buffer_send, size_t fifo_size)
 {
     int i;
     uint32_t temp = 0;
@@ -383,12 +383,12 @@ void ConvertDoubleArrayToUint64Array(double *value, uint64_t *fxp_buffer_send, s
             temp = (uint32_t)(value[i] * (-1) * pow(2, (AO_WordLength - AO_IntegerWordLength)));
             --temp;
             temp = ~temp;
-            fxp_buffer_send[i] = (uint64_t)(0xFFFFFFFF00000000 + temp);
+            fxp_buffer_send[i] = (U64_t)(0xFFFFFFFF00000000 + temp);
         }
         else
         {
         //Value is positive.
-            fxp_buffer_send[i] = (uint64_t)(value[i] * pow(2, (AO_WordLength - AO_IntegerWordLength)));
+            fxp_buffer_send[i] = (U64_t)(value[i] * pow(2, (AO_WordLength - AO_IntegerWordLength)));
         }
     }
 
@@ -417,7 +417,7 @@ void ConvertDoubleArrayToUint64Array(double *value, uint64_t *fxp_buffer_send, s
  */
 void Ao_WriteFifo(ELVISIII_Aio*                  bank,
                   HostToTarget_FIFO_FXP          fifo,
-                   const uint64_t*               fxp_buffer_send,
+                   const U64_t*               fxp_buffer_send,
                    size_t                        fifo_size,
                    uint32_t                      timeout,
                    size_t*                       elementsRemaining)
