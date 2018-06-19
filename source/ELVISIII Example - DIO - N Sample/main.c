@@ -50,8 +50,8 @@ int main()
     time_t currentTime;
     time_t finalTime;
 
-    U64_t fxp_buffer_receive[FIFO_SIZE];
-    U64_t fxp_buffer_send[] = {0, 1, 0, 1, 0, 1, 0, 1};
+    uint64_t fxp_buffer_receive[FIFO_SIZE];
+    uint64_t fxp_buffer_send[] = {0, 1, 0, 1, 0, 1, 0, 1};
     NiFpga_Bool value[FIFO_SIZE];
 
     printf("DigitalInputOutput - N Sample:\n");
@@ -110,7 +110,7 @@ int main()
     Do_WriteFifo(&bank_B,
                  HostToTarget_FIFO_FXP_B,
                  fxp_buffer_send,
-                 sizeof(fxp_buffer_send)/sizeof(U64_t),
+                 sizeof(fxp_buffer_send)/sizeof(uint64_t),
                  NiFpga_InfiniteTimeout,
                  NULL);
 

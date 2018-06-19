@@ -50,10 +50,10 @@ int main(int argc, char **argv)
     NiFpga_Status status;
 
     double value[FIFO_SIZE];
-    U64_t fxp_buffer_receive[FIFO_SIZE];
+    uint64_t fxp_buffer_receive[FIFO_SIZE];
 
     double send[] = {2, 2, 2, 2, -2, -2, -2, -2};
-    U64_t fxp_buffer_send[FIFO_SIZE];
+    uint64_t fxp_buffer_send[FIFO_SIZE];
 
     time_t currentTime;
     time_t finalTime;
@@ -112,13 +112,13 @@ int main(int argc, char **argv)
 
     // Convert double values to fixed-point values of the FIFO.
     // The fixed-point value is an unsigned long long int value.
-    ConvertDoubleArrayToU64Array(send, fxp_buffer_send, sizeof(send)/sizeof(U64_t));
+    ConvertDoubleArrayToU64Array(send, fxp_buffer_send, sizeof(send)/sizeof(uint64_t));
 	
     // Write fixed-point values to an AO FIFO on bank B.
     Ao_WriteFifo(&bank_B,
                  HostToTarget_FIFO_FXP_B,
                  fxp_buffer_send,
-                 (sizeof(fxp_buffer_send)/sizeof(U64_t)),
+                 (sizeof(fxp_buffer_send)/sizeof(uint64_t)),
                  NiFpga_InfiniteTimeout,
                  NULL);
 
