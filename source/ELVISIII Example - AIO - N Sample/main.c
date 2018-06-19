@@ -91,8 +91,8 @@ int main(int argc, char **argv)
 
     // Convert fixed-point values of the FIFO to double values.
     // The fixed-point value is an unsigned long long int value.
-    ConvertUnsignedLongLongIntToDouble(fxp_buffer_receive, FIFO_SIZE, value);
-
+    ConvertU64ArrayToDoubleArray(fxp_buffer_receive, FIFO_SIZE, value);
+	
     // Print out the values of A/AI0.
     printf("Channel%d:\n", Ai_Channel0 - RSE_NUM);
     int i;
@@ -112,8 +112,8 @@ int main(int argc, char **argv)
 
     // Convert double values to fixed-point values of the FIFO.
     // The fixed-point value is an unsigned long long int value.
-    ConvertDoubleToUnsignedLongLongInt(send, fxp_buffer_send, sizeof(send)/sizeof(uint64_t));
-
+    ConvertDoubleArrayToU64Array(send, fxp_buffer_send, sizeof(send)/sizeof(uint64_t));
+	
     // Write fixed-point values to an AO FIFO on bank B.
     Ao_WriteFifo(&bank_B,
                  HostToTarget_FIFO_FXP_B,

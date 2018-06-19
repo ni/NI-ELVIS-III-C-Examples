@@ -101,7 +101,7 @@ void Di_ReadFifo(ELVISIII_Dio*         bank,
                   size_t*               elementsRemaining);
 
 // Convert fixed-point values of the FIFO to boolean values.
-void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fxp_buffer_receive, size_t fifo_size, NiFpga_Bool value[]);
+void ConvertU64ArrayToBoolArray(Dio_Channel channel, uint64_t* fxp_buffer_receive, size_t fifo_size, NiFpga_Bool value[]);
 
 // Set the Direction of the DIO channel as an input.
 void Do_Direction(ELVISIII_Dio* bank, Dio_Channel channel);

@@ -179,8 +179,8 @@ void Di_Enable(ELVISIII_Dio* bank)
  * elementsRemaining | NULL.
  * ------------------------------------------
  */
-void Di_ReadFifo(ELVISIII_Dio*         bank,
-                 TargetToHost_FIFO_FXP fifo,
+void Di_ReadFifo(ELVISIII_Dio*          bank,
+                 TargetToHost_FIFO_FXP  fifo,
                   uint64_t*             fxp_buffer_receive,
                   size_t                fifo_size,
                   uint32_t              timeout,
@@ -213,7 +213,7 @@ void Di_ReadFifo(ELVISIII_Dio*         bank,
  * @param[in]  fifo_size                The size of DI FIFO.
  * @param[in]  value                    groups of boolean value
  */
-void ConvertUnsignedLongLongIntToBool(Dio_Channel channel, uint64_t* fxp_buffer_receive, size_t fifo_size, NiFpga_Bool value[])
+void ConvertU64ArrayToBoolArray(Dio_Channel channel, uint64_t* fxp_buffer_receive, size_t fifo_size, NiFpga_Bool value[])
 {
     uint8_t bit = channel;
     int i;
@@ -387,8 +387,8 @@ void Do_Enable(ELVISIII_Dio* bank, Dio_Channel channel)
  * elementsRemaining | NULL.
  * ------------------------------------------
  */
-void Do_WriteFifo(ELVISIII_Dio*         bank,
-                  HostToTarget_FIFO_FXP fifo,
+void Do_WriteFifo(ELVISIII_Dio*          bank,
+                  HostToTarget_FIFO_FXP  fifo,
                    const uint64_t*       fxp_buffer_send,
                    size_t                fifo_size,
                    uint32_t              timeout,

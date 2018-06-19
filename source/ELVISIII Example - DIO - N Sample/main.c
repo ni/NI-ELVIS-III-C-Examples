@@ -84,7 +84,7 @@ int main()
 
     // Convert fixed-point values of the FIFO to boolean values.
     // The fixed-point value is an unsigned long long int value.
-    ConvertUnsignedLongLongIntToBool(Dio_Channel0, fxp_buffer_receive, FIFO_SIZE, value);
+    ConvertU64ArrayToBoolArray(Dio_Channel0, fxp_buffer_receive, FIFO_SIZE, value);
 
     // Print the values of A/DIO0.
     printf("Channel%d:\n", Dio_Channel0);
