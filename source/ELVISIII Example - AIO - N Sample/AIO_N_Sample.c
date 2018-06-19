@@ -226,19 +226,12 @@ void Ai_Enable(ELVISIII_Aio* bank)
  * elementsRemaining | NULL.
  * ------------------------------------------
  */
-void Ai_ReadFifo(ELVISIII_Aio*                  bank,
+void Ai_ReadFifo(ELVISIII_Aio*             bank,
                  TargetToHost_FIFO_FXP     fifo,
-<<<<<<< HEAD
-                  uint64_t*                         fxp_buffer_receive,
-                  size_t                            fifo_size,
-                  uint32_t                          timeout,
-                  size_t*                           elementsRemaining)
-=======
                   uint64_t*                fxp_buffer_receive,
                   size_t                   fifo_size,
                   uint32_t                 timeout,
                   size_t*                  elementsRemaining)
->>>>>>> renamebank
 {
     NiFpga_Status status;
 
@@ -266,7 +259,7 @@ void Ai_ReadFifo(ELVISIII_Aio*                  bank,
  * @param[in]  fifo_size                    The size of the AI FIFO.
  * @param[in]  value                        Double value.
  */
- void ConvertUint64ArrayToDoubleArray(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value)
+void ConvertUint64ArrayToDoubleArray(uint64_t *fxp_buffer_receive, size_t fifo_size, double *value)
 {
     int i;
     uint32_t temp;
@@ -422,8 +415,8 @@ void ConvertDoubleArrayToUint64Array(double *value, uint64_t *fxp_buffer_send, s
  * elementsRemaining | NULL.
  * ------------------------------------------
  */
-void Ao_WriteFifo(ELVISIII_Aio*                 bank,
-                  HostToTarget_FIFO_FXP     fifo,
+void Ao_WriteFifo(ELVISIII_Aio*                  bank,
+                  HostToTarget_FIFO_FXP          fifo,
                    const uint64_t*               fxp_buffer_send,
                    size_t                        fifo_size,
                    uint32_t                      timeout,

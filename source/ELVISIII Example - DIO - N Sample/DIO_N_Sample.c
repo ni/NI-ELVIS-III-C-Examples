@@ -179,8 +179,8 @@ void Di_Enable(ELVISIII_Dio* bank)
  * elementsRemaining | NULL.
  * ------------------------------------------
  */
-void Di_ReadFifo(ELVISIII_Dio*         bank,
-                 TargetToHost_FIFO_FXP fifo,
+void Di_ReadFifo(ELVISIII_Dio*          bank,
+                 TargetToHost_FIFO_FXP  fifo,
                   uint64_t*             fxp_buffer_receive,
                   size_t                fifo_size,
                   uint32_t              timeout,
@@ -387,8 +387,8 @@ void Do_Enable(ELVISIII_Dio* bank, Dio_Channel channel)
  * elementsRemaining | NULL.
  * ------------------------------------------
  */
-void Do_WriteFifo(ELVISIII_Dio*         bank,
-                  HostToTarget_FIFO_FXP fifo,
+void Do_WriteFifo(ELVISIII_Dio*          bank,
+                  HostToTarget_FIFO_FXP  fifo,
                    const uint64_t*       fxp_buffer_send,
                    size_t                fifo_size,
                    uint32_t              timeout,
