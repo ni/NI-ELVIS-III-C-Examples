@@ -135,12 +135,12 @@ Ignore any error if the folder already exists.
 
 Some examples need extra devices to connect to NI ELVIS III.Here are the input and output interfaces of these examples:
 
-- DIO: DIO [0:19] on bank A and bank B
-- PWM: DIO [0:19] on bank A and bank B
-- Encoder: DIO [0:1], DIO [2:3], …, DIO [18:19] on bank A and bank B
-- SPI: DIO [5:7] on bank A and bank B
-- I2C: DIO [14:15] on bank A and bank B
-- UART: DIO [16:17]  on bank A and bank B
+- DIO:      DIO [0:19] on bank A and bank B
+- PWM:      DIO [0:19] on bank A and bank B
+- Encoder:  DIO [0:1], DIO [2:3], …, DIO [18:19] on bank A and bank B
+- SPI:      DIO [5:7] on bank A and bank B
+- I2C:      DIO [14:15] on bank A and bank B
+- UART:     DIO [16:17]  on bank A and bank B
 
 |**NI ELVIS III**| DIO example | PWM example | Encoder example | SPI example | I2C example              |UART example| 
 |:--------------:|:-----------:|:-----------:|:---------------:|:-----------:|:------------------------:|:----------:| 
