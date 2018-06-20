@@ -131,7 +131,7 @@ Ignore any error if the folder already exists.
 9.	Click Run
 
 
-## IO Mapping
+## Function Select Register
 
 Some examples need extra devices to connect to NI ELVIS III.Here are the input and output interfaces of these examples:
 
