@@ -1,3 +1,12 @@
+# Table of Contents
+- [User Guide](#user-guide)
+  * [Set up the Software Environment](#set-up-the-software-environment)
+  * [Start Eclipse](#start-eclipse)
+  * [Create the connection with ELVIS III](#create-the-connection-with-elvis-iii)
+  * [Create the Eclipse C Project](#create-the-eclipse-c-project)
+  * [Install Bitfiles](#install-bitfiles)
+  * [Build and Install Executable](#build-and-install-executable)
+  
 # User Guide
 
   This guide helps you to configure the development environment of Eclipse ,create a connection with NI ELVIS III. You can debug or run the project on the ELVIS III with Eclipse.
