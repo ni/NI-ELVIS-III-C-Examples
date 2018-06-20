@@ -1,3 +1,12 @@
+# Table of Contents
+- [User Guide](#user-guide)
+  * [Set up the Software Environment](#set-up-the-software-environment)
+  * [Start Eclipse](#start-eclipse)
+  * [Create the connection with ELVIS III](#create-the-connection-with-elvis-iii)
+  * [Create the Eclipse C Project](#create-the-eclipse-c-project)
+  * [Install Bitfiles](#install-bitfiles)
+  * [Build and Install Executable](#build-and-install-executable)
+  
 # User Guide
 
   This guide helps you to configure the development environment of Eclipse ,create a connection with NI ELVIS III. You can debug or run the project on the ELVIS III with Eclipse.
@@ -130,6 +139,35 @@ Ignore any error if the folder already exists.
   
 9.	Click Run
 
+## Examples Overview
+NI provides the following examples for using the NI ELVIS III. Refer to the *main.c* file in each example for more information.
+
+### AIO
+  Demonstrates using the analog input and output (AIO). This example writes an initial value to AO0 on bank A and reads this value from AI0 on bank A.This example also reads the difference of the initial values on AI1 and AI5 on bank B. This example prints the values to the console.
+### AIO N Sample
+  Demonstrates using th analog input and output of N Sample (AIO - N Sample). This example reads a group of values from AI0 on bank A and writes a group of initial values to AO0 on bank B.This example prints the group of read values to the console.
+### DIO
+  Demonstrates using the digital input and output (DIO). This example writes an initial value to DIO1 on bank A and reads this value from DIO0 on bank A.This example also reads an initial value from DIO0 on bank B.This example prints the values to the console.
+### DIO N Sample
+  Demonstrates using th digital input and output of N Sample (AIO - N Sample). This example reads a group of values from DIO0 on bank A and writes a group of initial values to DIO0 on bank B.This example prints the group of read values to the console.
+### PWM
+  Demonstrates using pulse-width modulation (PWM). This example generates a PWM signal from PWM 0 on bank A.
+### Encoder
+  Demonstrates using the encoder. This example reads a step and direction signal from the encoder on bank A and prints the values to the console.
+### I2C
+  Demonstrates using the I²C. This example reads the temperature from a connected TMP102 digital temperature sensor and writes the response to the console.
+### SPI
+  Demonstrates using the serial peripheral interface bus (SPI). This example writes a message to the SPI bus and then prints any returned bytes to the console.
+### UART
+  Demonstrates using the universal asynchronous receiver/transmitter (UART). This example writes a character to the UART bus and then prints any returned character to the console.
+### AIIRQ
+  Demonstrates using the analog input interrupt request (IRQ). This example registers an IRQ on analog input AI0 on bank A and creates a new thread that waits for the interrupt to occur.
+### DIIRQ
+  Demonstrates using the digital input interrupt request. This example registers an IRQ on digital input DIO0 on connector A and creates a new thread that waits for the interrupt to occur.
+### ButtonIRQ
+  Demonstrates using the button interrupt request. This example registers an IRQ on the user button of the NI ELVIS III and creates a new thread that waits for the interrupt to occur.
+### TimerIRQ
+  Demonstrates using the timer interrupt request. This example registers an IRQ on software timer and creates a new thread that waits for the interrupt to occur.
 
 ## Function Select Register
 
@@ -164,5 +202,3 @@ Some examples need extra devices to connect to NI ELVIS III.Here are the input a
 | **DIO 17**     | DIO 17      | PWM 17      | ENC.B 8         |             |                          | UART.TX    | 
 | **DIO 18**     | DIO 18      | PWM 18      | ENC.A 9         |             |                          |            | 
 | **DIO 19**     | DIO 19      | PWM 19      | ENC.B 9         |             |                          |            | 
-
-
