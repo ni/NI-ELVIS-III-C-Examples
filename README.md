@@ -82,7 +82,7 @@ Note  Before import , you need to download the C support archive file .You can d
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/picture/pic8.png)  
 
 ## Install Bitfiles
-       Bitfiles contain information about the interfaces and registers of the hardware .Before using ELVIS III ,you need to install bitfiles in ELVIS III. You can download bitfiles from …
+   Bitfiles contain information about the interfaces and registers of the hardware .Before using ELVIS III ,you need to install bitfiles in ELVIS III. You can download bitfiles from …
 1.	Click Window > Open Perspective > Other.... Select Remote System Explorer. Click OK.
 2.	In the Remote Systems pane's toolbar, expand Sftp Files > root. Right-click Root, and click New > Folder.The New Folder dialog shows.
 
@@ -129,3 +129,9 @@ Ignore any error if the folder already exists.
   ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/picture/pic12.png) 
   
 9.	Click Run
+
+# NI ELVIS III Top Board Developer's Manual
+
+This manual helps users of the National Instruments ELVIS III develop a custom application top board. The manual includes information on licensing, mechanical design, electrical design, basic software interfacing, and courseware support. For information on the use of ELVIS III or administering and provisioning ELVIS III in a laboratory setting refer to the product documentation.
+
+You can find 
