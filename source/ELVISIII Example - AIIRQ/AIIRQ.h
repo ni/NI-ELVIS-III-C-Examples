@@ -122,7 +122,7 @@ int32_t Irq_UnregisterAiIrq(ELVISIII_IrqAi*    bank,
                              NiFpga_IrqContext irqContext,
                              uint8_t           irqNumber);
 							 
-// Wait for the AI IRQ in a new thread.							 
+// Start a new thread to handle AI IRQ.						 
 void *AI_Irq_Thread(void* resource);
 
 #if NiFpga_Cpp
