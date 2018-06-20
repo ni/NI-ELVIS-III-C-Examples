@@ -6,6 +6,21 @@
   * [Create the Eclipse C Project](#create-the-eclipse-c-project)
   * [Install Bitfiles](#install-bitfiles)
   * [Build and Install Executable](#build-and-install-executable)
+  * [Examples Overview](#examples-overview)
+    + [AIO](#aio)
+    + [AIO N Sample](#aio-n-sample)
+    + [DIO](#dio)
+    + [DIO N Sample](#dio-n-sample)
+    + [PWM](#pwm)
+    + [Encoder](#encoder)
+    + [I2C](#i2c)
+    + [SPI](#spi)
+    + [UART](#uart)
+    + [AIIRQ](#aiirq)
+    + [DIIRQ](#diirq)
+    + [ButtonIRQ](#buttonirq)
+    + [TimerIRQ](#timerirq)
+  * [Function Select Register](#function-select-register)
   
 # User Guide
 
