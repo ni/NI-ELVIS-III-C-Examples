@@ -21,7 +21,7 @@
   * [ButtonIRQ](#buttonirq)
   * [TimerIRQ](#timerirq)
 - [Function Select Register](#function-select-register)
-- [NI ELVIS III Top Board Developer's Manual](#ni-elvis-iii-top-board-developer-s-manual)
+- [NI ELVIS III Top Board Developer's Manual](#ni-elvis-iii-top-board-developers-manual)
 
 # Installation Instructions
 
