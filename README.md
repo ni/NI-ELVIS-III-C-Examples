@@ -221,5 +221,6 @@ Some examples need extra devices to connect to NI ELVIS III.Here are the input a
 # NI ELVIS III Top Board Developer's Manual
 
 This manual helps users of the National Instruments ELVIS III develop a custom application top board. The manual includes information on licensing, mechanical design, electrical design, basic software interfacing, and courseware support. For information on the use of ELVIS III or administering and provisioning ELVIS III in a laboratory setting refer to the product documentation.
-You can find NI ELVIS III Top Board Developer's Manual here.
+
+You can find NI ELVIS III Top Board Developer's Manual [here](/docs/NI-ELVIS-III-MDK.docx).
 
