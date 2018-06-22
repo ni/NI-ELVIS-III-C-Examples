@@ -20,6 +20,7 @@
   * [DIIRQ](#diirq)
   * [ButtonIRQ](#buttonirq)
   * [TimerIRQ](#timerirq)
+- [Function Select Register](#function-select-register)
 - [NI ELVIS III Top Board Developer's Manual](#ni-elvis-iii-top-board-developer-s-manual)
 
 # Installation Instructions
@@ -184,7 +185,7 @@ NI provides the following examples for using the NI ELVIS III. Refer to the *mai
 ## TimerIRQ
   Demonstrates using the timer interrupt request. This example registers an IRQ on software timer and creates a new thread that waits for the interrupt to occur.
 
-## Function Select Register
+# Function Select Register
 
 Some examples need extra devices to connect to NI ELVIS III.Here are the input and output interfaces of these examples:
 
