@@ -184,8 +184,42 @@ NI provides the following examples for using the NI ELVIS III. Refer to the *mai
 ## TimerIRQ
   Demonstrates using the timer interrupt request. This example registers an IRQ on software timer and creates a new thread that waits for the interrupt to occur.
 
+## Function Select Register
+
+Some examples need extra devices to connect to NI ELVIS III.Here are the input and output interfaces of these examples:
+
+- DIO:      DIO [0:19] on bank A and bank B
+- PWM:      DIO [0:19] on bank A and bank B
+- Encoder:  DIO [0:1], DIO [2:3], …, DIO [18:19] on bank A and bank B
+- SPI:      DIO [5:7] on bank A and bank B
+- I2C:      DIO [14:15] on bank A and bank B
+- UART:     DIO [16:17]  on bank A and bank B
+
+|**NI ELVIS III**| DIO example | PWM example | Encoder example | SPI example | I2C example              |UART example| 
+|:--------------:|:-----------:|:-----------:|:---------------:|:-----------:|:------------------------:|:----------:| 
+| **DIO 0**      | DIO 0       | PWM 0       | ENC.A 0         |             |                          |            | 
+| **DIO 1**      | DIO 1       | PWM 1       | ENC.B 0         |             |                          |            | 
+| **DIO 2**      | DIO 2       | PWM 2       | ENC.A 1         |             |                          |            | 
+| **DIO 3**      | DIO 3       | PWM 3       | ENC.B 1         |             |                          |            | 
+| **DIO 4**      | DIO 4       | PWM 4       | ENC.A 2         |             |                          |            | 
+| **DIO 5**      | DIO 5       | PWM 5       | ENC.B 2         | SPI.CLK     |                          |            | 
+| **DIO 6**      | DIO 6       | PWM 6       | ENC.A 3         | SPI.MISO    |                          |            | 
+| **DIO 7**      | DIO 7       | PWM 7       | ENC.B 3         | SPI.MOSI    |                          |            | 
+| **DIO 8**      | DIO 8       | PWM 8       | ENC.A 4         |             |                          |            | 
+| **DIO 9**      | DIO 9       | PWM 9       | ENC.B 4         |             |                          |            | 
+| **DIO 10**     | DIO 10      | PWM 10      | ENC.A 5         |             |                          |            | 
+| **DIO 11**     | DIO 11      | PWM 11      | ENC.B 5         |             |                          |            | 
+| **DIO 12**     | DIO 12      | PWM 12      | ENC.A 6         |             |                          |            | 
+| **DIO 13**     | DIO 13      | PWM 13      | ENC.B 6         |             |                          |            | 
+| **DIO 14**     | DIO 14      | PWM 14      | ENC.A 7         |             | I2C.SCL                  |            | 
+| **DIO 15**     | DIO 15      | PWM 15      | ENC.B 7         |             | I2C.SDA                  |            | 
+| **DIO 16**     | DIO 16      | PWM 16      | ENC.A 8         |             |                          | UART.RX    | 
+| **DIO 17**     | DIO 17      | PWM 17      | ENC.B 8         |             |                          | UART.TX    | 
+| **DIO 18**     | DIO 18      | PWM 18      | ENC.A 9         |             |                          |            | 
+| **DIO 19**     | DIO 19      | PWM 19      | ENC.B 9         |             |                          |            | 
+
 # NI ELVIS III Top Board Developer's Manual
 
 This manual helps users of the National Instruments ELVIS III develop a custom application top board. The manual includes information on licensing, mechanical design, electrical design, basic software interfacing, and courseware support. For information on the use of ELVIS III or administering and provisioning ELVIS III in a laboratory setting refer to the product documentation.
-
 You can find NI ELVIS III Top Board Developer's Manual here.
+
