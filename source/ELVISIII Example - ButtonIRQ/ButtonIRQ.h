@@ -48,6 +48,9 @@ int32_t Irq_UnregisterButtonIrq(ELVISIII_IrqButton* irqButton,
                                 NiFpga_IrqContext   irqContext,
                                 uint8_t             irqNumber);
 
+// Start a new thread to handle Button IRQ.
+void *Button_Irq_Thread(void* resource);
+
 #if NiFpga_Cpp
 }
 #endif
