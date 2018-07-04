@@ -1,11 +1,11 @@
 # Table of Contents
 - [Installation Instructions](#installation-instructions)
-  * [Set up the Software Environment](#set-up-the-software-environment)
-  * [Start Eclipse](#start-eclipse)
-  * [Create the connection with ELVIS III](#create-the-connection-with-elvis-iii)
-  * [Create the Eclipse C Project](#create-the-eclipse-c-project)
-  * [Install Bitfiles](#install-bitfiles)
-  * [Build and Install Executable](#build-and-install-executable)
+  * [Setting up the Software Environment](#setting-up-the-software-environment)
+  * [Starting Eclipse](#starting-eclipse)
+  * [Connect to the NI ELVIS III](#connect-to-the-ni-elvis-iii)
+  * [Importing C Support File for NI ELVIS III to Eclipse](#importing-c-support-file-for-ni-elvis-iii-to-eclipse)
+  * [Installing Bitfiles](#installing-bitfiles)
+  * [Building and Installing Executable](#building-and-installing-executable)
 - [Examples Overview](#examples-overview)
   * [AIO](#aio)
   * [AIO N Sample](#aio-n-sample)
@@ -21,7 +21,7 @@
   * [ButtonIRQ](#buttonirq)
   * [TimerIRQ](#timerirq)
 - [Function Select Register](#function-select-register)
-- [NI ELVIS III Top Board Developer's Manual](#ni-elvis-iii-top-board-developers-manual)
+- [NI ELVIS III Top Board Developer's Manual](#ni-elvis-iii-top-board-developer-s-manual)
 
 # Installation Instructions
 
