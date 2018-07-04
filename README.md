@@ -149,16 +149,16 @@
 >1.	On the left pane of the **Properties** dialog box, expand **C/C++ Build** and select **Tool Chain Editor**. 
 >2.	On the right pane, select **CDT Internal Builder** from the **Current builder** pull-down menu.
 
-3.	In the Project Explorer pane, right-click the project and select Properties. On the left pane,expand Resource and select Linked Resources . On the right pane ,click Linked Resources .Select the location of C support file ,click Edit….Add the path to the source file of the C support file. Usually the path is C:\Users<administrator name>\workspace\C Support for ELVISIII\source
-4.	In the Project Explorer pane, select the project and select Run -> Run Configurations. 
+3.	On the right pane, click the **Linked Resources** tab, select the **C_Support** row, and click **Edit** to edit the path to the C support files. Usually the path is C:\Users<administrator name>\workspace\C Support for ELVISIII\source. Click **OK** to save your changes.  
+4.	In the **Project Explorer** pane, select the project and select **Run -> Run Configurations** from the toolbar. 
 5.	Right-click **C/C++ Remote Application** and select **New** to display the **Run Configurations** dialog box .
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic11.png) 
 
 6.	Select the IP address of the NI ELVIS III from the **Connection** pull-down menu.
 7.	Click **Browse** to the right of the **Remote Absolute File Path for C/C++ Application** textbox.
-8.	Right-click My Home and select New -> Folder 
-9.	Enter the new folder name and click Finish .
+8.	Right-click **My Home** and select **New -> Folder**. 
+9.	Enter the new folder name and click **Finish**.
 10.	Select the folder you have just created and click **OK**. In the textbox, append **/** after **/home/admin** and add the project name to the end of the path. 
 11.	Click **Apply** to save the settings. 
   
