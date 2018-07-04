@@ -103,7 +103,7 @@
        Use C examples to try how to run a project on ELVIS III with Eclipse.
 1. Download the C Support archive File from github depository. Click **Clone or download** button. Click **Download ZIP**.
 
-![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/clone.png)  
+![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/download.png)  
 
 2.	Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box.
 3.	Select **C/C++ (default)** and click **OK**.
