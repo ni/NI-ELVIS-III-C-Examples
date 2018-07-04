@@ -101,7 +101,7 @@
 
 ## Importing C Support File for NI ELVIS III to Eclipse
        Use C examples to try how to run a project on ELVIS III with Eclipse.
-1. Download the C Support archive File from github depository. Click **Clone or download** button. Click **Download ZIP**.
+1. Download the C Support archive File from github repository. Click **Clone or download** button and then click **Download ZIP**.
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/download.png)  
 
@@ -114,7 +114,7 @@
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic8.png)  
 
->Note : After importing the C Support project, you need to check if the location of C_Support file is correct.<br>
+>Note : After importing the C Support project, check if the location of the C Support file is correct. .<br>
 >a. In the **Project Explore**r pane, right-click the example and select **Properties**. <br>
 >b. On the left pane of the **Properties** dialog box, expand **Resource** and select **Linked Resources**. <br>
 >c. On the right pane, click the **Linked Resources** tab, select the **C_Support** row, and click **Edit** to edit the path to the C support files. Usually the path is C:\Users<administrator name>\workspace\C Support for ELVISIII\source. Click **OK** to save your changes.  
