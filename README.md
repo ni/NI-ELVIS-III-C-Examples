@@ -101,17 +101,25 @@
 
 ## Importing C Support File for NI ELVIS III to Eclipse
        Use C examples to try how to run a project on ELVIS III with Eclipse.
-1.	Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box.
-2.	Select **C/C++ (default)** and click **OK**.
-3.	Select **File > Import...** The **Import dialog** box shows.
-4.	Select **General > Existing Projects** into Workspace and click **Next** to display the **Import Projects** page.
+1. Download the C Support archive File from github depository. Click **Clone or download** button. Click **Download ZIP**.
 
->Note : Before importing the project , you need to download the C support archive file .You can download the C support archive file from……
+![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/clone.png)  
 
-5.	Select **Select archive file**, click **Browse** and select the latest build C support archive file.
-6.	Select the C Support file and the example to import and click **Finish**.
+2.	Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box.
+3.	Select **C/C++ (default)** and click **OK**.
+4.	Select **File > Import...** The **Import dialog** box shows.
+5.	Select **General > Existing Projects** into Workspace and click **Next** to display the **Import Projects** page.
+6.	Select **Select archive file**, click **Browse** and select the latest build C support archive file.
+7.	Select the C Support file and the example to import and click **Finish**.
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic8.png)  
+
+>Note : After importing the C Support project, you need to check if the location of C_Support file is correct.<br>
+>a. In the **Project Explore**r pane, right-click the example and select **Properties**. <br>
+>b. On the left pane of the **Properties** dialog box, expand **Resource** and select **Linked Resources**. <br>
+>c. On the right pane, click the **Linked Resources** tab, select the **C_Support** row, and click **Edit** to edit the path to the C support files. Usually the path is C:\Users<administrator name>\workspace\C Support for ELVISIII\source. Click **OK** to save your changes.  
+ 
+![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/cSupportPath.png)  
 
 ## Installing Bitfiles
    Bitfiles contain information about the interfaces and registers of the hardware. Before using the NI ELVIS III, you need to install bitfiles  on the NI ELVIS III. You can download bitfiles from …
@@ -149,22 +157,21 @@
 >1.	On the left pane of the **Properties** dialog box, expand **C/C++ Build** and select **Tool Chain Editor**. 
 >2.	On the right pane, select **CDT Internal Builder** from the **Current builder** pull-down menu.
 
-3.	On the right pane, click the **Linked Resources** tab, select the **C_Support** row, and click **Edit** to edit the path to the C support files. Usually the path is C:\Users<administrator name>\workspace\C Support for ELVISIII\source. Click **OK** to save your changes.  
-4.	In the **Project Explorer** pane, select the project and select **Run -> Run Configurations** from the toolbar. 
-5.	Right-click **C/C++ Remote Application** and select **New** to display the **Run Configurations** dialog box .
+3.	In the **Project Explorer** pane, select the project and select **Run -> Run Configurations** from the toolbar. 
+4.	Right-click **C/C++ Remote Application** and select **New** to display the **Run Configurations** dialog box .
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic11.png) 
 
-6.	Select the IP address of the NI ELVIS III from the **Connection** pull-down menu.
-7.	Click **Browse** to the right of the **Remote Absolute File Path for C/C++ Application** textbox.
-8.	Right-click **My Home** and select **New -> Folder**. 
-9.	Enter the new folder name and click **Finish**.
-10.	Select the folder you have just created and click **OK**. In the textbox, append **/** after **/home/admin** and add the project name to the end of the path. 
-11.	Click **Apply** to save the settings. 
+5.	Select the IP address of the NI ELVIS III from the **Connection** pull-down menu.
+6.	Click **Browse** to the right of the **Remote Absolute File Path for C/C++ Application** textbox.
+7.	Right-click **My Home** and select **New -> Folder**. 
+8.	Enter the new folder name and click **Finish**.
+9.	Select the folder you have just created and click **OK**. In the textbox, append **/** after **/home/admin** and add the project name to the end of the path. 
+10.	Click **Apply** to save the settings. 
   
   ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic12.png) 
   
-12.	Click **Run** to build and install the executables.
+11.	Click **Run** to build and install the executables.
 
 # Examples Overview
 NI provides the following examples for using the NI ELVIS III. Refer to the *main.c* file in each example for more information.
