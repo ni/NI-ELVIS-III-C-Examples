@@ -5,23 +5,23 @@
  *
  * Overview:
  * Demonstrates using the digital input and output (DIO).
- * Write an initial value to DIO1 on bank A.
- * Read this value from DIO0 on bank A.
- * Read an initial value from DIO0 on bank B.
+ * Writes an initial value to DIO1 on bank A.
+ * Reads this value from DIO0 on bank A.
+ * Reads an initial value from DIO0 on bank B.
  *
  * Instructions:
- * 1. Connect the DIO0 and DIO1 on bank A.
+ * 1. Connect DIO0 and DIO1 on bank A.
  * 2. Connect an input (5 V, 3.3 V, DGND) to DIO0 on bank B.
  * 3. Run this program.
  *
  * Output:
- * The program writes the initial value to DIO1 on bank A, and reads the write value from DIO0.
+ * The program writes the initial value to DIO1 on bank A, and reads the written value from DIO0.
  * The program reads the initial value from DIO0 on bank B.
  * The output is maintained for 60 s.
  * Values are written to the console.
  *
  * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
  */
 #include <stdio.h>
 #include <time.h>

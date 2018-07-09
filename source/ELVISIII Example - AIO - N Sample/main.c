@@ -4,30 +4,30 @@
  * All rights reserved.
  *
  * Overview:
- * Demonstrates using the analog input and output of N Sample (AIO - N Sample).
- * Read a group of values from one analog input channel on bank A.
- * Write a group of values to one analog output channel on bank B.
+ * Demonstrates using the analog input and output in N samples mode (AIO - N Samples).
+ * Reads a group of values from one analog input channel on bank A.
+ * Writes a group of values to one analog output channel on bank B.
  *
  * Instructions:
- * 1. Install an oscilloprobe on one of the Function Generator on NI ELVIS III device.
+ * 1. Install an oscilloprobe on one of the Function Generator channels on the NI ELVIS III.
  *    Use the oscilloprobe to probe AI0 on bank A. Use AGND as ground.
- * 2. Install an oscilloprobe on one of the Oscilloscope on NI ELVIS III device.
+ * 2. Install an oscilloprobe on one of the Oscilloscope channels on the NI ELVIS III.
  *    Use the oscilloprobe to probe AO0 on bank B. Use AGND as ground.
- * 3. Open "Measurements Live" (measurementslive.ni.com) and connect to the NI ELVIS III device.
- * 4. In Instruments tab, open Function and Arbitrary Waveform Generator.
- * 	  Set a square wave in 500Hz, 4Vpp and 0V DC offset.
- * 5. In Instruments tab, open Oscilloscope.
- * 	  Set Normal mode, analog edge type and 1V level.
+ * 3. Open Measurements Live (measurementslive.ni.com) and connect to the NI ELVIS III.
+ * 4. On the Instruments tab, launch the Function and Arbitrary Waveform Generator.
+ * 	  Set a square wave of 500Hz, 4Vpp and 0V DC offset.
+ * 5. On the Instruments tab, launch the Oscilloscope.
+ * 	  Set the trigger mode as Normal, the trigger type as Analog edge, and the trigger level as 1V.
  * 6. Run this program.
  *
  * Output:
  * The program reads groups of values from AI0 on bank A.
  * The program writes groups of initial values to AO0 on bank B.
  * The output is maintained for 60 s.
- * The group of values reading from the AI0 is written to the console.
+ * The group of values read from AI0 is written to the console.
  *
  * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
  */
 #include <stdio.h>
 #include <time.h>
