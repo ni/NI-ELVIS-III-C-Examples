@@ -2,7 +2,7 @@
 - [Installation Instructions](#installation-instructions)
   * [Setting up the Software Environment](#setting-up-the-software-environment)
   * [Starting Eclipse](#starting-eclipse)
-  * [Connect to the NI ELVIS III](#connect-to-the-ni-elvis-iii)
+  * [Connecting to the NI ELVIS III](#connecting-to-the-ni-elvis-iii)
   * [Importing C Support File for NI ELVIS III to Eclipse](#importing-c-support-file-for-ni-elvis-iii-to-eclipse)
   * [Installing Bitfiles](#installing-bitfiles)
   * [Building and Installing Executable](#building-and-installing-executable)
@@ -62,12 +62,12 @@
 ## Starting Eclipse
 
 1.	Run Eclipse from the location where it is installed.
-2.	The **Select a Workspace** dialog shows. Click **OK**.
-3.	On the Welcome screen, click the arrow to launch the Eclipse Workbench (C/C++ Editor)
+2.	The **Select a Workspace** dialog box shows. Click **OK**.
+3.	On the Welcome screen, click the arrow to launch the Eclipse Workbench (C/C++ Editor).
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic2.png)  
 
-## Connect to the NI ELVIS III
+## Connecting to the NI ELVIS III
 1.	Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box.
 2. Select **Remote System Explorer** and click **OK**.
 
@@ -100,15 +100,15 @@
 12.	The **Info** dialog box shows. Click **OK**. You have successfully connected to the NI ELVIS III.
 
 ## Importing C Support File for NI ELVIS III to Eclipse
-       Use C examples to try how to run a project on ELVIS III with Eclipse.
-1. Download the C Support archive File from github repository. Click **Clone or download** button and then click **Download ZIP**.
+       Use the C examples to learn how to run a project on the NI ELVIS III with Eclipse.
+1. Download the C Support archive file from github repository. Click **Clone or download** and then click **Download ZIP**.
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/download.png)  
 
 2.	Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box.
 3.	Select **C/C++ (default)** and click **OK**.
-4.	Select **File > Import...** The **Import dialog** box shows.
-5.	Select **General > Existing Projects** into Workspace and click **Next** to display the **Import Projects** page.
+4.	Select **File > Import** The **Import** dialog box shows.
+5.	Select **General > Existing Projects into Workspace** and click **Next** to display the **Import Projects** page.
 6.	Select **Select archive file**, click **Browse** and select the latest build C support archive file.
 7.	Select the C Support file and the example to import and click **Finish**.
 
@@ -122,24 +122,25 @@
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/cSupportPath.png)  
 
 ## Installing Bitfiles
-   Bitfiles contain information about the interfaces and registers of the hardware. Before using the NI ELVIS III, you need to install bitfiles  on the NI ELVIS III. You can download bitfiles from …
-1.	Click **Window > Open Perspective > Other....** Select **Remote System Explorer**. Click **OK**.
-2.	In the **Remote Systems** pane's toolbar, expand **Sftp Files**. Right-click **Root**, and select **New > Folder**. The **New Folder** dialog box shows.
+   Bitfiles contain information about the interfaces and registers of the hardware. Before using the NI ELVIS III, you need to install bitfiles  on the NI ELVIS III. You can download bitfiles from github repository.
+1. Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box. 
+2. Select **Remote System Explorer**. Click **OK**.
+3.	In the **Remote Systems** pane's toolbar, expand **Sftp Files**. Right-click **Root**, and select **New > Folder**. The **New Folder** dialog box shows.
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic9.png)  
 
-3.	Enter the folder name in the **New folder name** textbox: /var/local/natinst/bitfiles and click **Finish**. Ignore the error if the folder already exists.
-4.	In the **Remote Systems** pane, right-click the newly created folder and select **Export From Project** from the shortcut menu to display the **Export** dialog box.
-5.	Expand the project and select NiFpga_ELVISIIIv10FPGA.lvbitx (the bitfile name may vary depending on the hardware you are using). Click **Finish**.
+4.	Enter the folder name in the **New folder name** textbox: /var/local/natinst/bitfiles and click **Finish**. Ignore the error if the folder already exists.
+5.	In the **Remote Systems** pane, right-click the newly created folder and select **Export From Project** from the shortcut menu to display the **Export** dialog box.
+6.	Expand the project and select NiFpga_ELVISIIIv10FPGA.lvbitx (the bitfile name may vary depending on the hardware you are using). Click **Finish**.
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic10.png)  
 
 ## Building and Installing Executable
-1.	Click **Window > Open Perspective > Other....** Select **C/C++ (default)**. Click **OK**.
+1.	Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box. 
+2. Select **C/C++ (default)**. Click **OK**.
+3.	In the **Project Explorer** pane, right-click an example and select **Build Project** from the shortcut menu to build the example. Wait until the project finishes building. 
 
-2.	In the **Project Explorer** pane, right-click an example and select **Build Project** from the shortcut menu to build the example. Wait until the project finishes building. 
-
->NOTE: if you select **Release** on the toolbar to build the project ,you need to configure the settings and tool chain of the project.
+>NOTE: if you select **Release** on the toolbar to build the project, you need to configure the settings and tool chain of the project.
 
 >![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic13.png)  
 
@@ -157,21 +158,21 @@
 >1.	On the left pane of the **Properties** dialog box, expand **C/C++ Build** and select **Tool Chain Editor**. 
 >2.	On the right pane, select **CDT Internal Builder** from the **Current builder** pull-down menu.
 
-3.	In the **Project Explorer** pane, select the project and select **Run -> Run Configurations** from the toolbar. 
-4.	Right-click **C/C++ Remote Application** and select **New** to display the **Run Configurations** dialog box .
+4.	In the **Project Explorer** pane, select the project and select **Run -> Run Configurations** from the toolbar. 
+5.	Right-click **C/C++ Remote Application** and select **New** to display the **Run Configurations** dialog box .
 
 ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic11.png) 
 
-5.	Select the IP address of the NI ELVIS III from the **Connection** pull-down menu.
-6.	Click **Browse** to the right of the **Remote Absolute File Path for C/C++ Application** textbox.
-7.	Right-click **My Home** and select **New -> Folder**. 
-8.	Enter the new folder name and click **Finish**.
-9.	Select the folder you have just created and click **OK**. In the textbox, append **/** after **/home/admin** and add the project name to the end of the path. 
-10.	Click **Apply** to save the settings. 
+6.	Select the IP address of the NI ELVIS III from the **Connection** pull-down menu.
+7.	Click **Browse** to the right of the **Remote Absolute File Path for C/C++ Application** textbox.
+8.	Right-click **My Home** and select **New -> Folder**. 
+9.	Enter the new folder name and click **Finish**.
+10.	Select the folder you have just created and click **OK**. In the textbox, append **/** after **/home/admin** and add the project name to the end of the path. 
+11.	Click **Apply** to save the settings. 
   
   ![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/pic12.png) 
   
-11.	Click **Run** to build and install the executables.
+12.	Click **Run** to build and install the executables.
 
 # Examples Overview
 NI provides the following examples for using the NI ELVIS III. Refer to the *main.c* file in each example for more information.
