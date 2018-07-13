@@ -9,17 +9,17 @@
  * The main thread runs for 60 s.
  *
  * Instructions:
- * 1. Install an oscilloprobe on one of the Function Generator on NI ELVIS III device.
+ * 1. Install an oscilloprobe on one of the Function Generator channels on the NI ELVIS III.
  *    Use the oscilloprobe to probe DIO0 on bank A. Use DGND as ground.
- * 2. Open "Measurements Live" (measurementslive.ni.com) and connect to the NI ELVIS III device.
- * 3. In Instruments tab, open Function and Arbitrary Waveform Generator and set a square wave.
+ * 2. Open Measurements Live (measurementslive.ni.com) and connect to the NI ELVIS III.
+ * 3. On the Instruments tab, launch the Function and Arbitrary Waveform Generator and set a square wave.
  * 4. Run this program and observe the console.
  *
  * Output:
  * The IRQ2, triggered times and main loop count number.
  *
  * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
  */
 #include <stdio.h>
 #include <time.h>

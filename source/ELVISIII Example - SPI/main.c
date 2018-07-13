@@ -16,10 +16,10 @@
  *
  * Output:
  * The program writes the message "Hello World\n" for 60 s. Slave values are
- * written to the console every newline character.
+ * written to the console for every new line of characters.
  *
  * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
  */
 #include <stdio.h>
 #include <time.h>
