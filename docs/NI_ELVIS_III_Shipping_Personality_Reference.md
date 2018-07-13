@@ -27,7 +27,7 @@ Registers follow a naming scheme as described below:
 Peripheral Type.Channel Name.Property Name
 ```
 
-> Note When you program in C language, register names must not contain periods,
+> Note: When you program in C language, register names must not contain periods,
 colons, or spaces.
 
 
@@ -50,7 +50,7 @@ Possible values = {AI, AO, DIO, DI, DO, PWM, I2C, SPI, ENC, IRQ, SYS}
 | SYS         | System                       | 
 
 
-> Note SYS is a reserved value used for a special purpose system register. The system
+> Note: SYS is a reserved value used for a special purpose system register. The system
 registers may or may not be related to a specific peripheral.
 
 ### Channel Name
@@ -92,51 +92,27 @@ Table 1. Inputs (controls)
 Table 2. Outputs (indicators)
 </p>
 
-```
-Short Name Long Name Comment
-```
-IN Input The value currently present at the DIO input lines.
-
-STAT Status The status of a peripheral.
-
-CNTR Counter The value of some counter.
-
-DATI Data In The data received from an attached device.
-
-VAL Value The value read from a subsystem/onboard device.
-Also used as an input.
-
-WGHT Weight The scaling weight to convert to/from physical
-units.
-
-OFST Offset The offset from zero.
-
-RDY Ready The status of a subsystem.
-
-READ Read The remaining time before the FPGA timer
-elapses.
-
-WRITE Write The elapse time to be set to the FPGA timer.
-
-SETTIME Set Time The toggle to overwrite the elapse time in the
-FPGA timer.
-
-ENA Enable Enables the setting of a peripheral.
-
-RISE Rise Enables the rising edge interrupt.
-
-FALL Fall Enables the falling edge interrupt.
-
-NO Number The identifier of the interrupt.
-
-THRESHOLD Threshold The value that triggers the analog input interrupts.
-
-HYSTERESIS Hysteresis The window size for threshold to reduce noise.
+| Short Name  | Long Name   | Comment                                                                 | 
+|-------------|-------------|-------------------------------------------------------------------------| 
+| IN          | Input       | The value currently present at the DIO input lines.                     | 
+| STAT        | Status      | The status of a peripheral.                                             | 
+| CNTR        | Counter     | The value of some counter.                                              | 
+| DATI        | Data In     | The data received from an attached device.                              | 
+| VAL         | Value       | The value read from a subsystem/onboard device. Also used as an input.  | 
+| WGHT        | Weight      | The scaling weight to convert to/from physical units.                   | 
+| OFST        | Offset      | The offset from zero.                                                   | 
+| RDY         | Ready       | The status of a subsystem.                                              | 
+| READ        | Read        | The remaining time before the FPGA timer elapses.                       | 
+| WRITE       | Write       | The elapse time to be set to the FPGA timer.                            | 
+| SETTIME     | Set Time    | The toggle to overwrite the elapse time in the FPGA timer.              | 
+| ENA         | Enable      | Enables the setting of a peripheral.                                    | 
+| RISE        | Rise        | Enables the rising edge interrupt.                                      | 
+| FALL        | Fall        | Enables the falling edge interrupt.                                     | 
+| NO          | Number      | The identifier of the interrupt.                                        | 
+| THRESHOLD   | Threshold   | The value that triggers the analog input interrupts.                    | 
+| HYSTERESIS  | Hysteresis  | The window size for threshold to reduce noise.                          |
 
 ## System Control / Function Select
-
-
-8 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
 
 ### Function Select Registers (SYS.SELECTx)
 
@@ -145,11 +121,11 @@ must enable the desired functionality at run time by setting or clearing the app
 before you use the individual registers. The bit definition of each register for each
 connector type is given below.
 
-```
-Tip Changing the register value switches between functions. This may have
+
+> Tip: Changing the register value switches between functions. This may have
 undesired effects if the connected peripheral is not intended to be connected to the
 alternate function.
-```
+
 Register list: SYS.SELECTA, SYS.SELECTB
 
 Data type: U
@@ -159,21 +135,13 @@ B DIO [0:19], respectively. In this register, each DIO is represented by 2 bits 
 high. For example, Bits [0:1] is DIO 0, Bits [2:3] is DIO 1, etc. The functionality of the
 combination of 2 bits is shown in the following table:
 
-```
-Bits Functionality
-```
-```
-00 The channel is used as DIO.
-```
-```
-01 The channel is used as PWM.
-```
-```
-10 The channel is used as Encoder.
-```
-```
-11 The channel is used as SPI or I2C.
-```
+| Bits  | Functionality                      | 
+|-------|------------------------------------| 
+| 00    | The channel is used as DIO.        | 
+| 01    | The channel is used as PWM.        | 
+| 10    | The channel is used as Encoder.    | 
+| 11    | The channel is used as SPI or I2C. | 
+
 For each DIO channel on connectors A and B, it could have different functionalities:
 
 - DIO: DIO [0:19] on connectors A and B
@@ -182,33 +150,28 @@ For each DIO channel on connectors A and B, it could have different functionalit
 - SPI: DIO [5:7] on connectors A and B
 - I2C: DIO [14:15] on connectors A and B
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 9
-```
-```
-DIO PWM Encoder SPI I2C UART
-DIO 0 PWM 0 ENC.A 0
-DIO 1 PWM 1 ENC.B 0
-DIO 2 PWM 2 ENC.A 1
-DIO 3 PWM 3 ENC.B 1
-DIO 4 PWM 4 ENC.A 2
-DIO 5 PWM 5 ENC.B 2 SPI.CLK
-DIO 6 PWM 6 ENC.A 3 SPI.MISO
-DIO 7 PWM 7 ENC.B 3 SPI.MOSI
-DIO 8 PWM 8 ENC.A 4
-DIO 9 PWM 9 ENC.B 4
-DIO 10 PWM 10 ENC.A 5
-DIO 11 PWM 11 ENC.B 5
-DIO 12 PWM 12 ENC.A 6
-DIO 13 PWM 13 ENC.B 6
-DIO 14 PWM 14 ENC.A 7 I2C.SCL
-DIO 15 PWM 15 ENC.B 7 I2C.SDA
-DIO 16 PWM 16 ENC.A 8 UART.RX
-DIO 17 PWM 17 ENC.B 8 UART.TX
-DIO 18 PWM 18 ENC.A 9
-DIO 19 PWM 19 ENC.B 9
-```
+| DIO     | PWM     | Encoder  | SPI       | I2C      | UART     | 
+|---------|---------|----------|-----------|----------|----------| 
+| DIO 0   | PWM 0   | ENC.A 0  |           |          |          | 
+| DIO 1   | PWM 1   | ENC.B 0  |           |          |          | 
+| DIO 2   | PWM 2   | ENC.A 1  |           |          |          | 
+| DIO 3   | PWM 3   | ENC.B 1  |           |          |          | 
+| DIO 4   | PWM 4   | ENC.A 2  |           |          |          | 
+| DIO 5   | PWM 5   | ENC.B 2  | SPI.CLK   |          |          | 
+| DIO 6   | PWM 6   | ENC.A 3  | SPI.MISO  |          |          | 
+| DIO 7   | PWM 7   | ENC.B 3  | SPI.MOSI  |          |          | 
+| DIO 8   | PWM 8   | ENC.A 4  |           |          |          | 
+| DIO 9   | PWM 9   | ENC.B 4  |           |          |          | 
+| DIO 10  | PWM 10  | ENC.A 5  |           |          |          | 
+| DIO 11  | PWM 11  | ENC.B 5  |           |          |          | 
+| DIO 12  | PWM 12  | ENC.A 6  |           |          |          | 
+| DIO 13  | PWM 13  | ENC.B 6  |           |          |          | 
+| DIO 14  | PWM 14  | ENC.A 7  |           | I2C.SCL  |          | 
+| DIO 15  | PWM 15  | ENC.B 7  |           | I2C.SDA  |          | 
+| DIO 16  | PWM 16  | ENC.A 8  |           |          | UART.RX  | 
+| DIO 17  | PWM 17  | ENC.B 8  |           |          | UART.TX  | 
+| DIO 18  | PWM 18  | ENC.A 9  |           |          |          | 
+| DIO 19  | PWM 19  | ENC.B 9  |           |          |          | 
 ## Onboard Device Registers
 
 These registers control the onboard LEDs and read the onboard button and accelerometer.
@@ -219,20 +182,10 @@ Register list: DIO.LED3:
 
 Data type: U
 
-
-10 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
-```
-Bit 7 6 5 4 3 2 1 0
-```
-```
-Name - - - - LED3 LED2 LED1 LED
-```
-```
-Initial
-Value
-```
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7  | 6  | 5  | 4  | 3     | 2     | 1     | 0     | 
+|----------------|----|----|----|----|-------|-------|-------|-------| 
+| Name           | -  | -  | -  | -  | LED3  | LED2  | LED1  | LED0  | 
+| Initial Value  | 0  | 0  | 0  | 0  | 0     | 0     | 0     | 0     | 
 
 This register controls the state of the onboard LEDs. Each bit corresponds to a single
 LED. If the bit is set to 1, the LED is lit. If the bit is set to 0, the LED is unlit.
@@ -248,19 +201,11 @@ Register list: DI.BTN
 
 Data type: U
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-```
-Name - - - - - - - BTN
-```
-```
-Initial
-Value
-```
-```
-0 0 0 0 0 0 0 0 or 1
-```
+| Bit            | 7  | 6  | 5  | 4  | 3  | 2  | 1  | 0      | 
+|----------------|----|----|----|----|----|----|----|--------| 
+| Name           | -  | -  | -  | -  | -  | -  | -  | BTN    | 
+| Initial Value  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0 or 1 | 
+
 This register indicates the current state of the onboard button. A value of 1 means the
 button is pressed. A value of 0 means the button is not pressed. The button is internally
 debounced so you don’t need to add additional debouncing logic in software.
@@ -271,11 +216,7 @@ debounced so you don’t need to add additional debouncing logic in software.
 The state of the onboard button. The initial value is either 0 or 1, depending on the initial
 state of this button.
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 11
-```
-## AI/AO................................................................................................................................
+## AI/AO
 
 There are 8 analog input channels for each bank (A/B), and they support single-ended
 measurement which measures the difference between the selected signal and AI Ground
@@ -283,65 +224,28 @@ and differential measurement which measures the difference between the selected 
 and its associated signal pair. The following table shows the channel mapping for each
 mode.
 
-```
-Application Board
-Terminals
-```
-```
-Single-ended Mode Differential Mode
-```
-Bank A A/AI0 AI 0 AI 0 +
+| Bank    |Application Board Terminals|Single-ended Mode|Differential Mode| 
+|---------|--------|--------|---------| 
+| Bank A  | A/AI0  | AI 0   | AI 0 +  | 
+|         | A/AI1  | AI 1   | AI 1 +  | 
+|         | A/AI2  | AI 2   | AI 2 +  | 
+|         | A/AI3  | AI 3   | AI 3 +  | 
+|         | A/AI4  | AI 4   | AI 0 -  | 
+|         | A/AI5  | AI 5   | AI 1 -  | 
+|         | A/AI6  | AI 6   | AI 2 -  | 
+|         | A/AI7  | AI 7   | AI 3 -  | 
+| Bank B  | B/AI0  | AI 0   | AI 0 +  | 
+|         | B/AI1  | AI 1   | AI 1 +  | 
+|         | B/AI2  | AI 2   | AI 2 +  | 
+|         | B/AI3  | AI 3   | AI 3 +  | 
+|         | B/AI4  | AI 4   | AI 0 -  | 
+|         | B/AI5  | AI 5   | AI 1 -  | 
+|         | B/AI6  | AI 6   | AI 2 -  | 
+|         | B/AI7  | AI 7   | AI 3 -  | 
 
-```
-A/AI1 AI 1 AI 1 +
-```
-```
-A/AI2 AI 2 AI 2 +
-```
-```
-A/AI3 AI 3 AI 3 +
-```
-```
-A/AI4 AI 4 AI 0 -
-```
-```
-A/AI5 AI 5 AI 1 -
-```
-```
-A/AI6 AI 6 AI 2 -
-```
-```
-A/AI7 AI 7 AI 3 -
-```
-Bank B B/AI0 AI 0 AI 0 +
 
-```
-B/AI1 AI 1 AI 1 +
-```
-```
-B/AI2 AI 2 AI 2 +
-```
-```
-B/AI3 AI 3 AI 3 +
-```
-```
-B/AI4 AI 4 AI 0 -
-```
-```
-B/AI5 AI 5 AI 1 -
-```
-```
-B/AI6 AI 6 AI 2 -
-```
-```
-B/AI7 AI 7 AI 3 -
-```
-```
-Note When you program in C language, register names must not contain periods,
+> Note: When you program in C language, register names must not contain periods,
 colons, or spaces.
-```
-
-12 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
 
 ### Analog Counter Register (AI.x.CNT)
 
@@ -361,25 +265,10 @@ This register configures the AI channels to read. The number of the elements in 
 depends on the AI.X.CNT register. The value of the configuration is shown in the
 following table.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-```
-Name First
-Tick
-```
-- AI Range
-    AI
-    Mode
-
-```
-AI Channel Selection
-```
-```
-Initial
-Value
-```
-##### 0 0 0 0 0 0
+| Bit            | 7           | 6  | 5                  | 4                     | 3  | 2  | 1  | 0  | 
+|----------------|-------------|----|--------------------|-----------------------|----|----|----|----| 
+| Name           | First Tick  | -  | AI Range   | AI Range  |  AI Mode  |  AI Channel Selection  |  AI Channel Selection  | AI Channel Selection   | 
+| Initial Value  | 0           | 0  | 0                  | 0                     | 0  | 0  |  0  |  0  |
 
 - Bits [0:2]: Specify which AI channel to configure.
     o Channel 0: 000b
@@ -398,10 +287,6 @@ Value
 - Bit 7: First Tick Flag. True means this is the first tick after updating the
     configuration, and the data of this tick should be acquired.
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 13
-```
 ### Analog Divisor Registers (AI.x.CNTR, AO.x.DMA_CNTR)
 
 Register list: AI.A.CNTR, AI.B.CNTR, AO.A.DMA_CNTR, AO.B.DMA_CNTR
@@ -430,21 +315,14 @@ Data type: FXP
 Each two analog output channels share one DMA on connector A and B respectively. This
 register controls whether the DMA is enabled for a specific analog output channel.
 
-```
-Bit 1 0
-```
-```
-Name AO1 AO
-```
-```
-Initial Value 0 0
-```
+| Bit           | 1   | 0   | 
+|---------------|-----|-----| 
+| Name          | AO1 | AO0 | 
+| Initial Value | 0   | 0   | 
+
 ### Analog DMA IDLE Registers (AI.x.DMA_IDL, AO.x.DMA_IDL)
 
 Register list: AI.A.CNT, AI.B.CNT
-
-
-14 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
 
 Data type: Boolean
 
@@ -487,10 +365,6 @@ TRUE. Values for all registers are set for a single strobe of the GO register. C
 be taken to not change a VAL register if you do not want the output voltage to change
 when GO is strobed.
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 15
-```
 ### Analog Output Status Register (AO.SYS.STAT)
 
 Register list: AO.SYS.STAT
@@ -503,10 +377,9 @@ operation completes by waiting for the value to change from the initial value.
 
 ## DIO
 
-```
-Note When you program in C language, register names must not contain periods,
+> Note: When you program in C language, register names must not contain periods,
 colons, or spaces.
-```
+
 ### Data Direction Registers (DIO.x.DIR)
 
 Register list: DIO.A_19:0.DIR, DIO.B_19:0.DIR
@@ -533,9 +406,6 @@ output channels is undefined.
 
 Register list: DIO.A_19:0.OUT, DIO.B_19:0.OUT
 
-
-16 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
 Data type: FXP
 
 This register controls the value written on the DIO channel. Each bit in the register
@@ -553,11 +423,10 @@ effect on the hardware and bit 0 of the IN register is still 1. However, if the 
 changed to an output, the value read on bit 0 of the IN register immediately changes to a 0
 and a low voltage returns at the pin.
 
-```
-Note This follows the functionality of the Set Output Data and Set Output Enable
+> Note: This follows the functionality of the Set Output Data and Set Output Enable
 FPGA IO Method nodes. Refer to the LabVIEW Help for more information about
 using FPGA I/O.
-```
+
 ### Digital Divisor Registers (DI.x.DMA_CNTR, DO.x.DMA_CNTR)
 
 Register list: DI.A.DMA_CNTR, DI.B.DMA_CNTR, DO.A.DMA_CNTR,
@@ -575,10 +444,6 @@ Register list: DI.A.DMA_ENA, DI.B.DMA_ENA
 
 Data type: Boolean
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 17
-```
 Each twenty digital input channels share one DMA on connector A and B respectively.
 This register controls whether the DMA is enabled for all digital input channels on the
 connector.
@@ -602,10 +467,9 @@ This register shows whether the DMA is idle.
 
 ## PWM
 
-```
-Note When you program in C language, register names must not contain periods,
+> Note: When you program in C language, register names must not contain periods,
 colons, or spaces.
-```
+
 ### PWM Configuration Registers (PWM.x.CNFG)
 
 Register list: PWM.A_[0:19].CNFG, PWM.B_[0:19].CNFG
@@ -615,18 +479,11 @@ Data type: U
 This register configures the functionality of the PWM subsystem as shown in the
 following table.
 
+| Bit           | 7 | 6 | 5 | 4 | 3 | 2    | 1 | 0   | 
+|---------------|---|---|---|---|---|------|---|-----| 
+| Name          | - | - | - | - | - | MODE | - | INV | 
+| Initial Value | 0 | 0 | 0 | 0 | 0 | 0    | 0 | 0   | 
 
-18 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
-```
-Bit 7 6 5 4 3 2 1 0
-```
-```
-Name - - - - - MODE - INV
-```
-```
-Initial Value 0 0 0 0 0 0 0 0
-```
 - Bits [7:3] - Reserved for future use.
 - Bit [2] - MODE: Counter mode.
 
@@ -667,49 +524,25 @@ Data type: U
 
 This register controls the clock speed of the PWM counter.
 
+| Bit           | 7 | 6 | 5 | 4 | 3 | 2   | 1   | 0   | 
+|---------------|---|---|---|---|---|-----|-----|-----| 
+| Name          | - | - | - | - | - | CS2 | CS1 | CS0 | 
+| Initial Value | 0 | 0 | 0 | 0 | 0 | 0   | 0   | 0   | 
 
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 19
-```
-```
-Bit 7 6 5 4 3 2 1 0
-```
-```
-Name - - - - - CS2 CS1 CS
-```
-```
-Initial Value 0 0 0 0 0 0 0 0
-```
 - Bits [7:3] - Reserved for future use.
 - Bits [2:0] - CS : Clock select
 
-```
-CS2 CS1 CS0 Clock
-```
-```
-0 0 0 Off (No clock)
-```
-```
-0 0 1 1x (fclk)
-```
-```
-0 1 0 2x (fclk / 2)
-```
-```
-0 1 1 4x (fclk / 4)
-```
-```
-1 0 0 8x (fclk / 8)
-```
-```
-1 0 1 16x (fclk / 16)
-```
-```
-1 1 0 32x (fclk / 32)
-```
-```
-1 1 1 64x (fclk / 64)
-```
+| CS2 | CS1 | CS0 | Clock           | 
+|-----|-----|-----|-----------------| 
+| 0   | 0   | 0   | Off (No clock)  | 
+| 0   | 0   | 1   | 1x (fclk)       | 
+| 0   | 1   | 0   | 2x (fclk / 2)   | 
+| 0   | 1   | 1   | 4x (fclk / 4)   | 
+| 1   | 0   | 0   | 8x (fclk / 8)   | 
+| 1   | 0   | 1   | 16x (fclk / 16) | 
+| 1   | 1   | 0   | 32x (fclk / 32) | 
+| 1   | 1   | 1   | 64x (fclk / 64) | 
+
 The base clock frequency (fclk) is 40 MHz. Use this frequency when you calculate the
 value of MAX for the desired frequency. See the frequency generation section below on
 how to use the CS register.
@@ -724,9 +557,6 @@ This register determines the maximum value of the PWM counter. If the MODE bit i
 CNFG register is set to 1, the PWM counter counts to MAX, then resets to 0. Otherwise,
 this register is ignored.
 
-
-20 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
 ### PWM Compare Registers (PWM.x.CMP)
 
 Register list: PWM.A_[0:19].CMP, PWM.B_[0:19].CMP
@@ -736,18 +566,12 @@ Data type: U
 This register sets the compare value, and therefore determines the duty cycle of the PWM.
 The behavior depends on the value of the MODE and INV bits in the CNFG register.
 
-```
-MODE INV Output Behavior
-```
-```
-0 0 or 1 No output. CMP value is ignored.
-```
-```
-1 0 Clear the output when CNTR = CMP. (non-inverting mode)
-```
-```
-1 1 Set the output when CNTR = CMP. (inverting mode)
-```
+| MODE | INV    | Output Behavior                                        | 
+|------|--------|--------------------------------------------------------| 
+| 0    | 0 or 1 | No output. CMP value is ignored.                       | 
+| 1    | 0      | Clear the output when CNTR = CMP. (non-inverting mode) | 
+| 1    | 1      | Set the output when CNTR = CMP. (inverting mode)       | 
+
 ### PWM Counter Registers (PWM.x.CNTR)
 
 Register list: PWM.A_[0:19].CNTR, PWM.B_[0:19].CNTR
@@ -772,10 +596,6 @@ to generate a slower frequency. For example, the following figure shows the gene
 20 MHz and 10 MHz clocks from a 40 MHz clock by changing the output every rising
 edge or every other rising edge, respectively.
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 21
-```
 ```
 40 MHz
 ```
@@ -785,18 +605,19 @@ NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 21
 ```
 10 MHz
 ```
-```
+<p align="center">
 Figure 1. Generating Slower PWM Frequencies
-```
+</p>
+
 Slower frequencies must be exactly divisible by the clock period of 25 ns. A 25 MHz
 clock cannot be generated from the 40 MHz clock; the next slowest frequency is 20 MHz.
 
 The NI ELVIS III PWM counters are unsigned 16-bit integers with a range of 0 to 65535.
 Therefore, using the 40 MHz clock, the slowest frequency is:
 
-1
-25 ns × 65536
-≅ 610.35 Hz
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=\frac{1}{25&space;ns&space;\times&space;65536}\cong610.35Hz" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{1}{25&space;ns&space;\times&space;65536}\cong610.35Hz" title="\frac{1}{25 ns \times 65536}\cong610.35Hz" /></a> 
+</p>
 
 With this method, the achievable frequency range is ~610.35 Hz to 40 MHz, where
 frequencies whose period can be divided by 25 ns can actually be generated.
@@ -806,18 +627,16 @@ frequency and generate even slower frequencies. The hardware clock divider is se
 by the PWM.x.CS register. With a clock divider of 2, the new slowest achievable
 frequency is:
 
-1
-50 ns × 65536
-≅ 305.17 Hz
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=\frac{1}{50&space;ns\times&space;65536}\cong&space;305.17&space;Hz" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{1}{50&space;ns\times&space;65536}\cong&space;305.17&space;Hz" title="\frac{1}{50 ns\times 65536}\cong 305.17 Hz" /></a>
+</p>
 
 The following formula describes possible frequencies:
 
-fPWM=
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=f_{PWM}=\frac{f_{clk}}{N(X&plus;1)}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f_{PWM}=\frac{f_{clk}}{N(X&plus;1)}" title="f_{PWM}=\frac{f_{clk}}{N(X+1)}" /></a>
+</p>
 
-```
-fclk
-N (X+1)
-```
 where fclk is the base clock frequency, fPWM is the desired PWM frequency, N is the clock
 divider being used, and X is the number of counts before changing the signal.
 
@@ -2589,5 +2408,7 @@ and restricted data rights as set forth in FAR 52.227-14, DFAR 252.227-7014,
 and DFAR 252.227-7015.
 
 © 2013-2018 National Instruments. All rights reserved.
+
+
 
 
