@@ -597,7 +597,7 @@ to generate a slower frequency. For example, the following figure shows the gene
 edge or every other rising edge, respectively.
 
 <p align="center">
-![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/NewMDK/docs/resources/mdk1.png)  
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk1.png">
 </p>
 
 <p align="center">
@@ -725,63 +725,17 @@ of the CPOL bit. The CPHA functionality is summarized below.
 
 - Bit [0] - Reserved for future use.
 
-```
-CYCLE
-```
-```
-CPOL = 0
-```
-```
-CPOL = 1
-```
-```
-SPI.CLK
-```
-```
-SPI.MOSI Z Z
-```
-```
-SPI.MISO Z Z
-```
-```
-SAMPLE
-```
-```
-DORD = 0 MSB Bit 6 Bit 5 Bit 4 Bit 3 Bit 2 Bit 1 LSB
-DORD = 1 LSB Bit 1 Bit 2 Bit 3 Bit 4 Bit 5 Bit 6 MSB
-```
-```
-CS
-```
-```
-1 2 3 4 5 6 7 8
-```
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk2.png">
+</p>
+
 <p align="center">
 Figure 2. SPI Transfer Format with CPHA = 0
 </p>
-```
-CPOL = 0
-```
-```
-CPOL = 1
-```
-##### SPI.CLK
 
-##### SPI.MOSI
-
-##### CS
-
-##### SAMPLE
-
-##### CYCLE 1 2 3 4 5 6 7 8
-
-##### SPI.MISO Z Z
-
-```
-DORD = 0 MSB Bit 6 Bit 5 Bit 4 Bit 3 Bit 2 Bit 1 LSB
-DORD = 1 LSB Bit 1 Bit 2 Bit 3 Bit 4 Bit 5 Bit 6 MSB
-```
-##### Z Z
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk3.png">
+</p>
 
 <p align="center">
 Figure 3. SPI Transfer Format with CPHA = 1
@@ -866,15 +820,10 @@ generate a slower frequency. For example, the following figure shows the generat
 MHz and 10 MHz clocks from a 40 MHz clock by changing the output every rising edge
 or every other rising edge, respectively.
 
-```
-40 MHz
-```
-```
-20 MHz
-```
-```
-10 MHz
-```
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk4.png">
+</p>
+
 <p align="center">
 Figure 4. Generating Slower SPI Frequencies
 </p>
@@ -935,15 +884,10 @@ value is changed on every change of Phase A or Phase B. The following figure sho
 waveform with the Phase A and Phase B signals and the equivalent step (clk) and
 direction (dir) signals.
 
-```
-ENC.A
-```
-```
-ENC.B
-```
-```
-CLK
-```
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk5.png">
+</p>
+
 <p align="center">
 Figure 5. A Waveform with Phase A, Phase B, Step (CLK), and Direction (DIR) Signals
 </p>
@@ -1375,370 +1319,40 @@ The following figures show the sequence of events required to use the I2C periph
 
 #### Sending a Single Byte
 
-```
-NO
-```
-```
-Idle
-```
-```
-Write slave
-address to
-I2C.x.ADDR
-```
-```
-Write
-0bxxxx 0111 to
-I2C.x.CN TL
-```
-```
-BSY = 0?
-```
-```
-Read I2C.x.ST AT
-```
-```
-NO
-ERR = 0?
-```
-```
-YES
-```
-```
-Handle error
-```
-```
-Idle
-```
-```
-YES
-```
-```
-Read data from
-I2C.x.DATI
-```
-```
-Write TRU E to
-I2C.x.GO
-```
-```
-Run operatio n
-```
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk6.png">
+</p>
 
 #### Receiving a Single Byte
 
-```
-NO
-```
-```
-Idle
-```
-```
-Write slave
-address to
-I2C.x.ADDR
-```
-```
-Write
-0bxxxx 0111 to
-I2C.x.CN TL
-```
-```
-BSY = 0?
-```
-```
-Read I2C.x.ST AT
-```
-```
-NO
-ERR = 0?
-```
-```
-YES
-```
-```
-Handle error
-```
-```
-Idle
-```
-```
-YES
-```
-```
-Read data from
-I2C.x.DATI
-```
-```
-Write TRU E to
-I2C.x.GO
-```
-```
-Run operatio n
-```
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk7.png">
+</p>
 
 #### Sending Multiple Bytes
 
-```
-Idle
-```
-```
-Write slave
-address to
-I2C.x.ADDR
-```
-```
-Write dat a to
-I2C.x.DATO
-```
-```
-Write
-0bxxxxx 011 to
-I2C.x.CN TL
-```
-```
-ERR = 0?
-```
-```
-Write
-0bxxxxx 100 to
-I2C.x.CN TL
-```
-```
-Idle
-```
-```
-YES
-```
-```
-Write dat a to
-I2C.x.DATO
-```
-```
-NO
-```
-```
-Index = n - 1?
-```
-```
-Write
-0bxxxxx 001 to
-I2C.x.CN TL
-```
-```
-NO
-```
-```
-Write
-0bxxxxx 101 to
-I2C.x.CN TL
-```
-```
-YES
-```
-```
-ERR = 0? operationRun
-```
-```
-Run
-operation
-```
-```
-Handle error
-```
-```
-NO
-```
-```
-YES
-```
-```
-Run
-operation
-```
-```
-Send n-1 byt es
-```
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk8.png">
+</p>
 
 #### Receiving Multiple Bytes
 
-```
-Idle
-```
-```
-Write slave
-address to
-I2C.x.ADDR
-```
-```
-Write
-0bxxxx 1011 to
-I2C.x.CN TL
-```
-```
-ERR = 0?
-```
-```
-Write
-0bxxxx 0100 to
-I2C.x.CN TL
-```
-```
-Idle
-```
-```
-YES
-```
-```
-Read data from
-I2C.x.DATI
-```
-```
-NO
-```
-```
-Index = n - 1?
-```
-```
-Write
-0bxxxx 1001 to
-I2C.x.CN TL
-```
-```
-NO
-```
-```
-Write
-0bxxxx 0101 to
-I2C.x.CN TL
-```
-```
-YES
-```
-```
-ERR = 0? operationRun
-```
-```
-Run
-operation
-```
-```
-Handle error
-```
-```
-NO
-```
-```
-YES
-```
-```
-Run
-operation
-```
-```
-Read data from
-I2C.x.DATI
-```
-```
-Receive n-1 byt es
-```
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk9.png">
+</p>
 
 #### Sending Multiple Bytes then Receiving Multiple Bytes
 
-```
-Idle
-```
-```
-Write slave
-address to
-I2C.x.ADDR
-```
-```
-Write dat a to
-I2C.x.DATO
-```
-```
-Send n-1
-byt es
-```
-```
-Write
-0bxxxxx 001 to
-I2C.x.CN TL
-```
-```
-Run
-operation
-```
-```
-Receive n
-byt es
-```
-```
-Write slave
-address to
-I2C.x.ADDR
-```
-```
-Idle
-```
-```
-Do not ge ner at e
-STOP condition.
-```
-```
-Repeated START condition is
-generated when changing
-dir ec ti on.
-```
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk10.png">
+</p>
 
 #### Receiving Multiple Bytes then Sending Multiple Bytes
 
-```
-Idle
-```
-```
-Write slave
-address to
-I2C.x.ADDR
-```
-```
-Receive n-1
-byt es
-```
-```
-Write
-0bxxxx 0001 to
-I2C.x.CN TL
-```
-```
-Run
-operation
-```
-```
-Send n
-byt es
-```
-```
-Write slave
-address to
-I2C.x.ADDR
-```
-```
-Idle
-```
-```
-Do not ge ner at e S TOP
-condition and do not
-send an ACK.
-```
-```
-Read data from
-I2C.x.DATI
-Repeated START condition is
-generated when changing
-dir ec ti on.
-```
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk11.png">
+</p>
+
 ## IRQ
 
 > Note: When you program in C language, register names must not contain periods,
