@@ -19,7 +19,7 @@
  * console every 5 s.
  *
  * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
  */
 #include <stdio.h>
 #include <time.h>

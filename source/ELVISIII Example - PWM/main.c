@@ -9,15 +9,15 @@
  *
  * Instructions:
  * 1. Connect an oscilloscope to the PWM 0 pin on bank A.
- * 2. Open MeasurementsLive website and connect the ELVISIII.
- * 4. In Instruments tab, Open Oscilloscope, generate a PWM signal.
+ * 2. Open Measurements Live (measurementslive.ni.com) and connect to the NI ELVIS III.
+ * 4. On the Instruments tab, launch the Oscilloscope and generate a PWM signal.
  * 3. Run this program.
  *
  * Output:
  * The program generates a 25% duty cycle signal at 10 kHz for 60 s.
  *
  * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
  */
 #include <stdio.h>
 #include <time.h>

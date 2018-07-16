@@ -5,25 +5,26 @@
  *
  * Overview:
  * Demonstrates using the analog input and output (AIO).
- * Writes an initial value on bank A.Reads the write value from bank A.
- * Reads the difference of the initial values of two analog input channels from bank B.
- * Print the value and the difference to the console.
+ * Writes an initial value to an analog output channel on bank A. 
+ * Reads the written value from an analog input channel on bank A.
+ * Reads the difference of the input values of two analog input channels from bank B.
+ * Print the written value and the voltage difference to the console.
  *
  *
  * Instructions:
- * 1. Connect the AI0 and AO0 on bank A.
+ * 1. Connect AI0 and AO0 on bank A.
  * 2. Connect a DC voltage input (between -5 V and 5 V) to AI1 on bank B.
  * 3. Connect a DC voltage input (between -5 V and 5 V) to AI5 on bank B.
  * 4. Run this program.
  *
  * Output:
- * The program writes the initial value to AO0 on bank A, and reads the write value from AI0.
+ * The program writes the initial value to AO0 on bank A, and reads the written value from AI0.
  * The program reads the difference of the initial voltage on AI1 and AI5 on bank B.
  * The output is maintained for 60 s.
- * The write value and the difference are written to the console.
+ * The written value and the voltage difference are written to the console.
  *
  * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
  */
 #include <stdio.h>
 #include <unistd.h>

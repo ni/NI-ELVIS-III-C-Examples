@@ -4,29 +4,30 @@
  * All rights reserved.
  *
  * Overview:
- * Demonstrates using the digital input and output in N Sample (DIO - N Sample).
- * Read a groups of values from a DI FIFO (bank A, channel 0).
- * Write a groups of values to a DO FIFO (bank B, channel 0).
+ * Demonstrates using the digital input and output in N samples mode (AIO - N Samples).
+ * Reads a groups of values from one digital input channel (bank A, channel 0).
+ * Writes a groups of values to one digital output channel (bank B, channel 0).
  *
  * Instructions:
- * 1. Install an oscilloprobe on one of the Function Generator on NI ELVIS III device.
+ * 1. Install an oscilloprobe on one of the Function Generator channels on the NI ELVIS III.
  *    Use the oscilloprobe to probe DIO0 on bank A. Use DGND as ground.
- * 2. Install an oscilloprobe on one of the Oscilloscope on NI ELVIS III device.
+ * 2. Install an oscilloprobe on one of the Oscilloscope channels on the NI ELVIS III.
  *    Use the oscilloprobe to probe DIO0 on bank B. Use DGND as ground.
- * 3. Open "Measurements Live" (measurementslive.ni.com) and connect to the NI ELVIS III device.
- * 4. In Instruments tab, open Function and Arbitrary Waveform Generator.
- *    Set a square wave in 250Hz, 4Vpp and 2V DC offset.
- * 5. In Instruments tab, open Oscilloscope and set Normal mode.The Level is 1V and the Type is Analog edge.
+ * 3. Open Measurements Live (measurementslive.ni.com) and connect to the NI ELVIS III.
+ * 4. On the Instruments tab, launch the Function and Arbitrary Waveform Generator.
+ *    Set a square wave of 250Hz, 4Vpp and 2V DC offset.
+ * 5. On the Instruments tab, launch the Oscilloscope.
+ *    Set the trigger mode as Normal, the trigger type as Analog edge, and the trigger level as 1V.
  * 6. Run this program.
  *
  * Output:
  * The program reads groups of values from DIO0 on bank A.
  * The program writes groups of values to DIO0 on bank B.
- * The groups of values reading from the DI0 will be printed on the console.
+ * The groups of values read from DI0 will be printed on the console.
  * The output is maintained for 60 s.
  *
  * Note:
- * The Eclipse project defines the preprocessor symbol for the ELVIS III.
+ * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
  */
 #include <stdio.h>
 #include <time.h>
