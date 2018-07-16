@@ -596,15 +596,10 @@ to generate a slower frequency. For example, the following figure shows the gene
 20 MHz and 10 MHz clocks from a 40 MHz clock by changing the output every rising
 edge or every other rising edge, respectively.
 
-```
-40 MHz
-```
-```
-20 MHz
-```
-```
-10 MHz
-```
+<p align="center">
+![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/NewMDK/docs/resources/mdk1.png)  
+</p>
+
 <p align="center">
 Figure 1. Generating Slower PWM Frequencies
 </p>
@@ -1340,7 +1335,7 @@ Table 9. I2C control registers possible combinations
 | TX IDLE  | X                                         | X    | 0     | 0      | 1      | Send Data (to previously addressed slave),Receive Data ACK, and return to TX IDLE state.                                  | 
 |          | X                                         | X    | 1     | 0      | 0      | Generate STOP, and go to IDLE state.                                                                                      | 
 |          | X                                         | X    | 1     | 0      | 1      | Send Data, Receive Data ACK, Generate STOP, and go to IDLE state.                                                         | 
-| 0        | X                                         | 0    | 1  | 1  | Generate REPEATED START, Send Address, Receive Address ACK, Send Data, Receive Data ACK, and return to TX IDLE state.  |                                                                                                                                | 
+|   |0        | X                                         | 0    | 1  | 1  | Generate REPEATED START, Send Address, Receive Address ACK, Send Data, Receive Data ACK, and return to TX IDLE state.  |                                                                                                                                | 
 |          | 0                                         | X    | 1  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Send Data, Receive Data ACK, Generate STOP, and go to IDLE state.  | 
 |          | 1                                         | 0    | 0  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Receive Data, Send Data NAK, and go to RX IDLE state.              | 
 |          | 1                                         | 0    | 1  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Receive Data, Send Data NAK, Generate STOP, and go to IDLE state.  | 
