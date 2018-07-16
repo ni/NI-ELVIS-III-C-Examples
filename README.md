@@ -221,7 +221,7 @@ Some examples need extra devices to connect to NI ELVIS III.Here are the input a
 
 # NI ELVIS III Shipping Personality Reference 
 
-This document contains reference information about the NI ELVIS III shipping personality. The reference includes information of registers used to control the peripherals of NI ELVIS III.
+This document contains reference information about the NI ELVIS III shipping personality. The reference includes information about the registers used to control the peripherals of NI ELVIS III.
 
 You can find NI ELVIS III Shipping Personality Reference  [here](./docs/NI\_ELVIS\_III\_Shipping\_Personality\_Reference.md).
 
