@@ -596,15 +596,10 @@ to generate a slower frequency. For example, the following figure shows the gene
 20 MHz and 10 MHz clocks from a 40 MHz clock by changing the output every rising
 edge or every other rising edge, respectively.
 
-```
-40 MHz
-```
-```
-20 MHz
-```
-```
-10 MHz
-```
+<p align="center">
+![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/NewMDK/docs/resources/mdk1.png)  
+</p>
+
 <p align="center">
 Figure 1. Generating Slower PWM Frequencies
 </p>
