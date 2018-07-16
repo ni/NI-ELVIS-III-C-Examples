@@ -21,7 +21,7 @@
   * [ButtonIRQ](#buttonirq)
   * [TimerIRQ](#timerirq)
 - [Function Select Register](#function-select-register)
-- [NI ELVIS III Top Board Developer's Manual](#ni-elvis-iii-top-board-developers-manual)
+- [NI ELVIS III Shipping Personality Reference](#ni-elvis-iii-shipping-personality-reference)
 
 # Installation Instructions
 
@@ -219,9 +219,9 @@ Some examples need extra devices to connect to NI ELVIS III.Here are the input a
 | **DIO 18**     | DIO 18      | PWM 18      | ENC.A 9         |             |                          |            | 
 | **DIO 19**     | DIO 19      | PWM 19      | ENC.B 9         |             |                          |            | 
 
-# NI ELVIS III Top Board Developer's Manual
+# NI ELVIS III Shipping Personality Reference 
 
-This manual helps users of the National Instruments ELVIS III develop a custom application top board. The manual includes information on licensing, mechanical design, electrical design, basic software interfacing, and courseware support. For information on the use of ELVIS III or administering and provisioning ELVIS III in a laboratory setting refer to the product documentation.
+This document contains reference information about the NI ELVIS III shipping personality. The reference includes information of registers used to control the peripherals of NI ELVIS III.
 
-You can find NI ELVIS III Top Board Developer's Manual [here](./docs/NI%20ELVIS%20III%20MDK.docx).
+You can find NI ELVIS III Shipping Personality Reference  [here](./docs/NI%20ELVIS%20III%20Shipping%20Personality%20Reference.md).
 
