@@ -643,19 +643,14 @@ divider being used, and X is the number of counts before changing the signal.
 The value of N is determined by the value written to the PWM.x.CS register, and X is the
 value written to the PWM.x.MAX register.
 
-```
-Note Attempts to generate frequencies outside the range of 40 Hz to 40 kHz are not
+> Note Attempts to generate frequencies outside the range of 40 Hz to 40 kHz are not
 supported.
-```
-
-22 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
 
 ## SPI Master
 
-```
-Note When you program in C language, register names must not contain periods,
+> Note: When you program in C language, register names must not contain periods,
 colons, or spaces.
-```
+
 ### SPI Configuration Registers (SPI.x.CNFG)
 
 Register list: SPI.A.CNFG, SPI.B.CNFG
@@ -665,56 +660,15 @@ Data type: U16
 This register configures the SPI master subsystem. It determines the clock divider, frame
 length, data order, clock polarity, and clock phase settings.
 
-```
-Bit 15 14 13 12 11 10 9 8
-```
-```
-Name CS1 CS0 - - - - - -
-```
-```
-Initial
-Value
-```
-##### 0 0 0 0 0 0 0 0
+| Bit            | 15   | 14   | 13  | 12  | 11  | 10  | 9  | 8  | 
+|----------------|------|------|-----|-----|-----|-----|----|----| 
+| Name           | CS1  | CS0  | -   | -   | -   | -   | -  | -  | 
+| Initial Value  | 0    | 0    | 0   | 0   | 0   | 0   | 0  | 0  | 
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-```
-Name FLE
-N3
-```
-##### FLE
-
-##### N2
-
-##### FLE
-
-##### N1
-
-##### FLE
-
-##### N0
-
-##### DOR
-
-##### D
-
-##### CPO
-
-##### L
-
-##### CPH
-
-##### A
-
-##### -
-
-```
-Initial
-Value
-```
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7       | 6       | 5       | 4       | 3      | 2      | 1      | 0  | 
+|----------------|---------|---------|---------|---------|--------|--------|--------|----| 
+| Name           | FLE N3  | FLE N2  | FLE N1  | FLE N0  | DOR D  | CPO L  | CPH A  | -  | 
+| Initial Value  | 0       | 0       | 0       | 0       | 0      | 0      | 0      | 0  | 
 
 - Bits [15:14] - CS : Clock Select
 
@@ -722,25 +676,13 @@ Selects the desired clock divider to be applied to the SPI clock generator which
 the SPI frequency. The CS bits and the CNT register are used together to determine the
 speed of the SPI transmission. The possible frequencies are shown below:
 
+| CS1  | CS0  | Clock          | 
+|------|------|----------------| 
+| 0    | 0    | 1x (fclk)      | 
+| 0    | 1    | 2x (fclk / 2)  | 
+| 1    | 0    | 4x (fclk / 4)  | 
+| 1    | 1    | 8x (fclk / 8)  | 
 
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 23
-```
-```
-CS1 CS0 Clock
-```
-```
-0 0 1x (fclk)
-```
-```
-0 1 2x (fclk / 2)
-```
-```
-1 0 4x (fclk / 4)
-```
-```
-1 1 8x (fclk / 8)
-```
 The base clock frequency (fclk) is set at 40 MHz. You must use this frequency when
 calculating the value of the CNT register. See the frequency generation section below on
 how to use the CS register.
@@ -763,40 +705,30 @@ This bit controls the order in which the bits are transmitted. When DORD is 0, t
 significant bit of the data frame is transmitted first. When DORD is 1, the least significant
 bit of the data frame is transmitted first.
 
-
-24 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
 - Bit [2] - CPOL: Clock Polarity
 
 This bit controls the idle state of the SPI clock. When this bit is written to one, SPI.CLK is
 high when idle. When CPOL is written to zero, SPI.CLK is low when idle. The CPOL
 functionality is summarized below:
 
-```
-CPOL Leading Edge Trailing Edge
-```
-```
-0 Rising Falling
-```
-```
-1 Falling Rising
-```
+| CPOL  | Leading Edge  | Trailing Edge  | 
+|-------|---------------|----------------| 
+| 0     | Rising        | Falling        | 
+| 1     | Falling       | Rising         | 
+
 - Bit [1] - CPHA: Clock Phase
 
 This bit controls the functionality of the leading and trailing edges of SPI.CLK on the
 SPI.SDA line. The directions of the leading and trailing edges are controlled by the value
 of the CPOL bit. The CPHA functionality is summarized below.
 
-CPHA Leading Edge Trailing Edge
+| CPHA  | Leading Edge  | Trailing Edge  | 
+|-------|---------------|----------------| 
+| 0     | Sample        | Setup          | 
+| 1     | Setup         | Sample         | 
 
-0 Sample Setup
-
-1 Setup Sample
 
 - Bit [0] - Reserved for future use.
-
-
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 25
 
 ```
 CYCLE
@@ -829,9 +761,9 @@ CS
 ```
 1 2 3 4 5 6 7 8
 ```
-```
+<p align="center">
 Figure 2. SPI Transfer Format with CPHA = 0
-```
+</p>
 ```
 CPOL = 0
 ```
@@ -856,11 +788,9 @@ DORD = 1 LSB Bit 1 Bit 2 Bit 3 Bit 4 Bit 5 Bit 6 MSB
 ```
 ##### Z Z
 
-```
+<p align="center">
 Figure 3. SPI Transfer Format with CPHA = 1
-```
-
-26 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
+</p>
 
 ### SPI Counter Registers (SPI.x.CNT)
 
@@ -895,15 +825,11 @@ Data type: U8
 
 The register indicates the status of the SPI subsystem.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-```
-Name - - - - - - - BSY
-```
-```
-Initial Value 0 0 0 0 0 0 0 0
-```
+| Bit            | 7  | 6  | 5  | 4  | 3  | 2  | 1  | 0    | 
+|----------------|----|----|----|----|----|----|----|------| 
+| Name           | -  | -  | -  | -  | -  | -  | -  | BSY  | 
+| Initial Value  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0    | 
+
 - Bits [7:1] - Reserved for future use.
 - Bit [0] - BSY
 If BSY is 1, the SPI subsystem is transferring a frame. If BSY is 0, the SPI subsystem is
@@ -913,10 +839,6 @@ idle.
 
 Register list: SPI.A.DATO, SPI.B.DATO
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 27
-```
 Data type: U16
 
 This register holds the data that is sent to the slave device during the next transmission.
@@ -958,21 +880,19 @@ or every other rising edge, respectively.
 ```
 10 MHz
 ```
-```
+<p align="center">
 Figure 4. Generating Slower SPI Frequencies
-```
+</p>
+
 Slower frequencies must be exactly divisible by the clock period of 25 ns. A 25 MHz
 clock cannot be generated from the 40 MHz clock; the next slowest frequency is 20 MHz.
-
-
-28 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
 
 The NI ELVIS III SPI counters are unsigned 16-bit integers with a range of 0 to 65535.
 Therefore, using the 40 MHz clock, the slowest frequency is:
 
-1
-25 ns × 65536
-≅ 610 .35 Hz
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=\frac{1}{25&space;ns&space;\times&space;65536}\cong610.35Hz" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{1}{25&space;ns&space;\times&space;65536}\cong610.35Hz" title="\frac{1}{25 ns \times 65536}\cong610.35Hz" /></a> 
+</p>
 
 Using this method, the achievable frequency range is ~610.35 Hz to 40 MHz, where
 frequencies whose period can be divided by 25ns can actually be generated.
@@ -983,28 +903,25 @@ base frequency is divided into even numbers (2, 4, 8, etc) and the generated clo
 to increment the counter. With a clock divider of 2, and a U16 counter, the new slowest
 achievable frequency is:
 
-1
-50 ns × 65536
-≅ 305 .17 Hz
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=\frac{1}{50&space;ns\times&space;65536}\cong&space;305.17&space;Hz" target="_blank"><img src="https://latex.codecogs.com/gif.latex?\frac{1}{50&space;ns\times&space;65536}\cong&space;305.17&space;Hz" title="\frac{1}{50 ns\times 65536}\cong 305.17 Hz" /></a>
+</p>
 
 The possible SPI frequencies that can be generated are based on the following equation:
 
-fSPI=
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=f_{SPI}=\frac{f_{clk}}{2\times&space;N\times&space;(X&plus;1)}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f_{SPI}=\frac{f_{clk}}{2\times&space;N\times&space;(X&plus;1)}" title="f_{SPI}=\frac{f_{clk}}{2\times N\times (X+1)}" /></a>
+</p>
 
-```
-fclk
-2 ×N ×(X+1)
-```
 where fclk is the base clock frequency, fSPIis the desired SPI frequency, N is the clock
 divider being used, and X is the number of counts before changing the signal.
 
 The value of N is determined by the value written to the CS bits in the CNTL register, and
 X is the value written to the CNT register.
 
-```
-Note Attempts to generate frequencies outside the range of 40 Hz to 4 MHz are not
+> Note: Attempts to generate frequencies outside the range of 40 Hz to 4 MHz are not
 supported.
-```
+
 ## Encoder
 
 The quadrature encoder block counts the number of steps that an encoder makes along its
@@ -1019,10 +936,6 @@ Phase A and Phase B, which are two square waves that are 90 degrees out of phase
 each other. In general, when Phase A is leading Phase B, the encoder counter is counting
 up, and when Phase B leads Phase A, the encoder counter is counting down. The count
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 29
-```
 value is changed on every change of Phase A or Phase B. The following figure shows a
 waveform with the Phase A and Phase B signals and the equivalent step (clk) and
 direction (dir) signals.
@@ -1036,14 +949,13 @@ ENC.B
 ```
 CLK
 ```
-```
-DIR
+<p align="center">
 Figure 5. A Waveform with Phase A, Phase B, Step (CLK), and Direction (DIR) Signals
-```
-```
-Note When you program in C language, register names must not contain periods,
+</p>
+
+> Note: When you program in C language, register names must not contain periods,
 colons, or spaces.
-```
+
 ### Encoder Configuration Registers (ENC.x.CNFG)
 
 Register list: ENC.A_[0:9].CNFG, ENC.B_[0:9].CNFG
@@ -1052,12 +964,10 @@ Data type: U8
 
 This register configures the encoder subsystem.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-Name - - - COVR CERR MODE RST EN
-
-Initial Value 0 0 0 0 0 0 0 0
+| Bit            | 7  | 6  | 5  | 4     | 3     | 2     | 1    | 0   | 
+|----------------|----|----|----|-------|-------|-------|------|-----| 
+| Name           | -  | -  | -  | COVR  | CERR  | MODE  | RST  | EN  | 
+| Initial Value  | 0  | 0  | 0  | 0     | 0     | 0     | 0    | 0   | 
 
 - Bits [7:5] - Reserved for future use.
 - Bit [4] - COVR: Clear Overflow
@@ -1071,9 +981,6 @@ value goes from 0 to 1. It should be manually reset to 0 after use.
 Clears the error flag (ERR) in the ENC Status Register (STAT). The flag is cleared on the
 rising edge on this signal, which is when the value goes from 0 to 1. It should be manually
 reset to 0 after use.
-
-
-30 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
 
 - Bit [2] - MODE: Signal Mode
 
@@ -1097,17 +1004,10 @@ Register list: ENC.A_[0:9].STAT, ENC.B_[0:9].STAT
 
 Data type: U8
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-```
-Name - - SOERR UOERR SOVR UOVR ERR DIR
-```
-```
-Initial
-Value
-```
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7  | 6  | 5      | 4      | 3     | 2     | 1    | 0    | 
+|----------------|----|----|--------|--------|-------|-------|------|------| 
+| Name           | -  | -  | SOERR  | UOERR  | SOVR  | UOVR  | ERR  | DIR  | 
+| Initial Value  | 0  | 0  | 0      | 0      | 0     | 0     | 0    | 0    | 
 
 Configures the encoder subsystem for the desired behavior.
 
@@ -1131,10 +1031,6 @@ CNFG register.
 
 - Bit [3] - SOVR: Signed Overflow
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 31
-```
 Indicates that a signed overflow has occurred. The counter value is stored as an unsigned
 32-bit value which can represent both a signed or unsigned number. If you want to treat
 the stored value as a signed number then use this overflow flag and ignore the UOVR flag.
@@ -1184,18 +1080,14 @@ Phase B and decrements when Phase B leads Phase A. In step and direction mode, t
 counter increments when the direction input is low and decrements when the direction
 input is high. Both signed and unsigned numbers are stored as unsigned 32-bit values so if
 
-
-32 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
 the user wants to treat the value as a signed number they must convert it before they use
 the value.
 
 ## I2C
 
-```
-Note When you program in C language, register names must not contain periods,
+> Note: When you program in C language, register names must not contain periods,
 colons, or spaces.
-```
+
 ### I2C Configuration Registers (I2C.x.CNFG)
 
 Register list: I2C.A.CNFG, I2C.B.CNFG
@@ -1204,15 +1096,10 @@ Data type: U8
 
 This register enables or disables the I2C subsystem.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-Name - - - - - - - MSTREN
-
-Initial
-Value
-
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7  | 6  | 5  | 4  | 3  | 2  | 1  | 0       | 
+|----------------|----|----|----|----|----|----|----|---------| 
+| Name           | -  | -  | -  | -  | -  | -  | -  | MSTREN  | 
+| Initial Value  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0       | 
 
 - Bits [7:1] - Reserved for future use.
 - Bit [0] - MSTREN: Enable or disable I2C functionality.
@@ -1223,33 +1110,22 @@ Register list: I2C.A.ADDR, I2C.B.ADDR
 
 Data type: U8
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 33
-```
 This register sets the address and transmission direction of the slave device.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-Name SA6 SA5 SA4 SA3 SA2 SA1 SA0 R/S
-
-Initial
-Value
-
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7    | 6    | 5    | 4    | 3    | 2    | 1    | 0    | 
+|----------------|------|------|------|------|------|------|------|------| 
+| Name           | SA6  | SA5  | SA4  | SA3  | SA2  | SA1  | SA0  | R/S  | 
+| Initial Value  | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 0    | 
 
 - Bits [7:1] - SA : Slave address
 
-```
 Specifies the 7-bit address for the slave device that is being communicated with.
-```
+
 - Bit [0] - R/S : Receive/send
 
-```
 Specifies if the next transmission operation to be completed is a send or receive
 operation.
-```
+
 - 0: Send
 - 1: Receive
 
@@ -1264,12 +1140,10 @@ send or receive operation.
 
 The value of the CNTR register can be calculated using the following equation:
 
-fSCL=
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=f_{SCL}=\frac{f_{clk}}{(2\times&space;CNTR)-26}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f_{SCL}=\frac{f_{clk}}{(2\times&space;CNTR)-26}" title="f_{SCL}=\frac{f_{clk}}{(2\times CNTR)-26}" /></a>
+</p>
 
-```
-fclk
-(2 × CNTR) - 26
-```
 where fSCL is the desired I2C transmission frequency and fclk is the base clock frequency
 of the hardware (40 MHz).
 
@@ -1279,33 +1153,29 @@ fSCL= 100 kHz
 
 fclk = 40 MHz
 
-Since fSCL=
-fclk
-(2 × CNTR) - 26
+Since 
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=f_{SCL}=\frac{f_{clk}}{(2\times&space;CNTR)-26}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?f_{SCL}=\frac{f_{clk}}{(2\times&space;CNTR)-26}" title="f_{SCL}=\frac{f_{clk}}{(2\times CNTR)-26}" /></a>
+</p>
 
-##### CNTR =
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=CNTR=\frac{f_{clk}/f_{SCL}&plus;26}{2}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?CNTR=\frac{f_{clk}/f_{SCL}&plus;26}{2}" title="CNTR=\frac{f_{clk}/f_{SCL}+26}{2}" /></a>
+</p>
 
-```
-fclk⁄fSCL+ 26
-2
-```
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=CNTR=\frac{40MHz/100kHz&plus;26}{2}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?CNTR=\frac{40MHz/100kHz&plus;26}{2}" title="CNTR=\frac{40MHz/100kHz+26}{2}" /></a>
+</p>
 
-34 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
+<p align="center">
+<a href="https://www.codecogs.com/eqnedit.php?latex=CNTR=213" target="_blank"><img src="https://latex.codecogs.com/gif.latex?CNTR=213" title="CNTR=213" /></a>
+</p>
 
-##### CNTR =
 
-```
-40 MHz⁄100 kHz+ 26
-2
-```
-CNTR = 213
-
-```
-Note The actual frequency of the I2C clock depends on the rise and fall times of your
+> Note: The actual frequency of the I2C clock depends on the rise and fall times of your
 circuit. Using the previous equation guarantees that the frequency of the generated
 clock signal complies with the I2C specification for standard and fast modes,
 regardless of the connected circuit.
-```
+
 ### I2C Data Out Registers (I2C.x.DATO)
 
 Register list: I2C.A.DATO, I2C.B.DATO
@@ -1331,90 +1201,64 @@ Data type: U8
 
 This register indicates the current status of the I2C subsystem.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-Name - - BUSBSY INUSE DATNAK ADRNAK ERR BSY
-
-Initial
-Value
-
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7  | 6  | 5       | 4      | 3       | 2       | 1    | 0    | 
+|----------------|----|----|---------|--------|---------|---------|------|------| 
+| Name           | -  | -  | BUSBSY  | INUSE  | DATNAK  | ADRNAK  | ERR  | BSY  | 
+| Initial Value  | 0  | 0  | 0       | 0      | 0       | 0       | 0    | 0    | 
 
 - Bits [7:6] - Reserved for future use.
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 35
-```
 - Bit [5] - BUSBSY: I2C bus is busy.
 
-```
 Indicates if the I2C bus is currently busy. The bit is set to 1 when the bus is busy. The
 bit is set to 0 when the bus is free.
-```
+
 - Bit [4] - INUSE: I2C subsystem is in use.
 
-```
 Indicates if the I2C subsystem is currently in use. The bit is set to 1 when the
 subsystem is in use. The bit is set to 0 when the subsystem is free.
-```
+
 - Bit [3] - DATNAK: Data Not Acknowledge (NAK) received.
 
-```
 Indicates if a NAK is received from the slave after the last data transmission. The bit
 is set to 1 when a NAK is received. The bit is set to 0 when a NAK is not received, or
 an ACK is received.
-```
+
 - Bit [2] - ADRNAK: Address Not Acknowledge (NAK) received.
 
-```
 Indicates that a NAK is received from the slave after the last address transmission.
 The bit is set to 1 when a NAK is received. The bit is set to 0 when a NAK is not
 received (an ACK is received).
-```
+
 - Bit [1] - ERR: Error
 
-```
 Indicates that an error occurs during the last transmission. This could be either a
 NAK is received on the last data transmission or on the last address transmission. It is
 provided for convenience so that both the ADRNAK and DATNAK bits don't have to
 be checked every time. When the value = 0 no error occurred during the last
 operation, when the value = 1 an error occurred during the last operation. If the value
 = 1 the DATNAK and ADRNAK bits must be checked to see the cause of the error.
-```
+
 - Bit [0] - BSY: Busy
 
-```
 Indicates if the I2C subsystem is busy performing an operation. The value is 1 when
 the subsystem is busy. The value is 0 when the subsystem is not busy.
-```
 
-36 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
 
-```
+<p align="center">
 Table 8. I2C busbsy/inuse/bsy combinations
+</p>
+
+| BUSBSY  | INUSE  | BSY  | Interpretation                                                                                                                                           | 
+|---------|--------|------|----------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| 0       | 0      | 0    | The I2C bus is free and control can be taken by the I2C subsystem.                                                                                       | 
+| 1       | 0      | 0    | The I2C bus is busy and in use by some other master connected to the bus. (Not Supported)                                                                | 
+| 1       | 1      | 0    | The I2C bus is busy and in use by the I2C subsystem. The subsystem is not busy so the I2C subsystem is either in the TX IDLE, or RX IDLE state.          | 
+| 1       | 1      | 1    | The I2C bus is busy, in use by the I2C subsystem, and the subsystem is executing some operation. This could be a START, REPEATED START, TX, RX, or STOP. | 
+
 ```
-```
-BUSBSY INUSE BSY Interpretation
-```
-0 0 0 The I2C bus is free and control can be taken by
-the I2C subsystem.
-
-1 0 0 The I2C bus is busy and in use by some other
-master connected to the bus. (Not Supported)
-
-1 1 0 The I2C bus is busy and in use by the I2C
-subsystem. The subsystem is not busy so the I2C
-subsystem is either in the TX IDLE, or RX IDLE
-state.
-
-1 1 1 The I2C bus is busy, in use by the I2C
-subsystem, and the subsystem is executing some
-operation. This could be a START, REPEATED
-START, TX, RX, or STOP.
-
 All other combinations have no real-world interpretation and should never occur.
+```
 
 ### I2C Control Registers (I2C.x.CNTL)
 
@@ -1427,68 +1271,51 @@ the operations supported by the I2C subsystem can be independent of each other. 
 they must be configured to occur before the operation is started. See Table 1 for a list of
 valid and invalid values for the CNTL register.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-Name - - - - ACK STOP START TX/RX
+| Bit      | 7  | 6  | 5  | 4  | 3    | 2     | 1      | 0      | 
+|----------|----|----|----|----|------|-------|--------|--------| 
+| Name     | -  | -  | -  | -  | ACK  | STOP  | START  | TX/RX  | 
+| Initial  |    |    |    |    |      |       |        |        | 
+| Value    | 0  | 0  | 0  | 0  | 0    | 0     | 0      | 0      | 
 
-Initial
-Value
-
-##### 0 0 0 0 0 0 0 0
 
 - Bits [7:4] - Reserved for future use.
 
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 37
-```
 - Bit [3] - ACK: Data Acknowledge Enable
 
-```
 When receiving data from the slave, this bit specifies if an ACK or a NAK must be
 generated after the data byte is received. When sending data to the slave device, this
 bit is ignored.
-```
-```
-Note Sending an ACK after the last data byte received (before generating a STOP
+
+> Note: Sending an ACK after the last data byte received (before generating a STOP
 condition) violates the I2C standard.
-```
-```
+
 See field decoding in Table 9.
-```
+
 - Bit [2] - STOP: Generate the STOP condition.
 
-```
 Specifies if the I2C subsystem generates a STOP condition after completing the
 operation. When the STOP condition is generated, control of the I2C bus is released.
-```
-```
-Note When receiving data from the slave, the STOP bit and the ACK bit must never
+
+> Note: When receiving data from the slave, the STOP bit and the ACK bit must never
 be true at the same time.
-```
-```
+
 See field decoding in Table 9.
-```
+
 - Bit [1] - START: Generate the START condition.
 
-```
 Specifies if the I2C controller generates a START or REPEATED START condition.
 A START condition must be generated when the I2C subsystem does not have
 control of the bus and wants to get control. A REPEATED START condition must be
 generated when the I2C subsystem already has control of the bus and wants to either
 change the addressed slave device or change the direction of the transmission to the
 same slave device.
-```
-```
-Note When the START bit is TRUE, the TX/RX bit must also be TRUE.
-```
-```
+
+>Note: When the START bit is TRUE, the TX/RX bit must also be TRUE.
+
 See field decoding in Table 9.
-```
+
 - Bit [0] - TX/RX: Transmit or receive a data byte.
 
-```
 Specifies if the I2C controller sends a data byte to or receive a data byte from the
 slave device. The direction of the transmission (whether it is a send or receive
 operation) depends on the value of the R/S bit in the I2C.x.ADDR register. This bit
@@ -1496,150 +1323,44 @@ can be set on its own (when in send mode) or in conjunction with the ACK bit (wh
 in receive mode) to continually send or receive data from the slave without having to
 generate START or STOP conditions.
 See field decoding in Table 9.
-```
 
-38 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
-```
+<p align="center">
 Table 9. I2C control registers possible combinations
-```
-```
-State R/S ACK STOP START TX/RX I2C Operation
-```
-IDLE 0 X 0 1 1 Generate START, Send Address,
-Receive Address ACK, Send Data,
-Receive Data ACK, and go to TX
-IDLE state.
+</p>
 
-0 X 1 1 1 Generate START, Send Address,
-Receive Address ACK, Send Data,
-Receive Data ACK, Generate STOP,
-and return to IDLE state.
+| State    | R/S                                       | ACK  | STOP  | START  | TX/RX  | I2C Operation                                                                                                             | 
+|----------|-------------------------------------------|------|-------|--------|--------|---------------------------------------------------------------------------------------------------------------------------| 
+| IDLE     | 0                                         | X    | 0     | 1      | 1      | Generate START, Send Address, Receive Address ACK, Send Data, Receive Data ACK, and go to TX IDLE state.                  | 
+|          | 0                                         | X    | 1     | 1      | 1      | Generate START, Send Address, Receive Address ACK, Send Data, Receive Data ACK, Generate STOP, and return to IDLE state.  | 
+|          | 1                                         | 0    | 0     | 1      | 1      | Generate START, Send Address, Receive Address ACK, Receive Data, Send Data NAK, and go to RX IDLE state.                  | 
+|          | 1                                         | 0    | 1     | 1      | 1      | Generate START, Send Address, Receive Address ACK, Receive Data, Send Data NAK, and return to IDLE state.                 | 
+|          | 1                                         | 1    | 0     | 1      | 1      | Generate START, Send Address, Receive Address ACK, Receive Data, Send Data ACK, and go to RX IDLE state.                  | 
+|          | 1                                         | 1    | 1     | 1      | 1      | Illegal. (Master cannot transmit an ACK before generating a STOP.)                                                        | 
+|          | All other operations are non-operations.  |    |   |   |   | NOP  |       |        |        |                                                                                                                           | 
+| TX IDLE  | X                                         | X    | 0     | 0      | 1      | Send Data (to previously addressed slave),Receive Data ACK, and return to TX IDLE state.                                  | 
+|          | X                                         | X    | 1     | 0      | 0      | Generate STOP, and go to IDLE state.                                                                                      | 
+|          | X                                         | X    | 1     | 0      | 1      | Send Data, Receive Data ACK, Generate STOP, and go to IDLE state.                                                         | 
+| 0        | X                                         | 0    | 1  | 1  | Generate REPEATED START, Send Address, Receive Address ACK, Send Data, Receive Data ACK, and return to TX IDLE state.  |                                                                                                                                | 
+|          | 0                                         | X    | 1  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Send Data, Receive Data ACK, Generate STOP, and go to IDLE state.  | 
+|          | 1                                         | 0    | 0  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Receive Data, Send Data NAK, and go to RX IDLE state.              | 
+|          | 1                                         | 0    | 1  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Receive Data, Send Data NAK, Generate STOP, and go to IDLE state.  | 
+|          | 1                                         | 1    | 0  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Receive Data, Send Data ACK, and go to RX IDLE state.              | 
+|          | 1                                         | 1    | 1  | 1  | 1                                                                                                                      | Illegal. (Master cannot transmit an ACK before generating a STOP.)                                                             | 
+|          | All other operations are non-operations.  |    |   |   |   | NOP  |    |    |                                                                                                                        |                                                                                                                                | 
+| RX IDLE  | X                                         | 0    | 0  | 0  | 1                                                                                                                      | Receive Data (from previously addressed slave), Send Data NAK, and return to RX IDLE state.                                    | 
+|          | X                                         | X    | 1  | 0  | 0                                                                                                                      | Generate STOP, and go to IDLE state.                                                                                           | 
+|          | X                                         | 0    | 1  | 0  | 1                                                                                                                      | Receive Data, Send Data NAK, Generate STOP, and return to IDLE state.                                                          | 
+|          | X                                         | 1    | 0  | 0  | 1                                                                                                                      | Receive Data, Send Data ACK, and                                                                                               | 
+|          |                                           |      |    |    |                                                                                                                        | return to RX IDLE state.                                                                                                       | 
+|          | X                                         | 1    | 1  | 0  | 1                                                                                                                      | Illegal. (Master cannot transmit an ACK before generating a STOP.)                                                             | 
+|          | 0                                         | X    | 0  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, RX Address ACK, Send Data, RX Data ACK, and go to TX IDLE state.                        | 
+|          | 0                                         | X    | 1  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Send Data, Receive Data ACK, Generate STOP, and go to IDLE state.  | 
+|          | 1                                         | 0    | 0  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Receive Data, Send Data NAK, and return to RX IDLE state.          | 
+|          | 1                                         | 0    | 1  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Receive Data, Send Data NAK, Generate STOP, and go to IDLE state.  | 
+|          | 1                                         | 1    | 0  | 1  | 1                                                                                                                      | Generate REPEATED START, Send Address, Receive Address ACK, Receive Data, Send Data ACK, and return to RX IDLE state.          | 
+|          | 1                                         | 1    | 1  | 1  | 1                                                                                                                      | Illegal. (Master cannot transmit an ACK before generating a STOP.)                                                             | 
+|          | All other operations are non-operations.  |    |   |   |   | NOP  |    |    |                                                                                                                        |                                                                                                                                | 
 
-1 0 0 1 1 Generate START, Send Address,
-Receive Address ACK, Receive
-Data, Send Data NAK, and go to RX
-IDLE state.
-
-1 0 1 1 1 Generate START, Send Address,
-Receive Address ACK, Receive
-Data, Send Data NAK, and return to
-IDLE state.
-
-1 1 0 1 1 Generate START, Send Address,
-Receive Address ACK, Receive
-Data, Send Data ACK, and go to RX
-IDLE state.
-
-1 1 1 1 1 Illegal. (Master cannot transmit an
-ACK before generating a STOP.)
-
-All other operations are non-operations. NOP
-
-(^) TX
-IDLE
-X X 0 0 1 Send Data (to previously addressed
-slave), Receive Data ACK, and
-return to TX IDLE state.
-X X 1 0 0 Generate STOP, and go to IDLE
-state.
-X X 1 0 1 Send Data, Receive Data ACK,
-Generate STOP, and go to IDLE
-state.
-
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 39
-```
-0 X 0 1 1 Generate REPEATED START,
-Send Address, Receive Address
-ACK, Send Data, Receive Data
-ACK, and return to TX IDLE state.
-
-0 X 1 1 1 Generate REPEATED START,
-Send Address, Receive Address
-ACK, Send Data, Receive Data
-ACK, Generate STOP, and go to
-IDLE state.
-
-1 0 0 1 1 Generate REPEATED START,
-Send Address, Receive Address
-ACK, Receive Data, Send Data
-NAK, and go to RX IDLE state.
-
-1 0 1 1 1 Generate REPEATED START,
-Send Address, Receive Address
-ACK, Receive Data, Send Data
-NAK, Generate STOP, and go to
-IDLE state.
-
-1 1 0 1 1 Generate REPEATED START,
-Send Address, Receive Address
-ACK, Receive Data, Send Data
-ACK, and go to RX IDLE state.
-
-1 1 1 1 1 Illegal. (Master cannot transmit an
-ACK before generating a STOP.)
-
-All other operations are non-operations. NOP
-
-RX
-IDLE
-
-```
-X 0 0 0 1 Receive Data (from previously
-addressed slave), Send Data NAK,
-and return to RX IDLE state.
-```
-X X 1 0 0 Generate STOP, and go to IDLE
-state.
-
-X 0 1 0 1 Receive Data, Send Data NAK,
-Generate STOP, and return to IDLE
-state.
-
-X 1 0 0 1 Receive Data, Send Data ACK, and
-
-
-40 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
-```
-return to RX IDLE state.
-```
-X 1 1 0 1 Illegal. (Master cannot transmit an
-ACK before generating a STOP.)
-
-0 X 0 1 1 Generate REPEATED START,
-Send Address, RX Address ACK,
-Send Data, RX Data ACK, and go
-to TX IDLE state.
-
-0 X 1 1 1 Generate REPEATED START,
-Send Address, Receive Address
-ACK, Send Data, Receive Data
-ACK, Generate STOP, and go to
-IDLE state.
-
-1 0 0 1 1 Generate REPEATED START,
-Send Address, Receive Address
-ACK, Receive Data, Send Data
-NAK, and return to RX IDLE state.
-
-1 0 1 1 1 Generate REPEATED START,
-Send Address, Receive Address
-ACK, Receive Data, Send Data
-NAK, Generate STOP, and go to
-IDLE state.
-
-1 1 0 1 1 Generate REPEATED START,
-Send Address, Receive Address
-ACK, Receive Data, Send Data
-ACK, and return to RX IDLE state.
-
-1 1 1 1 1 Illegal. (Master cannot transmit
-an ACK before generating a STOP.)
-
-All other operations are non-operations. NOP
 
 ### I2C Execute Registers (I2C.x.GO)
 
@@ -1649,11 +1370,6 @@ Data type: Boolean
 
 This register causes the operation specified in the I2C.x.CNTL register to begin. When an
 operation is written to the CNTL register, it does not start until the GO bit is strobed. The
-
-
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 41
-```
 user only has to write a TRUE to this register as the register resets to FALSE after the I2C
 operation has started. Table 1 shows how to set the CNTL register for the different
 possible I2C operations.
@@ -1714,8 +1430,6 @@ I2C.x.GO
 Run operatio n
 ```
 
-42 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
 #### Receiving a Single Byte
 
 ```
@@ -1768,9 +1482,6 @@ I2C.x.GO
 Run operatio n
 ```
 
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 43
-```
 #### Sending Multiple Bytes
 
 ```
@@ -1853,8 +1564,6 @@ operation
 ```
 Send n-1 byt es
 ```
-
-44 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
 
 #### Receiving Multiple Bytes
 
@@ -1939,9 +1648,6 @@ I2C.x.DATI
 Receive n-1 byt es
 ```
 
-```
-NI ELVIS III Shipping Personality 1.0 Reference | © National Instruments | 45
-```
 #### Sending Multiple Bytes then Receiving Multiple Bytes
 
 ```
@@ -1990,8 +1696,6 @@ Repeated START condition is
 generated when changing
 dir ec ti on.
 ```
-
-46 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
 
 #### Receiving Multiple Bytes then Sending Multiple Bytes
 
@@ -2042,20 +1746,14 @@ dir ec ti on.
 ```
 ## IRQ
 
-```
-Note When you program in C language, register names must not contain periods,
+> Note: When you program in C language, register names must not contain periods,
 colons, or spaces.
-```
+
 ### Timer Interrupt
 
-```
-Note Timer Interrupt reserves the IRQ Number 0 while the other interrupts use
+> Note: Timer Interrupt reserves the IRQ Number 0 while the other interrupts use
 values within the range [1 , 8].
-```
 
-```
-N Shipping Personality 6.0 Reference | © National Instruments | 47
-```
 #### Timer Read Register (IRQ.TIMER.READ)
 
 Register list: IRQ.TIMER.READ
@@ -2103,9 +1801,6 @@ Register list: IRQ.AI_A_0.HYSTERESIS, IRQ.AI_A_1.HYSTERESIS
 
 Data type: FXP
 
-
-48 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
 This register sets the value of hysteresis or the window size. Hysteresis adds a window
 above or below the analog IRQ threshold to reduce false triggering due to noise. Each
 channel has one analog IRQ hysteresis register.
@@ -2119,39 +1814,19 @@ Data type: U8
 This register contains the interrupt type and enabling configuration of the analog IRQ, as
 shown in the following table.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-Name - - - - IRQ.AI_A_
-1.Type
-
-##### IRQ.AI_A_
-
-##### 1.ENA
-
-##### IRQ.AI_A_0
-
-```
-.Type
-```
-##### IRQ.AI_A_
-
-##### 0.ENA
-
-Initial
-Value
-
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7  | 6  | 5  | 4  | 3                | 2               | 1                 | 0               | 
+|----------------|----|----|----|----|------------------|-----------------|-------------------|-----------------| 
+| Name           | -  | -  | -  | -  | IRQ.AI_A_1.Type  | IRQ.AI_A_1.ENA  | IRQ.AI_A_0 .Type  | IRQ.AI_A_0.ENA  | 
+| Initial Value  | 0  | 0  | 0  | 0  | 0                | 0               | 0                 | 0               | 
 
 - Bits [7:4] - Reserved for future use.
 - Bit [3] - IRQ.AI_A_1. Type.
 
-```
 Specifies the interrupt type of the channel. If the bit is set to 1, the AI1 channel on
 connector A checks AI interrupts on a rising edge of the analog input signal. If the bit
 is set to 0, the AI1 channel on connector A checks AI interrupts on a falling edge of
 the analog input signal.
-```
+
 - Bit [2] - IRQ.AI_A_1. ENA.
     Enables the settings of the analog input interrupt channel. If the bit is set to 1, the AI1
     channel on connector A starts checking AI interrupts based on the settings. If the bit
@@ -2159,24 +1834,18 @@ the analog input signal.
     value of the bit is 0 when the NI ELVIS III device is powered on.
 - Bit [1] - IRQ.AI_A_0. Type.
 
-```
 Specifies the interrupt type of the channel. If the bit is set to 1, the AI0 channel on
 connector A checks AI interrupts on a rising edge of the analog input signal. If the bit
 is set to 0, the AI0 channel on connector A checks AI interrupts on a falling edge of
 the analog input signal.
-```
+
 - Bit [0] - IRQ.AI_A_0. ENA
 
-```
 Enables the settings of the analog input interrupt channel. If the bit is set to 1, the AI0
 channel on connector A starts checking AI interrupts based on the settings. If the bit
 is set to 0, the AI0 channel on connector A stops checking AI interrupts. The default
 value of the bit is 0 when the NI ELVIS III device is powered on.
-```
 
-```
-N Shipping Personality 6.0 Reference | © National Instruments | 49
-```
 #### Analog IRQ Number Register (IRQ.AI_x.NO)
 
 Register list: IRQ.AI_A_0.NO, IRQ.AI_A_1.NO
@@ -2187,7 +1856,7 @@ This register specifies the identifier of the interrupt. Each channel has one an
 number register. The IRQ number ranges from 1 to 8 on FPGA. The number is shared
 with analog, digital and button interrupts.
 
-### Digital Input Interrupt................................................................................................
+### Digital Input Interrupt
 
 #### Digital Enabling Register (IRQ.DIO_x.ENA)
 
@@ -2197,28 +1866,10 @@ Data type: U8
 
 This register enables the settings of digital input interrupt channels.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-Name - - - - IRQ.DIO_A
-_3.ENA
-
-##### IRQ.DIO_A_
-
-##### 2.ENA
-
-##### IRQ.DIO_A
-
-##### _1.ENA
-
-##### IRQ.DIO_A_
-
-##### 0.ENA
-
-Initial
-Value
-
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7  | 6  | 5  | 4  | 3                 | 2                | 1                 | 0                | 
+|----------------|----|----|----|----|-------------------|------------------|-------------------|------------------| 
+| Name           | -  | -  | -  | -  | IRQ.DIO_A _3.ENA  | IRQ.DIO_A_2.ENA  | IRQ.DIO_A _1.ENA  | IRQ.DIO_A_0.ENA  | 
+| Initial Value  | 0  | 0  | 0  | 0  | 0                 | 0                | 0                 | 0                | 
 
 - Bits [7:4] - Reserved for future use.
 - Bits [3:0] - IRQ.DIO_A_3:0.ENA.
@@ -2237,30 +1888,10 @@ Data type: U8
 
 This register enables the digital rising edge interrupt of digital input interrupt channels.
 
-
-50 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
-Bit 7 6 5 4 3 2 1 0
-
-Name - - - - IRQ.DIO_A
-_3.RISE
-
-##### IRQ.DIO_A_
-
-##### 2. RISE
-
-##### IRQ.DIO_A
-
-##### _1.RISE
-
-##### IRQ.DIO_A_
-
-##### 0.RISE
-
-Initial
-Value
-
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7  | 6  | 5  | 4  | 3                  | 2                 | 1                  | 0                 | 
+|----------------|----|----|----|----|--------------------|-------------------|--------------------|-------------------| 
+| Name           | -  | -  | -  | -  | IRQ.DIO_A _3.RISE  | IRQ.DIO_A_2.RISE  | IRQ.DIO_A _1.RISE  | IRQ.DIO_A_0.RISE  | 
+| Initial Value  | 0  | 0  | 0  | 0  | 0                  | 0                 | 0                  | 0                 | 
 
 - Bits [7:4] - Reserved for future use.
 - Bits [3:0] - IRQ.DIO_A_3:0.RISE.
@@ -2278,28 +1909,10 @@ Data type: U8
 
 This register enables the digital falling edge interrupt of digital input interrupt channels.
 
-```
-Bit 7 6 5 4 3 2 1 0
-```
-Name - - - - IRQ.DIO_A
-_3.FALL
-
-##### IRQ.DIO_A_
-
-##### 2. FALL
-
-##### IRQ.DIO_A
-
-##### _1.FALL
-
-##### IRQ.DIO_A_
-
-##### 0.FALL
-
-Initial
-Value
-
-##### 0 0 0 0 0 0 0 0
+| Bit            | 7  | 6  | 5  | 4  | 3                  | 2                 | 1                  | 0                 | 
+|----------------|----|----|----|----|--------------------|-------------------|--------------------|-------------------| 
+| Name           | -  | -  | -  | -  | IRQ.DIO_A _3.FALL  | IRQ.DIO_A_2.FALL  | IRQ.DIO_A _1.FALL  | IRQ.DIO_A_0.FALL  | 
+| Initial Value  | 0  | 0  | 0  | 0  | 0                  | 0                 | 0                  | 0                 | 
 
 - Bits [7:4] - Reserved for future use.
 - Bits [3:0] - IRQ.DIO_A_3:0.FALL.
@@ -2314,10 +1927,6 @@ not check the falling edge of the digital input signal.
 Register list: IRQ.DIO_A_0.NO, IRQ.DIO_A_1.NO, IRQ.DIO_A_2.NO,
 IRQ.DIO_A_3.NO
 
-
-```
-N Shipping Personality 6.0 Reference | © National Instruments | 51
-```
 Data type: U8
 
 This register specifies the identifier of the interrupt. Each channel has one digital IRQ
@@ -2364,9 +1973,6 @@ Register list: IRQ.DI_BTN.FALL
 
 Data type: Boolean
 
-
-52 | ni.com | NI ELVIS III Shipping Personality 1.0 Reference
-
 This register enables the falling edge interrupt of the button channel. If the bit is set to 1,
 the channel checks interrupts on a falling edge of the button state. If the bit is set to 0, the
 channel does not check the falling edge of the button state.
@@ -2389,25 +1995,14 @@ Data type: U32
 This register specifies the number of edges for triggering one interrupt. The interrupt is
 triggered every time the edges count reaches the number.
 
-
-Refer to the NI Trademarks and Logo Guidelines at ni.com/trademarks for more
-information on NI trademarks. Other product and company names mentioned
-herein are trademarks or trade names of their respective companies. For
-patents covering NI products/technology, refer to the appropriate location:
-Help»Patents in your software, the patents.txt file on your media, or the NI
-Patent Notice at ni.com/patents. You can find information about end-user
-license agreements (EULAs) and third-party legal notices in the readme file
-for your NI product. Refer to the Export Compliance Information at
-ni.com/legal/export-compliance for the National Instruments global trade
-compliance policy and how to obtain relevant HTS codes, ECCNs, and other
-import/export data. NI MAKES NO EXPRESS OR IMPLIED WARRANTIES AS TO THE
-ACCURACY OF THE INFORMATION CONTAINED HEREIN AND SHALL NOT BE LIABLE FOR ANY
-ERRORS. U.S. Government Customers: The data contained in this manual was
-developed at private expense and is subject to the applicable limited rights
-and restricted data rights as set forth in FAR 52.227-14, DFAR 252.227-7014,
-and DFAR 252.227-7015.
-
-© 2013-2018 National Instruments. All rights reserved.
+```
+Refer to the NI Trademarks and Logo Guidelines at ni.com/trademarks for more information on NI trademarks. Other product and company names mentioned herein are trademarks or trade names of their respective companies.
+For patents covering NI products/technology, refer to the appropriate location:
+Help»Patents in your software, the patents.txt file on your media, or the NI Patent Notice at ni.com/patents. You can find information about end-user license agreements (EULAs) and third-party legal notices in the readme file for your NI product. 
+Refer to the Export Compliance Information at ni.com/legal/export-compliance for the National Instruments global trade compliance policy and how to obtain relevant HTS codes, ECCNs, and other import/export data.
+NI MAKES NO EXPRESS OR IMPLIED WARRANTIES AS TO THE ACCURACY OF THE INFORMATION CONTAINED HEREIN AND SHALL NOT BE LIABLE FOR ANY ERRORS. U.S. Government Customers: 
+The data contained in this manual was developed at private expense and is subject to the applicable limited rights and restricted data rights as set forth in FAR 52.227-14, DFAR 252.227-7014, and DFAR 252.227-7015.
+```
 
 
 
