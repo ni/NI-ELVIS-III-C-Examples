@@ -258,7 +258,7 @@ These registers control the onboard LEDs and read the onboard button and acceler
 
 Register list: DIO.LED3:
 
-Data type: U
+Data type: U8
 
 | Bit            | 7  | 6  | 5  | 4  | 3     | 2     | 1     | 0     | 
 |----------------|----|----|----|----|-------|-------|-------|-------| 
@@ -276,7 +276,7 @@ The desired state of onboard LEDs 3 to 0.
 
 Register list: DI.BTN
 
-Data type: U
+Data type: U8
 
 | Bit            | 7  | 6  | 5  | 4  | 3  | 2  | 1  | 0      | 
 |----------------|----|----|----|----|----|----|----|--------| 
@@ -319,7 +319,7 @@ There are 8 analog input channels for each bank (A/B), and they support single-e
 
 Register list: AI.A.CNT, AI.B.CNT
 
-Data type: U
+Data type: U8
 
 This register shows how many valid channels there are in AI.X.CNFG and AI.X.VAL.
 
@@ -494,7 +494,7 @@ using FPGA I/O.
 Register list: DI.A.DMA_CNTR, DI.B.DMA_CNTR, DO.A.DMA_CNTR,
 DO.B.DMA_CNTR
 
-Data type: U
+Data type: U16
 
 This register is the divisor for the digital sample rate. The default onboard clock rate of
 FPGA is 40 MHz. This register equals the default onboard clock divided by the expected
@@ -532,7 +532,7 @@ This register shows whether the DMA is idle.
 
 Register list: PWM.A_[0:19].CNFG, PWM.B_[0:19].CNFG
 
-Data type: U
+Data type: U8
 
 This register configures the functionality of the PWM subsystem as shown in the
 following table.
@@ -578,7 +578,7 @@ Set the output on compare match, clear at min counter value (inverting mode).
 
 Register list: PWM.A_[0:19].CS, PWM.B_[0:19].CS
 
-Data type: U
+Data type: U8
 
 This register controls the clock speed of the PWM counter.
 
@@ -609,7 +609,7 @@ how to use the CS register.
 
 Register list: PWM.A_[0:19].MAX, PWM.B_[0:19].MAX
 
-Data type: U
+Data type: U16
 
 This register determines the maximum value of the PWM counter. If the MODE bit in the
 CNFG register is set to 1, the PWM counter counts to MAX, then resets to 0. Otherwise,
@@ -619,7 +619,7 @@ this register is ignored.
 
 Register list: PWM.A_[0:19].CMP, PWM.B_[0:19].CMP
 
-Data type: U
+Data type: U16
 
 This register sets the compare value, and therefore determines the duty cycle of the PWM.
 The behavior depends on the value of the MODE and INV bits in the CNFG register.
@@ -634,7 +634,7 @@ The behavior depends on the value of the MODE and INV bits in the CNFG register.
 
 Register list: PWM.A_[0:19].CNTR, PWM.B_[0:19].CNTR
 
-Data type: U
+Data type: U16
 
 Range: 0 to 65535
 
