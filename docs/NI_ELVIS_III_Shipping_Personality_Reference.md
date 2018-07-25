@@ -148,7 +148,7 @@ registers may or may not be related to a specific peripheral.
 
 The Channel Name is a combination of the bank designation and its numeric enumeration or range enumeration. An underscore (_) separates the channels bank designation and its enumeration. The enumeration is omitted if only one channel of that type is available on the bank. 
 
-Example: A_7:0 indicates that the register corresponds to channels 0 to 7 onBank A.
+Example: A_7:0 indicates that the register corresponds to channels 0 to 7 on Bank A.
 
 ### Property Names
 
