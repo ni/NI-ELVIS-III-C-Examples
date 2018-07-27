@@ -14,7 +14,7 @@
    * [Analog Configuration Registers (AI.x.CNFG)](#analog-configuration-registers-aixcnfg)
    * [Analog Divisor Registers (AI.x.CNTR, AO.x.DMA_CNTR)](#analog-divisor-registers-aixcntr-aoxdma\_cntr)
    * [Analog Input DMA Enable Registers (AI.x.DMA_ENA)](#analog-input-dma-enable-registers-aixdma\_ena)
-   * [Analog Ouptput DMA Enable Registers (AO.x.DMA_ENA)](#analog-ouptput-dma-enable-registers-aoxdma\_ena)
+   * [Analog Output DMA Enable Registers (AO.x.DMA_ENA)](#analog-output-dma-enable-registers-aoxdma\_ena)
    * [Analog DMA IDLE Registers (AI.x.DMA_IDL, AO.x.DMA_IDL)](#analog-dma-idle-registers-aixdma\_idl-aoxdma\_idl)
    * [Analog Value Registers (AI.x.VAL, AO.x.VAL)](#analog-value-registers-aixval-aoxval)
    * [Analog Output Set Register (AO.SYS.GO)](#analog-output-set-register-aosysgo)
@@ -26,7 +26,7 @@
    * [Digital Divisor Registers (DI.x.DMA_CNTR, DO.x.DMA_CNTR)](#digital-divisor-registers-dixdma\_cntr-doxdma\_cntr)
    * [Digital Input DMA Enable Registers (DI.x.DMA_ENA)](#digital-input-dma-enable-registers-dixdma\_ena)
    * [Digital Output DMA Enable Registers (DO.x.DMA_ENA)](#digital-output-dma-enable-registers-doxdma\_ena)
-   * [Digital DMA Idle Registers (DI.x.DMA_IDL, DO.x.DMA_IDL)](#digital-dma-idle-registers-dixdma\_idl-doxdma\_idl)
+   * [Digital DMA IDLE Registers (DI.x.DMA_IDL, DO.x.DMA_IDL)](#digital-dma-idle-registers-dixdma\_idl-doxdma\_idl)
  - [PWM](#pwm)
    * [PWM Configuration Registers (PWM.x.CNFG)](#pwm-configuration-registers-pwmxcnfg)
    * [PWM Clock Select Registers (PWM.x.CS)](#pwm-clock-select-registers-pwmxcs)
@@ -62,6 +62,9 @@
      + [Receiving Multiple Bytes](#receiving-multiple-bytes)
      + [Sending Multiple Bytes then Receiving Multiple Bytes](#sending-multiple-bytes-then-receiving-multiple-bytes)
      + [Receiving Multiple Bytes then Sending Multiple Bytes](#receiving-multiple-bytes-then-sending-multiple-bytes)
+ - [UART](#uart)
+   * [UART Enable Register (UART.x.ENA)](#uart-enable-register-uartxena)
+   * [UART Status Register (UART.x.STAT)](#uart-status-register-uartxstat)
  + [IRQ](#irq)
    * [Timer Interrupt](#timer-interrupt)
      + [Timer Read Register (IRQ.TIMER.READ)](#timer-read-register-irqtimerread)
@@ -70,7 +73,7 @@
    * [Analog Input Interrupt](#analog-input-interrupt)
      + [Analog IRQ Threshold Register (IRQ.AI_x.THRESHOLD)](#analog-irq-threshold-register-irqai\_xthreshold)
      + [Analog IRQ Hysteresis Register (IRQ.AI_x.HYSTERESIS)](#analog-irq-hysteresis-register-irqai\_xhysteresis)
-     + [Analog IRQ Configuration Register (IRQ.AI_ x.CNFG)](#analog-irq-configuration-register-irqai\_-xcnfg)
+     + [Analog IRQ Configuration Register (IRQ.AI_x.CNFG)](#analog-irq-configuration-register-irqai\_xcnfg)
      + [Analog IRQ Number Register (IRQ.AI_x.NO)](#analog-irq-number-register-irqai\_xno)
    * [Digital Input Interrupt](#digital-input-interrupt)
      + [Digital Enabling Register (IRQ.DIO_x.ENA)](#digital-enabling-register-irqdio\_xena)
@@ -88,7 +91,7 @@
 
 # NI ELVIS III Shipping Personality Reference
 
-This document contains reference information about the NI ELVIS III shipping personality.
+This document contains reference information about the NI ELVIS III shipping personality which consists of predefined FPGA bitfile for you to program with NI ELVIS III. 
 
 ## Introduction 
 
@@ -102,10 +105,10 @@ The LabVIEW ELVIS III Toolkit will also ship an FPGA personality as default, and
 - Serial peripheral interface (SPI)
 - Encoder
 - Inter-integrated circuit (I2C)
+- Universal asynchronous receiver-transmitter (UART)
 - Interrupt request (IRQ)
 
-Each peripheral is controlled through the use of its corresponding registers as outlined in
-this document.
+Each peripheral is controlled through the use of its corresponding registers as outlined in this document.
 
 ## Register Naming Convention
 
@@ -115,27 +118,27 @@ Registers follow a naming scheme as described below:
 Peripheral Type.Channel Name.Property Name
 ```
 
-> Note: When you program in C language, register names must not contain periods,
-colons, or spaces.
+> Note: When you program in C language, register names must not contain periods, colons, or spaces (like using “DIOA_190DIR” for “DIO.A_19:0.DIR”). 
 
 
 ### Peripheral Type
 
 Possible values = {AI, AO, DIO, DI, DO, PWM, I2C, SPI, ENC, IRQ, SYS}
 
-| Short Name  | Full Name                    | 
-|-------------|------------------------------| 
-| AI          | Analog input                 | 
-| AO          | Analog output                | 
-| DIO         | Digital input/output         | 
-| DI          | Digital input                | 
-| DO          | Digital output               | 
-| PWM         | Pulse-width modulation       | 
-| I2C         | Inter-integrated circuit     | 
-| SPI         | Serial peripheral interface  | 
-| ENC         | Encoder                      | 
-| IRQ         | Interrupt request            | 
-| SYS         | System                       | 
+| Short Name  | Full Name                                   | 
+|-------------|---------------------------------------------| 
+| AI          | Analog input                                | 
+| AO          | Analog output                               | 
+| DIO         | Digital input/output                        | 
+| DI          | Digital input                               | 
+| DO          | Digital output                              | 
+| PWM         | Pulse-width modulation                      | 
+| I2C         | Inter-integrated circuit                    | 
+| SPI         | Serial peripheral interface                 | 
+| ENC         | Encoder                                     | 
+| UART        |	Universal asynchronous receiver-transmitter |
+| IRQ         | Interrupt request                           | 
+| SYS         | System                                      | 
 
 
 > Note: SYS is a reserved value used for a special purpose system register. The system
@@ -143,13 +146,9 @@ registers may or may not be related to a specific peripheral.
 
 ### Channel Name
 
-The Channel Name is a combination of the connector designation and its numeric
-enumeration or range enumeration. An underscore (_) separates the channels connector
-designation and its enumeration. The enumeration is omitted if only one channel of that
-type is available on the connector.
+The Channel Name is a combination of the bank designation and its numeric enumeration or range enumeration. An underscore (_) separates the channels bank designation and its enumeration. The enumeration is omitted if only one channel of that type is available on the bank. 
 
-Example: C_0 indicates the channel is the first channel on Connector C. A_7:0 indicates
-that the register corresponds to channels 0 to 7 on Connector A.
+Example: A_7:0 indicates that the register corresponds to channels 0 to 7 on Bank A.
 
 ### Property Names
 
@@ -189,7 +188,6 @@ Table 2. Outputs (indicators)
 | VAL         | Value       | The value read from a subsystem/onboard device. Also used as an input.  | 
 | WGHT        | Weight      | The scaling weight to convert to/from physical units.                   | 
 | OFST        | Offset      | The offset from zero.                                                   | 
-| RDY         | Ready       | The status of a subsystem.                                              | 
 | READ        | Read        | The remaining time before the FPGA timer elapses.                       | 
 | WRITE       | Write       | The elapse time to be set to the FPGA timer.                            | 
 | SETTIME     | Set Time    | The toggle to overwrite the elapse time in the FPGA timer.              | 
@@ -204,24 +202,15 @@ Table 2. Outputs (indicators)
 
 ### Function Select Registers (SYS.SELECTx)
 
-The function select registers control the functionality that is routed to the shared pins. You
-must enable the desired functionality at run time by setting or clearing the appropriate bits
-before you use the individual registers. The bit definition of each register for each
-connector type is given below.
+The function select registers control the functionality that is routed to the shared pins. You must enable the desired functionality at run time by setting or clearing the appropriate bits before you use the individual registers. The bit definition of each register for each bank type is given below. 
 
-
-> Tip: Changing the register value switches between functions. This may have
-undesired effects if the connected peripheral is not intended to be connected to the
-alternate function.
+> Tip: Changing the register value switches between functions. This may have undesired effects if the connected peripheral is not intended to be connected to the alternate function.
 
 Register list: SYS.SELECTA, SYS.SELECTB
 
-Data type: U
+Data type: U64
 
-SYS.SELECTA and SYS.SELECTB select functionality on connectors A DIO [0:19] and
-B DIO [0:19], respectively. In this register, each DIO is represented by 2 bits from low to
-high. For example, Bits [0:1] is DIO 0, Bits [2:3] is DIO 1, etc. The functionality of the
-combination of 2 bits is shown in the following table:
+SYS.SELECTA and SYS.SELECTB select functionality on banks A DIO [0:19] and B DIO [0:19], respectively. In this register, each DIO is represented by 2 bits from low to high. For example, Bits [0:1] is DIO 0, Bits [2:3] is DIO 1, etc. The functionality of the combination of 2 bits is shown in the following table: 
 
 | Bits  | Functionality                      | 
 |-------|------------------------------------| 
@@ -230,13 +219,13 @@ combination of 2 bits is shown in the following table:
 | 10    | The channel is used as Encoder.    | 
 | 11    | The channel is used as SPI or I2C. | 
 
-For each DIO channel on connectors A and B, it could have different functionalities:
+For each DIO channel on banks A and B, it could have different functionalities: 
 
-- DIO: DIO [0:19] on connectors A and B
-- PWM: DIO [0:19] on connectors A and B
-- Encoder: DIO [0:1], DIO [2:3], ..., DIO [18:19] on connectors A and B
-- SPI: DIO [5:7] on connectors A and B
-- I2C: DIO [14:15] on connectors A and B
+- DIO: DIO [0:19] on banks A and B 
+- PWM: DIO [0:19] on banks A and B 
+- Encoder: DIO [0:1], DIO [2:3], …, DIO [18:19] on banks A and B 
+- SPI: DIO [5:7] on banks A and B 
+- I2C: DIO [14:15] on banks A and B 
 
 | DIO     | PWM     | Encoder  | SPI       | I2C      | UART     | 
 |---------|---------|----------|-----------|----------|----------| 
@@ -260,6 +249,7 @@ For each DIO channel on connectors A and B, it could have different functionalit
 | DIO 17  | PWM 17  | ENC.B 8  |           |          | UART.TX  | 
 | DIO 18  | PWM 18  | ENC.A 9  |           |          |          | 
 | DIO 19  | PWM 19  | ENC.B 9  |           |          |          | 
+
 ## Onboard Device Registers
 
 These registers control the onboard LEDs and read the onboard button and accelerometer.
@@ -268,15 +258,14 @@ These registers control the onboard LEDs and read the onboard button and acceler
 
 Register list: DIO.LED3:
 
-Data type: U
+Data type: U8
 
 | Bit            | 7  | 6  | 5  | 4  | 3     | 2     | 1     | 0     | 
 |----------------|----|----|----|----|-------|-------|-------|-------| 
 | Name           | -  | -  | -  | -  | LED3  | LED2  | LED1  | LED0  | 
 | Initial Value  | 0  | 0  | 0  | 0  | 0     | 0     | 0     | 0     | 
 
-This register controls the state of the onboard LEDs. Each bit corresponds to a single
-LED. If the bit is set to 1, the LED is lit. If the bit is set to 0, the LED is unlit.
+This register controls the state of the onboard LEDs. Each bit corresponds to a single LED. If the bit is set to 1, the LED is lit. If the bit is set to 0, the LED is unlit.
 
 - Bits [7:4] - Reserved for future use.
 - Bits [3:0] - LED3:
@@ -287,30 +276,23 @@ The desired state of onboard LEDs 3 to 0.
 
 Register list: DI.BTN
 
-Data type: U
+Data type: U8
 
 | Bit            | 7  | 6  | 5  | 4  | 3  | 2  | 1  | 0      | 
 |----------------|----|----|----|----|----|----|----|--------| 
 | Name           | -  | -  | -  | -  | -  | -  | -  | BTN    | 
 | Initial Value  | 0  | 0  | 0  | 0  | 0  | 0  | 0  | 0 or 1 | 
 
-This register indicates the current state of the onboard button. A value of 1 means the
-button is pressed. A value of 0 means the button is not pressed. The button is internally
-debounced so you don’t need to add additional debouncing logic in software.
+This register indicates the current state of the onboard button. A value of 1 means the button is pressed. A value of 0 means the button is not pressed. The button is internally debounced so you don’t need to add additional debouncing logic in software.
 
 - Bits [7:1] - Reserved for future use.
 - Bit [0] - BTN
 
-The state of the onboard button. The initial value is either 0 or 1, depending on the initial
-state of this button.
+The state of the onboard button. The initial value is either 0 or 1, depending on the initial state of this button.
 
 ## AI/AO
 
-There are 8 analog input channels for each bank (A/B), and they support single-ended
-measurement which measures the difference between the selected signal and AI Ground
-and differential measurement which measures the difference between the selected signal
-and its associated signal pair. The following table shows the channel mapping for each
-mode.
+There are 8 analog input channels for each bank (A/B), and they support single-ended measurement which measures the difference between the selected signal and AI Ground and differential measurement which measures the difference between the selected signal and its associated signal pair. The following table shows the channel mapping for each mode.
 
 | Bank    |Application Board Terminals|Single-ended Mode|Differential Mode| 
 |---------|--------|--------|---------| 
@@ -331,15 +313,13 @@ mode.
 |         | B/AI6  | AI 6   | AI 2 -  | 
 |         | B/AI7  | AI 7   | AI 3 -  | 
 
-
-> Note: When you program in C language, register names must not contain periods,
-colons, or spaces.
+> Note: When you program in C language, register names must not contain periods, colons, or spaces (like using “DIOA_190DIR” for “DIO.A_19:0.DIR”). 
 
 ### Analog Counter Register (AI.x.CNT)
 
 Register list: AI.A.CNT, AI.B.CNT
 
-Data type: U
+Data type: U8
 
 This register shows how many valid channels there are in AI.X.CNFG and AI.X.VAL.
 
@@ -358,32 +338,29 @@ following table.
 | Name           | First Tick  | -  | AI Range   | AI Range  |  AI Mode  |  AI Channel Selection  |  AI Channel Selection  | AI Channel Selection   | 
 | Initial Value  | 0           | 0  | 0                  | 0                     | 0  | 0  |  0  |  0  |
 
-- Bits [0:2]: Specify which AI channel to configure.
+- Bit 7: First Tick Flag. True means this is the first tick after updating the configuration, and the data of this tick should be acquired.  
+- Bit 6: Reserved for future use. 
+- Bits [5:4]: Specify the voltage range of the analog input channel 
+    o ±10 V: 00b
+    o 	±5 V: 01b
+    o 	±2 V: 10b
+    o 	±1 V: 11b 
+- Bit 3: Specify the acquisition mode of the analog input channel  
+    o DIFF: 0
+    o 	RSE: 1 
+- Bits [2:0]: Specify which AI channel to configure.  
     o Channel 0: 000b
     o Channel 1: 001b
     o ...
     o Channel 7: 111b
-- Bit 3: Specify the acquisition mode of the analog input channel
-    o DIFF: 0
-    o RSE: 1
-- Bits [4:5]: Specify the voltage range of the analog input channel
-    o ±10 V: 00b
-    o ±5 V: 01b
-    o ±2 V: 10b
-    o ±1 V: 11b
-- Bit 6: Reserved for future use.
-- Bit 7: First Tick Flag. True means this is the first tick after updating the
-    configuration, and the data of this tick should be acquired.
 
 ### Analog Divisor Registers (AI.x.CNTR, AO.x.DMA_CNTR)
 
 Register list: AI.A.CNTR, AI.B.CNTR, AO.A.DMA_CNTR, AO.B.DMA_CNTR
 
-Data type: U
+Data type: U32
 
-This register is the divisor for the analog sample rate. The default onboard clock rate of
-FPGA is 40 MHz. This register equals the default onboard clock divided by the expected
-sample rate.
+This register is the divisor for the analog sample rate. The default onboard clock rate of FPGA is 40 MHz. This register equals the default onboard clock divided by the expected sample rate.
 
 ### Analog Input DMA Enable Registers (AI.x.DMA_ENA)
 
@@ -391,17 +368,15 @@ Register list: AI.A.DMA_ENA, AI.A.DMA_ENA
 
 Data type: Boolean
 
-Each eight analog input channels share one DMA on connector A and B respectively. This
-register controls whether the DMA is enabled for a specific connector.
+Each eight analog input channels share one DMA on bank A and B respectively. This register controls whether the DMA is enabled for a specific bank. 
 
-### Analog Ouptput DMA Enable Registers (AO.x.DMA_ENA)
+### Analog Output DMA Enable Registers (AO.x.DMA_ENA)
 
 Register list: AI.A.DMA_ENA, AI.A.DMA_ENA
 
 Data type: FXP
 
-Each two analog output channels share one DMA on connector A and B respectively. This
-register controls whether the DMA is enabled for a specific analog output channel.
+Each two analog output channels share one DMA on bank A and B respectively. This register controls whether the DMA is enabled for a specific analog output
 
 | Bit           | 1   | 0   | 
 |---------------|-----|-----| 
@@ -465,8 +440,7 @@ operation completes by waiting for the value to change from the initial value.
 
 ## DIO
 
-> Note: When you program in C language, register names must not contain periods,
-colons, or spaces.
+> Note: When you program in C language, register names must not contain periods, colons, or spaces (like using “DIOA_190DIR” for “DIO.A_19:0.DIR”). 
 
 ### Data Direction Registers (DIO.x.DIR)
 
@@ -520,7 +494,7 @@ using FPGA I/O.
 Register list: DI.A.DMA_CNTR, DI.B.DMA_CNTR, DO.A.DMA_CNTR,
 DO.B.DMA_CNTR
 
-Data type: U
+Data type: U16
 
 This register is the divisor for the digital sample rate. The default onboard clock rate of
 FPGA is 40 MHz. This register equals the default onboard clock divided by the expected
@@ -532,9 +506,7 @@ Register list: DI.A.DMA_ENA, DI.B.DMA_ENA
 
 Data type: Boolean
 
-Each twenty digital input channels share one DMA on connector A and B respectively.
-This register controls whether the DMA is enabled for all digital input channels on the
-connector.
+Each twenty digital input channels share one DMA on bank A and B respectively. This register controls whether the DMA is enabled for all digital input channels on the bank. 
 
 ### Digital Output DMA Enable Registers (DO.x.DMA_ENA)
 
@@ -542,10 +514,9 @@ Register list: DO.A.DMA_ENA, DO.B.DMA_ENA
 
 Data type: FXP
 
-Each twenty digital output channels share one DMA on connector A and B respectively.
-This register controls whether the DMA is enabled for specific digital output channel.
+Each twenty digital output channels share one DMA on bank A and B respectively. This register controls whether the DMA is enabled for specific digital output channel. 
 
-### Digital DMA Idle Registers (DI.x.DMA_IDL, DO.x.DMA_IDL)
+### Digital DMA IDLE Registers (DI.x.DMA_IDL, DO.x.DMA_IDL)
 
 Register list: DI.A.DMA_IDL, DI.B.DMA_IDL, DO.A.DMA_IDL, DO.B.DMA_IDL
 
@@ -555,14 +526,13 @@ This register shows whether the DMA is idle.
 
 ## PWM
 
-> Note: When you program in C language, register names must not contain periods,
-colons, or spaces.
+> Note: When you program in C language, register names must not contain periods, colons, or spaces (like using “DIOA_190DIR” for “DIO.A_19:0.DIR”). 
 
 ### PWM Configuration Registers (PWM.x.CNFG)
 
 Register list: PWM.A_[0:19].CNFG, PWM.B_[0:19].CNFG
 
-Data type: U
+Data type: U8
 
 This register configures the functionality of the PWM subsystem as shown in the
 following table.
@@ -608,7 +578,7 @@ Set the output on compare match, clear at min counter value (inverting mode).
 
 Register list: PWM.A_[0:19].CS, PWM.B_[0:19].CS
 
-Data type: U
+Data type: U8
 
 This register controls the clock speed of the PWM counter.
 
@@ -639,7 +609,7 @@ how to use the CS register.
 
 Register list: PWM.A_[0:19].MAX, PWM.B_[0:19].MAX
 
-Data type: U
+Data type: U16
 
 This register determines the maximum value of the PWM counter. If the MODE bit in the
 CNFG register is set to 1, the PWM counter counts to MAX, then resets to 0. Otherwise,
@@ -649,7 +619,7 @@ this register is ignored.
 
 Register list: PWM.A_[0:19].CMP, PWM.B_[0:19].CMP
 
-Data type: U
+Data type: U16
 
 This register sets the compare value, and therefore determines the duty cycle of the PWM.
 The behavior depends on the value of the MODE and INV bits in the CNFG register.
@@ -664,7 +634,7 @@ The behavior depends on the value of the MODE and INV bits in the CNFG register.
 
 Register list: PWM.A_[0:19].CNTR, PWM.B_[0:19].CNTR
 
-Data type: U
+Data type: U16
 
 Range: 0 to 65535
 
@@ -731,8 +701,7 @@ supported.
 
 ## SPI Master
 
-> Note: When you program in C language, register names must not contain periods,
-colons, or spaces.
+> Note: When you program in C language, register names must not contain periods, colons, or spaces (like using “DIOA_190DIR” for “DIO.A_19:0.DIR”). 
 
 ### SPI Configuration Registers (SPI.x.CNFG)
 
@@ -956,22 +925,7 @@ supported.
 
 ## Encoder
 
-The quadrature encoder block counts the number of steps that an encoder makes along its
-rotation. The angular change per step is determined by the resolution of the encoder being
-used. When the encoder is going forward, the count value is incremented. When the
-encoder is moving backwards, the count value is decremented. There are two modes that
-are supported by the implemented encoder (ENC) subsystem. In the step and direction
-mode, the direction signal indicates the direction of rotation where a low signal means
-forward and a high signal means backward. The count value changes on every rising edge
-of the step signal. In the quadrature phase mode, the encoder generates two signals called
-Phase A and Phase B, which are two square waves that are 90 degrees out of phase with
-each other. In general, when Phase A is leading Phase B, the encoder counter is counting
-up, and when Phase B leads Phase A, the encoder counter is counting down. The count
-
-value is changed on every change of Phase A or Phase B. The following figure shows a
-waveform with the Phase A and Phase B signals and the equivalent step (clk) and
-direction (dir) signals.
-
+The quadrature encoder block counts the number of steps that an encoder makes about its axis of rotation. The angular change per step is determined by the resolution of the encoder being used. When the encoder is going forward, the count value is incremented. When the encoder is moving backwards, the count value is decremented. There are two modes that are supported by the implemented encoder (ENC) subsystem. In the step and direction mode, the direction signal indicates the direction of rotation where a low signal means forward and a high signal means backward. The count value changes on every rising edge of the step signal. In the quadrature phase mode, the encoder generates two signals called Phase A and Phase B, which are two square waves that are 90 degrees out of phase with each other.In general, when Phase A is leading Phase B, the encoder counter is counting up, and when Phase B leads Phase A, the encoder counter is counting down. The count value is changed on every change of Phase A or Phase B. The following figure shows a waveform with the Phase A and Phase B signals and the equivalent step (clk) and direction (dir) signals. 
 <p align="center">
     <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk5.png">
 </p>
@@ -980,8 +934,7 @@ direction (dir) signals.
 Figure 5. A Waveform with Phase A, Phase B, Step (CLK), and Direction (DIR) Signals
 </p>
 
-> Note: When you program in C language, register names must not contain periods,
-colons, or spaces.
+> Note: When you program in C language, register names must not contain periods, colons, or spaces (like using “DIOA_190DIR” for “DIO.A_19:0.DIR”). 
 
 ### Encoder Configuration Registers (ENC.x.CNFG)
 
@@ -1112,8 +1065,7 @@ the value.
 
 ## I2C
 
-> Note: When you program in C language, register names must not contain periods,
-colons, or spaces.
+> Note: When you program in C language, register names must not contain periods, colons, or spaces (like using “DIOA_190DIR” for “DIO.A_19:0.DIR”).
 
 ### I2C Configuration Registers (I2C.x.CNFG)
 
@@ -1273,7 +1225,7 @@ the subsystem is busy. The value is 0 when the subsystem is not busy.
 
 
 <p align="center">
-Table 8. I2C busbsy/inuse/bsy combinations
+Table 8. I2C busbsy/inuse/bsy combinations  
 </p>
 
 | BUSBSY  | INUSE  | BSY  | Interpretation                                                                                                                                           | 
@@ -1395,11 +1347,7 @@ Register list: I2C.A.GO, I2C.B.GO
 
 Data type: Boolean
 
-This register causes the operation specified in the I2C.x.CNTL register to begin. When an
-operation is written to the CNTL register, it does not start until the GO bit is strobed. The
-user only has to write a TRUE to this register as the register resets to FALSE after the I2C
-operation has started. Table 1 shows how to set the CNTL register for the different
-possible I2C operations.
+This register causes the operation specified in the I2C.x.CNTL register to begin. When an operation is written to the CNTL register, it does not start until the GO bit is strobed. The user only has to write a TRUE to this register as the register resets to FALSE after the I2C operation has started. Table 1 shows how to set the CNTL register for the different possible I2C operations.
 
 ### I2C Sequence Flowcharts
 
@@ -1441,10 +1389,29 @@ The following figures show the sequence of events required to use the I2C periph
     <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk11.png">
 </p>
 
+## UART
+
+> Note: When you program in C language, register names must not contain periods, colons, or spaces (like using “DIOA_190DIR” for “DIO.A_19:0.DIR”).
+
+#### UART Enable Register (UART.x.ENA)
+
+Register list: UART.A.ENA, UART.B.ENA
+
+Data type: Boolean 
+
+The UART and console output are multiplexing with the same pin. This register decides whether the UART is enabled for a specific bank.
+
+#### UART Status Register (UART.x.STAT)
+
+Register list: UART.A.STAT, UART.B. STAT 
+
+Data type: Boolean 
+
+This register reads the status of UART whether it is enabled or disabled for a specific bank. 
+
 ## IRQ
 
-> Note: When you program in C language, register names must not contain periods,
-colons, or spaces.
+> Note: When you program in C language, register names must not contain periods, colons, or spaces (like using “DIOA_190DIR” for “DIO.A_19:0.DIR”).
 
 ### Timer Interrupt
 
@@ -1488,9 +1455,7 @@ Register list: IRQ.AI_A_0.THRESHOLD, IRQ.AI_A_1.THRESHOLD
 
 Data type: FXP
 
-This register sets the value of the analog input threshold. When an analog input signal
-crosses the threshold, an interrupt is triggered. Each channel has one analog IRQ threshold
-register.
+This register sets the value of the analog input threshold. When an analog input signal crosses the threshold, an interrupt is triggered. Each channel has one analog IRQ threshold register.
 
 #### Analog IRQ Hysteresis Register (IRQ.AI_x.HYSTERESIS)
 
@@ -1519,29 +1484,32 @@ shown in the following table.
 - Bits [7:4] - Reserved for future use.
 - Bit [3] - IRQ.AI_A_1. Type.
 
-Specifies the interrupt type of the channel. If the bit is set to 1, the AI1 channel on
-connector A checks AI interrupts on a rising edge of the analog input signal. If the bit
-is set to 0, the AI1 channel on connector A checks AI interrupts on a falling edge of
-the analog input signal.
+Specifies the interrupt type of the channel. If the bit is set to 1, the AI1
+ channel on bank A checks AI interrupts on a rising edge of the analog input
+ signal. If the bit is set to 0, the AI1 channel on bank A checks AI interrupts
+ on a falling edge of the analog input signal. 
 
 - Bit [2] - IRQ.AI_A_1. ENA.
-    Enables the settings of the analog input interrupt channel. If the bit is set to 1, the AI1
-    channel on connector A starts checking AI interrupts based on the settings. If the bit
-    is set to 0, the AI1 channel on connector A stops checking AI interrupts. The default
-    value of the bit is 0 when the NI ELVIS III device is powered on.
+
+Specifies the interrupt type of the channel. If the bit is set to 1, the AI1
+ channel on bank A checks AI interrupts on a rising edge of the analog input
+ signal. If the bit is set to 0, the AI1 channel on bank A checks AI interrupts
+ on a falling edge of the analog input signal. 
+ 
 - Bit [1] - IRQ.AI_A_0. Type.
 
-Specifies the interrupt type of the channel. If the bit is set to 1, the AI0 channel on
-connector A checks AI interrupts on a rising edge of the analog input signal. If the bit
-is set to 0, the AI0 channel on connector A checks AI interrupts on a falling edge of
-the analog input signal.
+Specifies the interrupt type of the channel. If the bit is set to 1, the AI0
+ channel on bank A checks AI interrupts on a rising edge of the analog input
+ signal. If the bit is set to 0, the AI0 channel on bank A checks AI interrupts
+ on a falling edge of the analog input signal.
 
 - Bit [0] - IRQ.AI_A_0. ENA
 
-Enables the settings of the analog input interrupt channel. If the bit is set to 1, the AI0
-channel on connector A starts checking AI interrupts based on the settings. If the bit
-is set to 0, the AI0 channel on connector A stops checking AI interrupts. The default
-value of the bit is 0 when the NI ELVIS III device is powered on.
+Enables the settings of the analog input interrupt channel. If the bit is set to
+ 1, the AI0 channel on bank A starts checking AI interrupts based on the
+ settings. If the bit is set to 0, the AI0 channel on bank A stops checking AI
+ interrupts. The default value of the bit is 0 when the NI ELVIS III device is
+ powered on. 
 
 #### Analog IRQ Number Register (IRQ.AI_x.NO)
 
@@ -1693,12 +1661,21 @@ This register specifies the number of edges for triggering one interrupt. The in
 triggered every time the edges count reaches the number.
 
 ```
-Refer to the NI Trademarks and Logo Guidelines at ni.com/trademarks for more information on NI trademarks. Other product and company names mentioned herein are trademarks or trade names of their respective companies.
-For patents covering NI products/technology, refer to the appropriate location:
-Help»Patents in your software, the patents.txt file on your media, or the NI Patent Notice at ni.com/patents. You can find information about end-user license agreements (EULAs) and third-party legal notices in the readme file for your NI product. 
-Refer to the Export Compliance Information at ni.com/legal/export-compliance for the National Instruments global trade compliance policy and how to obtain relevant HTS codes, ECCNs, and other import/export data.
-NI MAKES NO EXPRESS OR IMPLIED WARRANTIES AS TO THE ACCURACY OF THE INFORMATION CONTAINED HEREIN AND SHALL NOT BE LIABLE FOR ANY ERRORS. U.S. Government Customers: 
-The data contained in this manual was developed at private expense and is subject to the applicable limited rights and restricted data rights as set forth in FAR 52.227-14, DFAR 252.227-7014, and DFAR 252.227-7015.
+Refer to the NI Trademarks and Logo Guidelines at ni.com/trademarks for more information on National
+Instruments trademarks. Other product and company names mentioned herein are trademarks or trade names
+of their respective companies. For patents covering National Instruments products/technology, refer to
+the appropriate location: patents.txt file on your media, or the Help»PatentsNational Instruments Patent
+Notice in your software, the at ni.com/patents. You can find information about end-user license
+agreements (Refer to the EULAs) and third-party legal notices in the readme file for your NI product.
+Export Compliance Information at ni.com/legal/export-compliance for the National Instruments global
+trade compliance policy and how to obtain relevant HTS codes, ECCNs, and other import/export data. NI
+MAKES NO EXPRESS OR IMPLIED WARRANTIES AS TO THE ACCURACY OF THE INFORMATION CONTAINED HEREIN AND SHALL
+NOT BE LIABLE FOR ANY ERRORS. U.S. Government Customers: The data contained in this manual was developed
+at private expense and is subject to the applicable limited rights and restricted data rights as set
+forth in FAR 52.227-14, DFAR 252.227-7014, and DFAR 252.227-7015. 
+ 
+© 2018 National Instruments. All rights reserved. 2 | ni.com | NI ELVIS III
+Shipping Personality 1.0 Reference 
 ```
 
 
