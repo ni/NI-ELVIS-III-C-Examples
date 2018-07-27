@@ -103,7 +103,9 @@
        Use the C examples to learn how to run a project on the NI ELVIS III with Eclipse.
 1. Download the C Support archive file from github repository. Click **Clone or download** and then click **Download ZIP**.
 
-![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/download.png)  
+<p align="center">
+    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/download.PNG">
+</p>
 
 2.	Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box.
 3.	Select **C/C++ (default)** and click **OK**.
@@ -119,7 +121,7 @@
 >b. On the left pane of the **Properties** dialog box, expand **Resource** and select **Linked Resources**. <br>
 >c. On the right pane, click the **Linked Resources** tab, select the **C_Support** row, and click **Edit** to edit the path to the C support files. Usually the path is C:\Users<administrator name>\workspace\C Support for ELVISIII\source. Click **OK** to save your changes.  
  
-![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/cSupportPath.png)  
+![](https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/cSupportPath.PNG)  
 
 ## Installing Bitfiles
    Bitfiles contain information about the interfaces and registers of the hardware. Before using the NI ELVIS III, you need to install bitfiles  on the NI ELVIS III. You can download bitfiles from github repository.
