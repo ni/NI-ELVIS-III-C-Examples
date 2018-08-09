@@ -246,11 +246,11 @@ void Pwm_Select(ELVISIII_Pwm* bank, Pwm_Channel channel)
 
     // Clear bits of the SYSSELECTA/SYSSELECTB register. This is
     // done so that the correct value can be set later on.
-    selectReg = selectReg & (~(0b11 << (channel * 2)));
+    selectReg = selectReg & (~((uint64_t)0b11 << (channel * 2)));
 
     // Set bit2 of the SYSSELECTA/SYSSELECTB register to enable Encoder functionality.
     // The functionality of the bit is specified in the documentation.
-    selectReg = selectReg | (0b01 << (channel * 2));
+    selectReg = selectReg | ((uint64_t)0b01 << (channel * 2));
 
     // Write the new value to the SYSSELECTA/SYSSELECTB Register.
     status = NiFpga_WriteU64(NiELVISIIIv10_session, bank->sel, selectReg);
