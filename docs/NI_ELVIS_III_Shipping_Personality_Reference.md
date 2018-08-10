@@ -655,7 +655,7 @@ to generate a slower frequency. For example, the following figure shows the gene
 edge or every other rising edge, respectively.
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk1.png">
+    <img src="docs/resources/mdk1.png">
 </p>
 
 <p align="center">
@@ -783,7 +783,7 @@ of the CPOL bit. The CPHA functionality is summarized below.
 - Bit [0] - Reserved for future use.
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk2.png">
+    <img src="docs/resources/mdk2.png">
 </p>
 
 <p align="center">
@@ -791,7 +791,7 @@ Figure 2. SPI Transfer Format with CPHA = 0
 </p>
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk3.png">
+    <img src="docs/resources/mdk3.png">
 </p>
 
 <p align="center">
@@ -878,7 +878,7 @@ MHz and 10 MHz clocks from a 40 MHz clock by changing the output every rising ed
 or every other rising edge, respectively.
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk4.png">
+    <img src="docs/resources/mdk4.png">
 </p>
 
 <p align="center">
@@ -927,7 +927,7 @@ supported.
 
 The quadrature encoder block counts the number of steps that an encoder makes about its axis of rotation. The angular change per step is determined by the resolution of the encoder being used. When the encoder is going forward, the count value is incremented. When the encoder is moving backwards, the count value is decremented. There are two modes that are supported by the implemented encoder (ENC) subsystem. In the step and direction mode, the direction signal indicates the direction of rotation where a low signal means forward and a high signal means backward. The count value changes on every rising edge of the step signal. In the quadrature phase mode, the encoder generates two signals called Phase A and Phase B, which are two square waves that are 90 degrees out of phase with each other.In general, when Phase A is leading Phase B, the encoder counter is counting up, and when Phase B leads Phase A, the encoder counter is counting down. The count value is changed on every change of Phase A or Phase B. The following figure shows a waveform with the Phase A and Phase B signals and the equivalent step (clk) and direction (dir) signals. 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk5.png">
+    <img src="docs/resources/mdk5.png">
 </p>
 
 <p align="center">
@@ -1356,37 +1356,37 @@ The following figures show the sequence of events required to use the I2C periph
 #### Sending a Single Byte
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk6.png">
+    <img src="docs/resources/mdk6.png">
 </p>
 
 #### Receiving a Single Byte
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk7.png">
+    <img src="docs/resources/mdk7.png">
 </p>
 
 #### Sending Multiple Bytes
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk8.png">
+    <img src="docs/resources/mdk8.png">
 </p>
 
 #### Receiving Multiple Bytes
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk9.png">
+    <img src="docs/resources/mdk9.png">
 </p>
 
 #### Sending Multiple Bytes then Receiving Multiple Bytes
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk10.png">
+    <img src="docs/resources/mdk10.png">
 </p>
 
 #### Receiving Multiple Bytes then Sending Multiple Bytes
 
 <p align="center">
-    <img src="https://github.com/ni-kismet/ELVISIII_C_Examples/blob/master/docs/resources/mdk11.png">
+    <img src="docs/resources/mdk11.png">
 </p>
 
 ## UART
