@@ -30,7 +30,7 @@
   
 ## Setting up the Software Environment
 
-1.	Install Java SE Development Kit 6.0 or greater , which you can download at http://www.oracle.com/technetwork/java/javase/downloads/index.html.
+1.	Install 32-bit Java SE 8 (x86), which you can download at http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html.
 2.	Install C/C++ Development Tools for NI Linux Real-Time, Eclipse Edition 2017-2018, which you can download at http://www.ni.com/download/labview-real-time-module-2017/6731/en/.
 
 ![](docs/resources/picture.png)  
