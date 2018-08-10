@@ -164,11 +164,11 @@ void Encoder_Select(ELVISIII_Encoder* bank, Encoder_Channel channel)
 
     // Clear bits of the SYSSELECTA/SYSSELECTB register. This is
     // done so that the correct value can be set later on.
-    selectReg = selectReg & (~(0xf << (channel * 4)));
+    selectReg = selectReg & (~((uint64_t)0xf << (channel * 4)));
 
     // Set bit2 of the SYSSELECTA/SYSSELECTB register to enable Encoder functionality.
     // The functionality of the bit is specified in the documentation.
-    selectReg = selectReg | (0xa << (channel * 4));
+    selectReg = selectReg | ((uint64_t)0xa << (channel * 4));
 
     // Write the new value to the SYSSELECTA/SYSSELECTB Register.
     status = NiFpga_WriteU64(NiELVISIIIv10_session, bank->sel, selectReg);
