@@ -173,13 +173,11 @@ void Spi_Select(ELVISIII_Spi* bank)
 
     NiELVISIIIv10_ReturnValueIfNotSuccess(status, status, "Could not read from the System Select Register!");
 
-    // Clear the value of the bits in the SYSSELECTA/SYSSELECTB register. This is
-    // done so that the correct value can be set later on.
-    selectReg = selectReg & 0x03ff;
-
-    // Set bit2 of the SYSSELECTA/SYSSELECTB register to enable Encoder functionality.
+    // No need to clear the value of the bits in the SYSSELECTA/SYSSELECTB register
+    // because SPI select is all 1.
+    // Set bit10:15 of the SYSSELECTA/SYSSELECTB register to enable SPI functionality.
     // The functionality of the bit is specified in the documentation.
-    selectReg = selectReg | ~0x03ff;
+    selectReg = selectReg | (uint64_t)0b111111 << 10;
 
     // Write the updated value of the SYSSELECTA register.
     status = NiFpga_WriteU64(NiELVISIIIv10_session, bank->sel, selectReg);
