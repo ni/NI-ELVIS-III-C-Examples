@@ -58,7 +58,7 @@
 
 
 
->NOTE : If you use other versions of Eclipse, update the paths accordingly.
+>NOTE: If you use other versions of Eclipse, update the paths accordingly.
 
 ## Starting Eclipse
 
@@ -96,7 +96,7 @@
 
 11.	Enter the user ID and the password of the NI ELVIS III. Click **OK**.
 
->NOTE : Leave the **Password** textbox blank if you have not set one. There is no password by default.
+>NOTE: Leave the **Password** textbox blank if you have not set one. There is no password by default.
 
 12.	The **Info** dialog box shows. Click **OK**. You have successfully connected to the NI ELVIS III.
 
@@ -117,13 +117,6 @@
 
 ![](docs/resources/pic8.png)  
 
->Note : After importing the C Support project, check if the location of the C Support file is correct. .<br>
->a. In the **Project Explore**r pane, right-click the example and select **Properties**. <br>
->b. On the left pane of the **Properties** dialog box, expand **Resource** and select **Linked Resources**. <br>
->c. On the right pane, click the **Linked Resources** tab, select the **C_Support** row, and click **Edit** to edit the path to the C support files. Usually the path is C:\Users<administrator name>\workspace\C Support for ELVISIII\source. Click **OK** to save your changes.  
- 
-![](docs/resources/cSupportPath.PNG)  
-
 ## Installing Bitfiles
    Bitfiles contain information about the interfaces and registers of the hardware. Before using the NI ELVIS III, you need to install bitfiles  on the NI ELVIS III. You can download bitfiles from github repository.
 1. Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box. 
@@ -139,39 +132,24 @@
 ![](docs/resources/pic10.png)  
 
 ## Building and Installing Executable
-1.	Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box. 
+1.	Select **Window > Open Perspective > Other** to display the **Open Perspective** dialog box.
 2. Select **C/C++ (default)**. Click **OK**.
-3.	In the **Project Explorer** pane, right-click an example and select **Build Project** from the shortcut menu to build the example. Wait until the project finishes building. 
-
->NOTE: if you select **Release** on the toolbar to build the project, you need to configure the settings and tool chain of the project.
-
->![](docs/resources/pic13.png)  
-
->   a.	Configuring the settings
->1.	In the **Project Explore**r pane, right-click the example and select **Properties**. 
->2.	On the left pane of the **Properties** dialog box, expand **C/C++ Build** and select **Settings**. 
->3.	On the right pane, select **Release** from the **Configuration** pull-down menu.
->4.	On the **Tool Settings** tab, Expand **Cross GCC Compiler** and configure **Symbols** and **Includes** according to configuration in Debug. Check your Debug configurations by selecting **Debug** from the **Configuration** pull-down menu. 
->5.	Expand **Cross GCC Linke**r and configure **Libraries** according to configuration in Debug.
-
-
->![](docs/resources/pic14.png)
-
->   b.	Configuring the toolchain
->1.	On the left pane of the **Properties** dialog box, expand **C/C++ Build** and select **Tool Chain Editor**. 
->2.	On the right pane, select **CDT Internal Builder** from the **Current builder** pull-down menu.
-
-4.	In the **Project Explorer** pane, select the project and select **Run -> Run Configurations** from the toolbar. 
-5.	Right-click **C/C++ Remote Application** and select **New** to display the **Run Configurations** dialog box .
+3.	In the **Project Explorer** pane, right-click an example and select **Build Project** from the shortcut menu to build the example. Wait until the project finishes building.
+4.	In the **Project Explorer** pane, select the project and select **Run As -> Run Configurations** from the toolbar.
+5.	Right-click **C/C++ Remote Application** and select **New** to display the **Run Configurations** dialog box.
 
 ![](docs/resources/pic11.png) 
 
 6.	Select the IP address of the NI ELVIS III from the **Connection** pull-down menu.
-7.	Click **Browse** to the right of the **Remote Absolute File Path for C/C++ Application** textbox.
-8.	Right-click **My Home** and select **New -> Folder**. 
-9.	Enter the new folder name and click **Finish**.
-10.	Select the folder you have just created and click **OK**. In the textbox, append **/** after **/home/admin** and add the project name to the end of the path. 
-11.	Click **Apply** to save the settings. 
+7.  Click **Search Project...** to select the built binary (Debug or Releae) you want to run on the NI ELVIS III device.
+
+![](docs/resources/pic15.png) 
+
+8.	Click **Browse** to the right of the **Remote Absolute File Path for C/C++ Application** textbox.
+9.	Right-click **My Home** and select **New -> Folder**.
+10.	Enter the new folder name and click **Finish**.
+12.	Select the folder you have just created and click **OK**. In the textbox, append **/** after **/home/admin** and add the project name to the end of the path.
+13.	Click **Apply** to save the settings.
   
   ![](docs/resources/pic12.png) 
   
