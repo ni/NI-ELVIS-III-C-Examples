@@ -27,10 +27,44 @@
 extern NiFpga_Session NiELVISIIIv10_session;
 
 // Initialize the register addresses of DI in bank A.
-ELVISIII_Dio bank_A = {98304, 98312, 98320};
+ELVISIII_Dio bank_A = {98304, 98312, 98320, SYSSELECTA};
 
 // Initialize the register addresses of DI in bank B.
-ELVISIII_Dio bank_B = {99532, 99524, 99516};
+ELVISIII_Dio bank_B = {99532, 99524, 99516, SYSSELECTB};
+
+/**
+ * Select DIO channel by setting the System Select Register.
+ *
+ * @param[in]  bank        A struct containing the registers for one connecter.
+ * @param[in]  channel     Enum containing 20 kinds of DIO channels.
+ */
+void Dio_Select(ELVISIII_Dio* bank, Dio_Channel channel)
+{
+    NiFpga_Status status;
+    uint64_t selectReg;
+
+    // DIO outputs are on pins shared with other buses like PWM, Encoder, UART, SPI and I2C.
+    // To output on a physical pin, select the DIO channel by setting the appropriate SELECT Register.
+    // Read the value of the SYSSELECTA/SYSSELECTB Register.
+    status = NiFpga_ReadU64(NiELVISIIIv10_session, bank->sel, &selectReg);
+
+    // Check if there was an error reading from the System Select Register.
+    // If there was an error then print an error message to stdout.
+    NiELVISIIIv10_ReturnValueIfNotSuccess(status, status, "Could not read from the System Select Register!");
+
+    // Clear bits of the SYSSELECTA/SYSSELECTB register.
+    // For DIO, the value for DIO select is 0, so we just need to clear the 2 bits and don't need to set.
+    selectReg = selectReg & (~((uint64_t)0b11 << (channel * 2)));
+
+    // Write the new value to the SYSSELECTA/SYSSELECTB Register.
+    status = NiFpga_WriteU64(NiELVISIIIv10_session, bank->sel, selectReg);
+
+    // Check if there was an error reading from the System Select Register.
+    // If there was an error then print an error message to stdout.
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not Write to the System Select Register!");
+
+    return;
+}
 
 /**
  * Read the value from one channel.
@@ -62,6 +96,9 @@ NiFpga_Bool Dio_ReadBit(ELVISIII_Dio* bank, Dio_Channel channel)
     uint32_t dirValue = 0;
     uint32_t dirMask  = 0;
     uint32_t inValue  = 0;
+
+    // Change the channel mode to DIO by setting SYS.SELECTx register.
+    Dio_Select(bank, channel);
 
     // Get the value of the DI Direction Register.
     // The returned NiFpga_Status value is stored for error checking.
@@ -130,6 +167,9 @@ void Dio_WriteBit(ELVISIII_Dio* bank, NiFpga_Bool value, Dio_Channel channel)
     uint32_t dirValue;
     uint32_t outValue;
     uint8_t bit = channel;
+
+    // Change the channel mode to DIO by setting SYS.SELECTx register.
+    Dio_Select(bank, channel);
 
     // Get the value from the DO Value Register.
     // The returned NiFpga_Status value is stored for error checking.

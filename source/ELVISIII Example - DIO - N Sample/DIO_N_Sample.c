@@ -27,10 +27,44 @@
 extern NiFpga_Session NiELVISIIIv10_session;
 
 // Initialize the register addresses of DIO in bank A.
-ELVISIII_Dio bank_A = {DIADMA_ENA, 98328, DIADMA_CNTR, DOADMA_CNTR, 98304};
+ELVISIII_Dio bank_A = {DIADMA_ENA, 98328, DIADMA_CNTR, DOADMA_CNTR, 98304, SYSSELECTA};
 
 // Initialize the register addresses of DIO in bank B.
-ELVISIII_Dio bank_B = {DIBDMA_ENA, 99508, DIBDMA_CNTR, DOBDMA_CNTR, 99532};
+ELVISIII_Dio bank_B = {DIBDMA_ENA, 99508, DIBDMA_CNTR, DOBDMA_CNTR, 99532, SYSSELECTB};
+
+/**
+ * Select DIO channel by setting the System Select Register.
+ *
+ * @param[in]  bank        A struct containing the registers for one connecter.
+ * @param[in]  channel     Enum containing 20 kinds of DIO channels.
+ */
+void Dio_Select(ELVISIII_Dio* bank, Dio_Channel channel)
+{
+    NiFpga_Status status;
+    uint64_t selectReg;
+
+    // DIO outputs are on pins shared with other buses like PWM, Encoder, UART, SPI and I2C.
+    // To output on a physical pin, select the DIO channel by setting the appropriate SELECT Register.
+    // Read the value of the SYSSELECTA/SYSSELECTB Register.
+    status = NiFpga_ReadU64(NiELVISIIIv10_session, bank->sel, &selectReg);
+
+    // Check if there was an error reading from the System Select Register.
+    // If there was an error then print an error message to stdout.
+    NiELVISIIIv10_ReturnValueIfNotSuccess(status, status, "Could not read from the System Select Register!");
+
+    // Clear bits of the SYSSELECTA/SYSSELECTB register.
+    // For DIO, the value for DIO select is 0, so we just need to clear the 2 bits and don't need to set.
+    selectReg = selectReg & ~((uint64_t)0b11 << (channel * 2));
+
+    // Write the new value to the SYSSELECTA/SYSSELECTB Register.
+    status = NiFpga_WriteU64(NiELVISIIIv10_session, bank->sel, selectReg);
+
+    // Check if there was an error reading from the System Select Register.
+    // If there was an error then print an error message to stdout.
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not Write to the System Select Register!");
+
+    return;
+}
 
 /**
  * Set the Direction of the DIO channel as an input.

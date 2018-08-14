@@ -80,8 +80,13 @@ typedef struct
     uint32_t di_cntr;     // DI Divisor Register 
     uint32_t do_cntr;     // DO Divisor Register 
 
-    uint32_t dir;         // DIO Direction Register 
+    uint32_t dir;         // DIO Direction Register
+
+    uint32_t sel;         // System Select Register
 } ELVISIII_Dio;
+
+// Select DIO channel by setting the System Select Register.
+void Dio_Select(ELVISIII_Dio* bank, Dio_Channel channel);
 
 // Set the DIO Direction Register.
 void Di_Direction(ELVISIII_Dio* bank, Dio_Channel channel);

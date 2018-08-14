@@ -57,7 +57,8 @@ typedef struct
 {
     uint32_t dir;         // DIO Direction Register 
     uint32_t in;          // DI Value Register 
-    uint32_t out;         // DO Value Register 
+    uint32_t out;         // DO Value Register
+    uint32_t sel;         // System Select Register
 } ELVISIII_Dio;
 
 // Read the value from one channel.

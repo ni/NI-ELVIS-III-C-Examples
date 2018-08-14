@@ -66,6 +66,9 @@ int main()
         return status;
     }
 
+    // Change the channelA0 mode to DIO by setting SYS.SELECTx register.
+    Dio_Select(&bank_A, Dio_Channel0);
+
     // Set the Direction of the DIO0 on bank A.
     Di_Direction(&bank_A, Dio_Channel0);
 
@@ -97,6 +100,9 @@ int main()
             printf("\n");
     }
     printf("\n");
+
+    // Change the channelA0 mode to DIO by setting SYS.SELECTx register.
+    Dio_Select(&bank_B, Dio_Channel0);
 
     // Set the Direction of the DIO0 on bank B.
     Do_Direction(&bank_B, Dio_Channel0);

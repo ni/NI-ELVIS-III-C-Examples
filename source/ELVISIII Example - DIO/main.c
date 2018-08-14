@@ -53,8 +53,8 @@ int main(int argc, char **argv)
         return status;
     }
 
-    // Write the initial value to channel DIO1, bank_A.
-    Dio_WriteBit(&bank_A, false, Dio_Channel1);
+    // Write the initial value to channel DIO19, bank_A.
+    Dio_WriteBit(&bank_A, false, Dio_Channel19);
 
     // Get the value in channel DIO0, bank_A.
     NiFpga_Bool di_A0 = Dio_ReadBit(&bank_A, Dio_Channel0);
