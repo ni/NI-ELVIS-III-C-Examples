@@ -5,12 +5,12 @@
  *
  * Overview:
  * Demonstrates using the digital input and output (DIO).
- * Writes an initial value to DIO1 on bank A.
+ * Writes an initial value to DIO19 on bank A.
  * Reads this value from DIO0 on bank A.
  * Reads an initial value from DIO0 on bank B.
  *
  * Instructions:
- * 1. Connect DIO0 and DIO1 on bank A.
+ * 1. Connect DIO0 and DIO19 on bank A.
  * 2. Connect an input (5 V, 3.3 V, DGND) to DIO0 on bank B.
  * 3. Run this program.
  *
