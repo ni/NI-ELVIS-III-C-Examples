@@ -57,15 +57,8 @@ void I2c_Configure(ELVISIII_I2c* bank, I2c_ConfigureSettings settings)
 /**
  * Set the speed of the I2C block.
  *
- * Standard mode (100kbps) = 187.
- * Fast mode (400kbps) = 51.
- *
- * These values are calculated using the formula:
- *   f_SCL = f_clk / 2 [(2 * CNTR) - 4]
- *
- * where:
- *   f_SCL = the desired frequency of the I2C transmission
- *   f_clk = the frequency of the myRIO FPGA clock (40 MHz default)
+ * Standard mode (100kbps) = 213.
+ * Fast mode (400kbps) = 63.
  *
  * This formula and its rationale can be found in the documentation.
  *
@@ -453,13 +446,13 @@ void I2c_Read(ELVISIII_I2c* bank, uint8_t address, uint8_t* data, uint32_t numBy
 void I2c_Select(ELVISIII_I2c* bank)
 {
     NiFpga_Status status;
-    uint8_t selectReg;
+    uint64_t selectReg;
 
     // I2C outputs are on pins shared with other onboard devices.
     // To output on a physical pin, select the I2C on the appropriate SELECT Register.
     // See the MUX example for simplified code to enable-disable onboard devices.
     // Read the value of the SYSSELECTA/SYSSELECTB Register.
-    status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->sel, &selectReg);
+    status = NiFpga_ReadU64(NiELVISIIIv10_session, bank->sel, &selectReg);
 
     // Check if there was an error reading from the System Select Register.
     // If there was an error then print an error message to stdout.
@@ -472,7 +465,7 @@ void I2c_Select(ELVISIII_I2c* bank)
     selectReg = selectReg | ((uint64_t)0b1111) << 28;
 
     // Write the new value to the SYSSELECTA/SYSSELECTB Register.
-    status = NiFpga_WriteU8(NiELVISIIIv10_session, bank->sel, selectReg);
+    status = NiFpga_WriteU64(NiELVISIIIv10_session, bank->sel, selectReg);
 
     // Check if there was an error reading from the System Select Register.
     // If there was an error then print an error message to stdout.

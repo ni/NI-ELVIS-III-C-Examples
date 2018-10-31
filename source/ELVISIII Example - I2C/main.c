@@ -4,19 +4,18 @@
  * All rights reserved.
  *
  * Overview:
- * Demonstrates using the I2C. Read the temperature from a connected TMP102
- * digital temperature sensor and writes the response to the console.
+ * Demonstrates using the I2C. Read a value from a I2C sensor and writes the
+ * response to the console.
  *
  * Instructions:
- * 1. Connect a TMP102 digital temperature sensor to the I2C pins on bank A.
- * 2. Connect I2C.SCL  to DIO14 on bank A.
- * 3. Connect I2C.SDA  to DIO15 on bank A.
- * 4. Connect GND of the sensor to DGND on bank A.
+ * 1. Connect I2C.SCL  to DIO14 on bank A.
+ * 2. Connect I2C.SDA  to DIO15 on bank A.
+ * 3. Connect GND of the sensor to DGND on bank A.
  * 4. Connect a DC voltage input (+3.3 V) to the sensor.
- * 2. Run the program.
+ * 5. Run the program.
  *
  * Output:
- * The program writes the read temperature to the console.
+ * The program writes the value to the console.
  *
  * Note:
  * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
@@ -36,10 +35,10 @@ int main(int argc, char **argv)
 {
     NiFpga_Status status;
 
-    uint8_t data[2] = {0x00, 0x80};
+    uint8_t data[2] = {0x2D, 0x08};
     int index;
-    uint8_t slaveWriteAddress = 0x48;
-    uint8_t slaveReadAddress  = 0x48;
+    uint8_t slaveWriteAddress = 0x53;
+    uint8_t slaveReadAddress  = 0x53;
 
     printf("I2C\n");
 
@@ -56,7 +55,7 @@ int main(int argc, char **argv)
     I2c_Select(&bank_A);
 
     // Set the speed of the I2C block.
-    I2c_Counter(&bank_A, 187);
+    I2c_Counter(&bank_A, 213);
 
     // Configure the I2C block.
     I2c_Configure(&bank_A, I2c_Enabled);
@@ -65,11 +64,12 @@ int main(int argc, char **argv)
     I2c_Write(&bank_A, slaveWriteAddress, data, 2);
 
     // Read 10 bytes from the slave device.
-    I2c_Read(&bank_A, slaveReadAddress, data, 2);
+    int data_to_read_back = 1;
+    I2c_Read(&bank_A, slaveReadAddress, data, data_to_read_back);
 
     // Print the data received from the slave.
     printf("Received data:");
-    for (index = 0; index < 2; index++)
+    for (index = 0; index < data_to_read_back; index++)
     {
         printf(" %.2X ", data[index]);
     }
