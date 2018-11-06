@@ -27,7 +27,12 @@
 		<link>
 			<name>C_Support</name>
 			<type>2</type>
-			<locationURI>$%7BPARENT-1-PROJECT_LOC%7D/C%20Support%20for%20ELVISIII/source</locationURI>
+			<location>C:/Users/Administrator/workspace2/C Support for ELVISIII/source</location>
+		</link>
+		<link>
+			<name>ELVISIII Example - DIO</name>
+			<type>2</type>
+			<locationURI>WORKSPACE_LOC/ELVISIII%20Example%20-%20DIO</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

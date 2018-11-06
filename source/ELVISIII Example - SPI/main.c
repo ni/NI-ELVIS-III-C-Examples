@@ -12,11 +12,14 @@
  * 2. Connect SPI.MISO of the SPI slave to DIO6 on bank A.
  * 3. Connect SPI.MOSI of the SPI slave to DIO7 on bank A.
  * 4. Connect SPI.GND of the SPI slave to DGND on bank A.
- * 5. Run the program.
+ * 5. Connect SPI.CS of the SPI slave to DIO0 on bank A.
+ * 6. Run the program.
  *
  * Output:
- * The program writes the message "Hello World\n" for 60 s. Slave values are
- * written to the console for every new line of characters.
+ * The program writes 0x80, which specifies the address to read from, to the
+ * SPI device. The bit 7 refers to the writing/reading bit. We want to read
+ * from the address 0x00, which means we have to set the bit 7 of 0x00 to 1.
+ * Then the program reads back a value from the 0x00 register of the SPI device.
  *
  * Note:
  * The Eclipse project defines the preprocessor symbol for the NI ELVIS III.
@@ -24,28 +27,23 @@
 #include <stdio.h>
 #include <time.h>
 #include "SPI.h"
+#include "DIO.h"
 #include "NiELVISIIIv10.h"
 
 #if !defined(LoopDuration)
 #define LoopDuration    60  // How long to output the signal, in seconds 
 #endif
 
-extern ELVISIII_Spi bank_A;
+extern ELVISIII_Dio bank_A;
+extern ELVISIII_Spi spi_bank_A;
 
 int main(int argc, char **argv)
 {
     NiFpga_Status status;
 
-    time_t currentTime;
-    time_t finalTime;
-
-    char writeMessage[]  = "Hello World\n";
-    uint8_t writePos = 0;
+    uint16_t data[1] = {0x80};
 
     uint16_t readChar;
-
-    char readMessage[100];
-    uint8_t readPos = 0;
 
     printf("SPI:\n");
 
@@ -58,61 +56,28 @@ int main(int argc, char **argv)
         return status;
     }
 
-    // Write the value to the System Select Register.
-    Spi_Select(&bank_A);
-
     // Configure the SPI as leading clock phase, low clock polarity, most
     // significant bit first, 8 bits, and with a clock divider of 8X.
-    Spi_Configure(&bank_A,
+    Spi_Configure(&spi_bank_A,
                   Spi_ClockPhase | Spi_ClockPolarity | Spi_DataOrder | Spi_FrameLength | Spi_ClockDivider,
-                  Spi_ClockPhaseLeading | Spi_ClockPolarityLow | Spi_DataOrderMsbFirst | Spi_FrameSize8 | Spi_Clock8x);
+                  Spi_ClockPhaseTrailing | Spi_ClockPolarityHigh | Spi_DataOrderMsbFirst | Spi_FrameSize8 | Spi_Clock1x);
 
-    // Set the maximum counter value. The counter counts from 0 to 1000.
-    // The clock divider was previously set with a clock divider of 8X.
-    // The counter increments at 40 MHz / 2 / 8 = 2.5 MHz and the counter
-    // counts from 0 to 5624990000. The frequency of the SPI is 2.5 MHz / 62499 = 40 Hz.
-    Spi_CounterMaximum(&bank_A, 62499U);
+    // Set the maximum counter value. See NI_ELVIS_III_Shipping_Personality_Reference
+    // for more details.
+    Spi_CounterMaximum(&spi_bank_A, 127);
 
-    // Normally, the main function runs a long running or infinite loop.
-    // Keep the program running so that you can measure the output using
-    // an external instrument.
-    time(&currentTime);
-    finalTime = currentTime + LoopDuration;
-    while (currentTime < finalTime)
-    {
-        Spi_Transmit(&bank_A, writeMessage[writePos], &readChar);
+    // Write the value to the System Select Register.
+    Spi_Select(&spi_bank_A);
 
-        // Increment the position in the message. Reset to the beginning after
-        // reaching the end of the message. -1 to not write the null terminating
-        // character.
-        ++writePos;
-        if (writePos >= (sizeof writeMessage) - 1)
-        {
-            writePos = 0;
-        }
+    // Write the initial value to channel DIO0 which set the SPI.CS to low.
+    Dio_WriteBit(&bank_A, false, Dio_Channel0);
 
-        // If the character read is not 0, then add to the string. Otherwise,
-        // interpret 0 as 'nothing was read'
-        if (readChar != 0)
-        {
-            readMessage[readPos] = (char) readChar;
+    // Start transmit beween the slave device and ELVIS III
+    readChar = Spi_Transmit(&spi_bank_A, data[0]);
+    printf("%i\n",  (int) readChar);
 
-            // If this was a newline character, then print out the string
-            // otherwise increment the position for the next loop iteration.
-            if (readMessage[readPos] == '\n')
-            {
-                readMessage[readPos + 1] = '\0';
-                printf("%s", readMessage);
-                readPos = 0;
-            }
-            else if (readPos < (sizeof readMessage) - 1)
-            {
-                ++readPos;
-            }
-        }
-
-        time(&currentTime);
-    }
+    // Write the initial value to channel DIO0 which set the SPI.CS to high.
+    Dio_WriteBit(&bank_A, true, Dio_Channel0);
 
     // Close the ELVISIII NiFpga Session.
     // This function MUST be called after all other functions.

@@ -7,6 +7,7 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 
 /**
  * Include the ELVIS III header file.
@@ -26,10 +27,18 @@
 extern NiFpga_Session NiELVISIIIv10_session;
 
 // Initialize the register addresses of SPI in bank A.
-ELVISIII_Spi bank_A = {SPIACNFG, SPIACNT, SPIAGO, SPIASTAT, SPIADATO, SPIADATI, SYSSELECTA};
+ELVISIII_Spi spi_bank_A = {SPIACNFG, SPIACNT, SPIAGO, SPIASTAT, SPIADATO, SPIADATI, SYSSELECTA};
 
 // Initialize the register addresses of SPI in bank B.
-ELVISIII_Spi bank_B = {SPIBCNFG, SPIBCNT, SPIBGO, SPIBSTAT, SPIBDATO, SPIBDATI, SYSSELECTB};
+ELVISIII_Spi spi_bank_B = {SPIBCNFG, SPIBCNT, SPIBGO, SPIBSTAT, SPIBDATO, SPIBDATI, SYSSELECTB};
+
+// Resources for the new thread.
+typedef struct
+{
+    NiFpga_IrqContext irqContext;      // IRQ context reserved by Irq_ReserveContext()
+    NiFpga_Bool       irqThreadRdy;    // IRQ thread ready flag
+    uint8_t           irqNumber;       // IRQ number value
+} ThreadResource;
 
 /**
  * Sets options for the SPI configuration register.
@@ -103,20 +112,13 @@ void Spi_CounterMaximum(ELVISIII_Spi* bank, uint16_t counterMax)
  * @param[in]  dataOut     Data to output.
  * @param[in]  dataIn      Data to input.
  */
-void Spi_Transmit(ELVISIII_Spi* bank, uint16_t dataOut, uint16_t* dataIn)
+uint16_t Spi_Transmit(ELVISIII_Spi* bank, uint16_t dataOut)
 {
     NiFpga_Status status;
-    uint8_t spiStatus;
 
     // Set the value of the data to output.
     // The returned NiFpga_Status value is stored for error checking.
     status = NiFpga_WriteU16(NiELVISIIIv10_session, bank->dato, dataOut);
-
-    // Start the data transmission.
-    // NiFpga_MergeStatus is used to propagate any errors from previous
-    // function calls. Errors are not anticipated so error checking is not done
-    // after every NiFpga function call but only at specific points.
-    NiFpga_MergeStatus(&status, NiFpga_WriteBool(NiELVISIIIv10_session, bank->go, NiFpga_True));
 
     // Check if there was an error writing to the SPI Execute Register.
     // If there was an error then the rest of the function cannot complete
@@ -124,36 +126,47 @@ void Spi_Transmit(ELVISIII_Spi* bank, uint16_t dataOut, uint16_t* dataIn)
     // function early.
     NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not write to the SPI Execute Register!");
 
-    // Wait for the status register to be set, which indicates that the transfer
-    // completed.
+    // Start the data transmission.
+    // NiFpga_MergeStatus is used to propagate any errors from previous
+    // function calls. Errors are not anticipated so error checking is not done
+    // after every NiFpga function call but only at specific points.
+    NiFpga_MergeStatus(&status, NiFpga_WriteBool(NiELVISIIIv10_session, bank->go, NiFpga_True));
 
-    do
+    ThreadResource irqThread;
+    if(bank[0].cnfg == spi_bank_A.cnfg)
     {
-        // Read the status register to check if it inverted.
-        // The returned NiFpga_Status value is stored for error checking.
-        status = NiFpga_ReadU8(NiELVISIIIv10_session, bank->stat, &spiStatus);
-
-    } while ((spiStatus & Spi_Busy) && !NiELVISIIIv10_IsNotSuccess(status));
-
-    // Check if there was an error reading from the SPI Status Register.
-    // If there was an error then the rest of the function cannot complete
-    // correctly so print an error message to stdout and return from the
-    // function early.
-    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the SPI Status Register!");
-
-    // NULL indicates don't care about reading data.
-    if (dataIn != NULL)
+        irqThread.irqNumber = 27;
+    } 
+    else
     {
-        // Get the value of the data Input Register.
-        // The returned NiFpga_Status value is stored for error checking.
-        status = NiFpga_ReadU16(NiELVISIIIv10_session, bank->dati, dataIn);
-
-        // Check if there was an error reading from the SPI registers.
-        // If there was an error then print an error message to stdout.
-        NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the SPI Data In Register!");
+        irqThread.irqNumber = 26;
+    }
+    irqThread.irqThreadRdy = NiFpga_True;
+    status = NiFpga_ReserveIrqContext(NiELVISIIIv10_session, &irqThread.irqContext);
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "A required NiFpga_IrqContext was not reserved.");
+    uint32_t irqAssert = 0;
+    status = NiFpga_WaitOnIrqs(NiELVISIIIv10_session,
+                               irqThread.irqContext,
+                               1 << irqThread.irqNumber,
+                               1000,  			/* break into infinite 100ms timeouts */
+                               &irqAssert,
+                               NULL);
+	// If an IRQ was asserted.
+    if (irqAssert & (1 << irqThread.irqNumber))
+    {
+        Irq_Acknowledge(irqAssert);
     }
 
-    return;
+    // Get the value of the data Input Register.
+    // The returned NiFpga_Status value is stored for error checking.
+    uint16_t readChar;
+    status = NiFpga_ReadU16(NiELVISIIIv10_session, bank->dati, &readChar);
+
+    // Check if there was an error reading from the SPI registers.
+    // If there was an error then print an error message to stdout.
+    NiELVISIIIv10_ReturnIfNotSuccess(status, "Could not read from the SPI Data In Register!");
+
+    return readChar;
 }
 
 /**

@@ -86,7 +86,7 @@ void Spi_Configure(ELVISIII_Spi* bank, Spi_ConfigureMask mask, Spi_ConfigureSett
 void Spi_CounterMaximum(ELVISIII_Spi* bank, uint16_t counterMax);
 
 // Transmits data.
-void Spi_Transmit(ELVISIII_Spi* bank, uint16_t dataOut, uint16_t* dataIn);
+uint16_t Spi_Transmit(ELVISIII_Spi* bank, uint16_t dataOut);
 
 // Write the value to the System Select Register.
 void Spi_Select(ELVISIII_Spi* bank);
